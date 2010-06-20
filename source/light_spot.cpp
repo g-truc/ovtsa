@@ -1,0 +1,54 @@
+#include "light_spot.hpp"
+#include "light_factory.hpp"
+#include "util.hpp"
+#include "main.hpp"
+
+spot * spot::create()
+{
+    return static_cast<spot*>(lightFactory::instance().create(SPOT));
+}
+
+spot::spot()
+{}
+
+spot::~spot()
+{}
+
+glm::vec3 spot::shade
+(
+	intersection const & Intersection, 
+	material const & Material, 
+	glm::vec3 const & View
+) const
+{
+    glm::vec3 Color(0.0f);
+
+    glm::vec3 LightVector = glm::normalize(this->getPosition() - Intersection.getGlobalPosition() + glm::vecRand3(0.0f, this->Inaccuracy));
+
+	if(!this->shadow(Intersection.getGlobalPosition(), this->getPosition(), LightVector))
+	if(glm::dot(this->Direction, -LightVector) > this->CutOff)
+	{
+	    float fDiffuse = glm::dot(Intersection.getNormal(), LightVector);
+		if(fDiffuse > 0.0f)
+	    {
+	        if(Material.IsDiffuse())
+	            Color += this->Color * Material.Diffuse() * fDiffuse;
+
+	        if(Material.IsSpecular())
+	        {
+	            glm::vec3 Reflect = glm::reflect(
+	                glm::normalize(-LightVector),
+	                glm::normalize( Intersection.getNormal()));
+	            float fDot = glm::dot(Reflect, View);
+	            float fSpecular = glm::pow(fDot > 0 ? fDot : 0, Material.SpecularExponent());
+	            Color += Material.Specular() * fSpecular;
+	        }
+	    }
+	}
+
+    //if(this->shadow(Intersection.getGlobalPosition(), this->getPosition(), LightVector))
+		//Color *= 1.0f - Material.getOpacity();
+		//Color = glm::vec3(0);
+
+    return Color;
+}

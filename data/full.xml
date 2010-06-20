@@ -1,0 +1,123 @@
+<?xml version="1.0" ?>
+
+<raytrace file="../../full.tga" width="640" height="400" depth="3" antialiasing="4" reflection-rays="1" refraction-rays="32" reflection-accuracy="0.0" refraction-accuracy="0.002">
+  <objects>
+    <plane>
+      <material opacity="0.8" reflection="0.3" refraction="0.0" environment-index="1.0" specular-exponent="8" type="grid" repeat="1">
+        <ambient r="1.0" g="1.0" b="1.0" a="0.1" />
+        <ambient-secondary r="1.0" g="0.5" b="0.0" a="0.2" />
+        <diffuse r="1.0" g="1.0" b="1.0" a="0.5" />
+        <specular r="1.0" g="1.0" b="1.0" a="0.4" />
+      </material>
+      <transforms>
+        <transform type="translate-z" value="-2" />
+      </transforms>
+    </plane>
+    <plane>
+      <material opacity="1.0" reflection="0.0" refraction="0.0" environment-index="1.0" specular-exponent="8" type="flat" repeat="1">
+        <ambient r="1.0" g="1.0" b="0.8" a="0.1" />
+        <ambient-secondary r="1.0" g="1.0" b="0.8" a="0.1" />
+        <diffuse r="1.0" g="1.0" b="0.8" a="0.1" />
+        <specular r="1.0" g="1.0" b="0.8" a="0.1" />
+      </material>
+      <transforms>
+        <transform type="rotate-x" value="180" />
+        <transform type="translate-z" value="-128" />
+      </transforms>
+    </plane>
+    <!--<plane>
+      <material opacity="1.0" reflection="0.0" refraction="0.0" environment-index="1.0" specular-exponent="8" type="flat" repeat="1">
+        <ambient r="0.2" g="0.6" b="0.8" a="0.1" />
+        <ambient-secondary r="0.2" g="0.6" b="0.8" a="0.2" />
+        <diffuse r="0.2" g="0.6" b="0.8" a="0.3" />
+        <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+      </material>
+      <transforms>
+        <transform type="translate-z" value="16" />
+      </transforms>
+    </plane>-->
+    <sphere>
+      <material opacity="1.0" reflection="0.8" refraction="0.0" environment-index="1.0" specular-exponent="4" type="flat" repeat="5">
+        <ambient r="1.0" g="0.5" b="0.0" a="1.0" />
+        <diffuse r="1.0" g="0.5" b="0.0" a="0.1" />
+        <specular r="1.0" g="1.0" b="1.0" a="0.1" />
+      </material>
+      <transforms>
+        <transform type="translate-z" value="-0.5" />
+      </transforms>
+    </sphere>
+    <sphere>
+      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="16" type="wood" repeat="10">
+        <ambient r="1.0" g="0.0" b="0.0" a="0.1" />
+        <ambient-secondary r="1.0" g="0.0" b="0.0" a="0.0" />
+        <diffuse r="1.0" g="0.0" b="0.0" a="0.5" />
+        <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+      </material>
+      <transforms>
+        <transform type="translate-x" value="-3.0" />
+        <transform type="scale-z" value="2.0" />
+      </transforms>
+    </sphere>
+    <sphere>
+      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="16" type="wood" repeat="10">
+        <ambient r="1.0" g="1.0" b="0.0" a="0.1" />
+        <ambient-secondary r="1.0" g="1.0" b="0.0" a="0.0" />
+        <diffuse r="1.0" g="1.0" b="0.0" a="0.5" />
+        <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+      </material>
+      <transforms>
+        <transform type="translate-y" value="3.0" />
+        <transform type="scale-z" value="2.0" />
+      </transforms>
+    </sphere>
+    <sphere>
+      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="16" type="wood" repeat="10">
+        <ambient r="0.0" g="1.0" b="0.0" a="0.1" />
+        <ambient-secondary r="0.0" g="1.0" b="0.0" a="0.0" />
+        <diffuse r="0.0" g="1.0" b="0.0" a="0.5" />
+        <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+      </material>
+      <transforms>
+        <transform type="translate-x" value="3.0" />
+        <transform type="scale-z" value="2.0" />
+      </transforms>
+    </sphere>
+    <sphere>
+      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="16" type="wood" repeat="10">
+        <ambient r="0.0" g="0.0" b="1.0" a="0.1" />
+        <ambient-secondary r="0.0" g="0.0" b="1.0" a="0.0" />
+        <diffuse r="0.0" g="0.0" b="1.0" a="0.5" />
+        <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+      </material>
+      <transforms>
+        <transform type="translate-y" value="-3.0" />
+        <transform type="scale-z" value="2.0" />
+      </transforms>
+    </sphere>
+  </objects>
+  <lights>
+    <!--light-directions>
+      <light-direction rays-number="1" inaccuracy="0.0">
+        <color r="1.0" g="1.0" b="1.0" a="10.0" />
+        <direction x="0" y="2" z="1" />
+      </light-direction>
+    </light-directions-->
+    <light-points>
+      <light-point rays-number="1" inaccuracy="0.0">
+        <color r="1.0" g="1.0" b="1.0" a="0.5" />
+        <position x="8" y="-8" z="8" />
+      </light-point>
+      <light-point rays-number="1" inaccuracy="0.0">
+        <color r="1.0" g="1.0" b="1.0" a="0.5" />
+        <position x="-8" y="-8" z="8" />
+      </light-point>
+    </light-points>
+    <light-spots>
+      <light-spot rays-number="1" inaccuracy="0.0" cutoff="0.8">
+        <color r="1.0" g="1.0" b="1.0" a="0.25" />
+        <position x="0" y="0" z="12" />
+        <direction x="0" y="0" z="-1" />
+      </light-spot>
+    </light-spots>
+  </lights>
+</raytrace>

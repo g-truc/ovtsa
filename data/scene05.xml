@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+
+<raytrace file="scene05.tga" width="320" height="240" depth="0" antialiasing="1" reflection-rays="1" refraction-rays="1" reflection-accuracy="0.0" refraction-accuracy="0.0">
+    <objects>
+        <plane>
+            <material reflection="1.0" refraction="0.0" environment-index="1.0" specular-exponent="10" type="flat">
+                <ambient r="1.0" g="1.0" b="1.0" a="0.2" />
+                <diffuse r="1.0" g="1.0" b="1.0" a="0.1" />
+                <specular r="1.0" g="1.0" b="1.0" a="0.1" />
+            </material>
+            <transforms>
+                <transform type="translate-z" value="-2" />
+            </transforms>
+        </plane>
+        <sphere>
+            <material reflection="0.5" refraction="0.5" environment-index="1.0" specular-exponent="5" type="flat">
+                <ambient r="1.0" g="1.0" b="1.0" a="0.3" />
+                <diffuse r="1.0" g="1.0" b="1.0" a="0.2" />
+                <specular r="1.0" g="1.0" b="1.0" a="0.2" />
+            </material>
+            <transforms>
+                <transform type="scale-x" value="2" />
+                <transform type="scale-y" value="2" />
+                <transform type="scale-z" value="2" />
+            </transforms>
+        </sphere>
+    </objects>
+    <lights>
+        <light-spots>
+            <light-spot rays-number="1" inaccuracy="0.0" cutoff="0.9">
+                <color r="1.0" g="0.0" b="0.0" a="1.0" />
+                <position x="0" y="0" z="12" />
+                <direction x="0" y="0" z="-1" />
+            </light-spot>
+        </light-spots>
+        <light-directions>
+            <light-direction rays-number="1" inaccuracy="0.0">
+                <color r="0.0" g="1.0" b="0.0" a="1.0" />
+                <direction x="1" y="1" z="-1" />
+            </light-direction>
+        </light-directions>
+        <light-points>
+            <light-point rays-number="1" inaccuracy="0.0">
+                <color r="0.0" g="0.0" b="1.0" a="1.0" />
+                <position x="8" y="-8" z="8" />
+            </light-point>
+        </light-points>
+    </lights>
+</raytrace>

@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+<raytrace file="scene08.tga" width="320" height="240" aa-level="32" aa-type="force">
+    <objects>
+        <plane>
+            <material reflection="1.0" refraction="0.0" specular-exponent="10" type="flat">
+                <ambient r="1.0" g="1.0" b="1.0" a="0.3" />
+                <diffuse r="1.0" g="1.0" b="1.0" a="0.3" />
+                <specular r="1.0" g="1.0" b="1.0" a="0.3" />
+            </material>
+            <transforms>
+                <transform type="translate-z" value="-2" />
+            </transforms>
+        </plane>
+        <sphere>
+            <material reflection="0.5" refraction="0.0" specular-exponent="10" type="flat">
+                <ambient r="1.0" g="0.5" b="0.0" a="0.5" />
+                <diffuse r="1.0" g="0.5" b="0.0" a="0.3" />
+                <specular r="1.0" g="1.0" b="0.0" a="0.2" />
+            </material>
+        </sphere>
+    </objects>
+    <lights>
+        <light-points>
+            <light-point rays-number="1" inaccuracy="0.0">
+                <color r="1.0" g="1.0" b="1.0" a="0.5" />
+                <position x="0" y="0" z="8" />
+            </light-point>
+        </light-points>
+    </lights>
+</raytrace>
