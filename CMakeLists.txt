@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 cmake_policy(VERSION 2.6)
 
-project("raytrace")
+project("ovtsa")
 
 ######################
 # Add build directory
@@ -11,11 +11,11 @@ execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Debu
 
 ###########
 # Add GLM 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/glm-0.9.A.2")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
 
 ###########
 # Add GLI
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/gli-0.2.1.0")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/gli")
 
 ################################
 # Add output directory

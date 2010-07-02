@@ -13,7 +13,7 @@
 #include <ctime>
 #include <vector>
 
-#include <boost/noncopyable.hpp>
+//#include <boost/noncopyable.hpp>
 
 #include <omp.h>
 

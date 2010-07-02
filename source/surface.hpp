@@ -3,7 +3,7 @@
 
 #include "util.hpp"
 
-class surface : boost::noncopyable
+class surface// : boost::noncopyable
 {
 public:
     surface(glm::uvec2 const & Size);

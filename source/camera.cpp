@@ -176,7 +176,7 @@ void camera::shootAliasing
 	        Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x), float(y), -float(m_WindowSize.y), 0.0f))));
 	        Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 			glm::vec3 Color = this->trace(Ray, iDepth);
-			Surface.add(glm::uvec2(x, y) + glm::uvec2(m_WindowSize / 2), Color);
+			Surface.add(glm::uvec2(x, y) + glm::uvec2(m_WindowSize / glm::uint(2)), Color);
 			Count++;
 	    }
 	}
@@ -219,7 +219,7 @@ void camera::shootAntiAliasing
 	            //Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition), -float(m_WindowSize.y), 0.0f))));
 	            //Ray.setPosition(glm::vec3(ModelView * glm::vec4(AntialisingBias[i], 0.0f, 1.0f)));
 				glm::vec3 Color = this->trace(Ray, iDepth) / float(Antialising);
-	            Surface.add(glm::uvec2(x, y) + glm::uvec2(m_WindowSize / 2), Color);
+				Surface.add(glm::uvec2(x, y) + glm::uvec2(m_WindowSize / glm::uint(2)), Color);
 				Count++;
 	        }
 		}

@@ -3,7 +3,7 @@
 
 #include "util.hpp"
 
-class adaptator : boost::noncopyable
+class adaptator// : boost::noncopyable
 {
 public:
 	adaptator(glm::uvec2 const & Size);

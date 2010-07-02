@@ -1,4 +1,4 @@
-set(NAME raytrace)
+set(NAME ovtsa)
 
 file(GLOB SOURCE_FILES *.cpp)
 file(GLOB INLINE_FILES *.inl)
