@@ -55,12 +55,11 @@ private:
 		ray const & Ray, 
 		int iDepth);
     
-    //glm::mat4 m_ModelView;
-    glm::uvec2 m_WindowSize;
-    float m_fMoveForward;
-    float m_fMoveUp;
-    float m_fRotateX;
-    float m_fRotateZ;
+    //glm::mat4 ModelView;
+    glm::uvec2 WindowSize;
+    float MoveForward;
+    float MoveUp;
+	glm::vec3 Rotate;
 };
 
 #endif //CAMERA_INCLUDED

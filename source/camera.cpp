@@ -7,10 +7,9 @@
 #include "adaptator.hpp"
 
 camera::camera() :
-	m_fMoveForward(12.f),
-	m_fMoveUp(-1.0f),
-	m_fRotateX(60.f),
-	m_fRotateZ(15.0f)
+	MoveForward(12.f),
+	MoveUp(-1.0f),
+	Rotate(60.f, 0.0f, 15.f)
 {}
 
 camera::~camera()
@@ -29,8 +28,8 @@ glm::vec3 camera::shade
     for(lightFactory::size_type i = 0; i < LightFactory.size(); i++)
     {
         glm::vec3 LightingColor;
-        int iLighting = LightFactory[i]->getRayNumber();
-        while(iLighting--)
+        int Lighting = LightFactory[i]->getRayNumber();
+        while(Lighting--)
             LightingColor += LightFactory[i]->shade(Intersection, Material, View);
         Color += LightingColor / float(LightFactory[i]->getRayNumber());
     }
@@ -130,12 +129,12 @@ void camera::shoot
     config & Config = config::instance();
 
 	glm::mat4 ModelView(1.0f);
-    ModelView = glm::translate(0.0f, 0.0f, m_fMoveUp);
-    ModelView = glm::rotate(ModelView, m_fRotateZ, 0.0f, 0.0f, 1.0f);
-    ModelView = glm::rotate(ModelView, m_fRotateX, 1.0f, 0.0f, 0.0f);
-    ModelView = glm::translate(ModelView, 0.0f, 0.0f, m_fMoveForward);
+    ModelView = glm::translate(0.0f, 0.0f, MoveUp);
+    ModelView = glm::rotate(ModelView, Rotate.z, 0.0f, 0.0f, 1.0f);
+    ModelView = glm::rotate(ModelView, Rotate.x, 1.0f, 0.0f, 0.0f);
+    ModelView = glm::translate(ModelView, 0.0f, 0.0f, MoveForward);
 
-    m_WindowSize = WindowSize;
+    this->WindowSize = WindowSize;
     //if(pConfig->AntiAliasingType() == AA_ADAPT && iAntialising > 1)
     //    ShootAntiAliasingAdaptative(iDepth, iAntialising);
     //else if(pConfig->AntiAliasingType() == AA_FORCE && iAntialising > 1)
@@ -158,25 +157,25 @@ void camera::shootAliasing
 {
     config & Config = config::instance();
 
-	surface Surface(m_WindowSize);
+	surface Surface(this->WindowSize);
 
     ray Ray;
     Ray.setEnvironmentIndex(1.0f);
 
-	std::size_t Total = glm::compMul(m_WindowSize);
+	std::size_t Total = glm::compMul(this->WindowSize);
 	std::size_t Count = 0;
 
 	//#pragma omp parallel for
-    for(int y = -int(m_WindowSize.y) / 2; y < int(m_WindowSize.y) / 2; y++)
+    for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
 	{
 		printf("%2.3f%\r", float(Count) / float(Total) * 100.f);
 
-		for(int x = -int(m_WindowSize.x) / 2; x < int(m_WindowSize.x) / 2; x++)
+		for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
 	    {
-	        Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x), float(y), -float(m_WindowSize.y), 0.0f))));
+	        Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x), float(y), -float(this->WindowSize.y), 0.0f))));
 	        Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 			glm::vec3 Color = this->trace(Ray, iDepth);
-			Surface.add(glm::uvec2(x, y) + glm::uvec2(m_WindowSize / glm::uint(2)), Color);
+			Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
 			Count++;
 	    }
 	}
@@ -194,7 +193,7 @@ void camera::shootAntiAliasing
     ray Ray;
     Ray.setEnvironmentIndex(1.0f);
 
-    surface Surface(m_WindowSize);
+    surface Surface(this->WindowSize);
 
 	std::vector<glm::vec2> AntialisingBias(Antialising);
     for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
@@ -202,24 +201,24 @@ void camera::shootAntiAliasing
 	//AntialisingBias[0] = glm::vec2(-1.0f);
 	//AntialisingBias[1] = glm::vec2(1.0f);
 
-	std::size_t Total = glm::compMul(m_WindowSize) * AntialisingBias.size();
+	std::size_t Total = glm::compMul(this->WindowSize) * AntialisingBias.size();
 	std::size_t Count = 0;
     for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
     {
 		//#pragma omp parallel for
-        for(int y = -int(m_WindowSize.y) / 2; y < int(m_WindowSize.y) / 2; y++)
+        for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
 		{
 			printf("%2.3f%\r", float(Count) / float(Total) * 100.f);
 
-			for(int x = -int(m_WindowSize.x) / 2; x < int(m_WindowSize.x) / 2; x++)
+			for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
 	        {
 				glm::ivec2 WindowPosition(x, y);
-	            Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(m_WindowSize.y), 0.0f))));
+	            Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
 	            Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 	            //Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition), -float(m_WindowSize.y), 0.0f))));
 	            //Ray.setPosition(glm::vec3(ModelView * glm::vec4(AntialisingBias[i], 0.0f, 1.0f)));
 				glm::vec3 Color = this->trace(Ray, iDepth) / float(Antialising);
-				Surface.add(glm::uvec2(x, y) + glm::uvec2(m_WindowSize / glm::uint(2)), Color);
+				Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
 				Count++;
 	        }
 		}
@@ -353,7 +352,7 @@ bool camera::checkAliasing
 {
     config & Config = config::instance();
 
-    if(x < 1 || x >= int(m_WindowSize.x) || y < 1 || y >= int(m_WindowSize.y))
+    if(x < 1 || x >= int(this->WindowSize.x) || y < 1 || y >= int(this->WindowSize.y))
         return false;
 
 	glm::vec3 ColorMM = Surface.getTexel(glm::uvec2(x - 1, y - 1)) / Adaptator.getFactor(glm::uvec2(x - 1, y - 1));
@@ -394,12 +393,12 @@ void camera::shootAntiAliasingAdaptative
 	int iAntialising
 )
 {
-    adaptator Adaptator(m_WindowSize);
+    adaptator Adaptator(this->WindowSize);
 
     ray Ray;
     Ray.setEnvironmentIndex(1.0f);
 
-    surface Surface(m_WindowSize);
+    surface Surface(this->WindowSize);
 
     glm::vec2 *pAnti = new glm::vec2[iAntialising];
     for(int i = 0; i < iAntialising; i++)
@@ -408,25 +407,25 @@ void camera::shootAntiAliasingAdaptative
         pAnti[i].y = glm::compRand1(0.0f, 1.0f) * 2.0f - 1.0f;
     }
 
-	std::size_t Total = glm::compMul(m_WindowSize) * iAntialising;
+	std::size_t Total = glm::compMul(this->WindowSize) * iAntialising;
 	std::size_t Count = 0;
     for(int i = 0; i < iAntialising; i++)
     {
-		for(int y = -int(m_WindowSize.y / 2); y < int(m_WindowSize.y / 2); y++)
+		for(int y = -int(this->WindowSize.y / 2); y < int(this->WindowSize.y / 2); y++)
 		{
 			printf("%2.3f%\r", float(Count) / float(Total) * 100.f);
 
-			for(int x = -int(m_WindowSize.x / 2); x < int(m_WindowSize.x / 2); x++)
+			for(int x = -int(this->WindowSize.x / 2); x < int(this->WindowSize.x / 2); x++)
 	        {
-	            int x_tmp = x + m_WindowSize.x / 2;
-	            int y_tmp = y + m_WindowSize.y / 2;
+	            int x_tmp = x + this->WindowSize.x / 2;
+	            int y_tmp = y + this->WindowSize.y / 2;
 	            bool bAnti = true;
 	            if(i > 0)
 	                bAnti = this->checkAliasing(Surface, Adaptator, x_tmp, y_tmp);
 	            if(bAnti)
 	            {
 	                // 05/02/2005 - A same value is used to depth and height.
-	                Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x + pAnti[i].x), float(y + pAnti[i].y), -float(m_WindowSize.y), 0.0f))));
+	                Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x + pAnti[i].x), float(y + pAnti[i].y), -float(this->WindowSize.y), 0.0f))));
 	                Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 	                Surface.add(glm::uvec2(x_tmp, y_tmp), this->trace(Ray, iDepth));
 	                Adaptator.add(glm::uvec2(x_tmp, y_tmp));
@@ -436,8 +435,8 @@ void camera::shootAntiAliasingAdaptative
 		}
     }
 
-	for(glm::uint y = 0; y < m_WindowSize.y; y++)
-    for(glm::uint x = 0; x < m_WindowSize.x; x++)
+	for(glm::uint y = 0; y < this->WindowSize.y; y++)
+    for(glm::uint x = 0; x < this->WindowSize.x; x++)
         Surface.div(glm::uvec2(x, y), Adaptator.getFactor(glm::uvec2(x, y)));
 
     delete[] pAnti;
@@ -453,10 +452,10 @@ void camera::rotateX
     switch(Move)
     {
     case PLUS:
-        m_fRotateX += 5;
+        this->Rotate.x += 5;
         break;
     case MINUS:
-        m_fRotateX -= 5;
+        this->Rotate.x -= 5;
         break;
     }
 }
@@ -469,10 +468,10 @@ void camera::rotateZ
     switch(Move)
     {
     case PLUS:
-        m_fRotateZ += 5;
+        this->Rotate.z += 5;
         break;
     case MINUS:
-        m_fRotateZ -= 5;
+        this->Rotate.z -= 5;
         break;
     }
 }
@@ -485,14 +484,14 @@ void camera::move
     switch(Move)
     {
     case PLUS:
-        m_fMoveForward++;
-        if(m_fMoveForward > 24) 
-            m_fMoveForward = 24; 
+        this->MoveForward++;
+        if(this->MoveForward > 24) 
+            this->MoveForward = 24; 
         break;
     case MINUS:
-        m_fMoveForward--;
-        if(m_fMoveForward < 1) 
-            m_fMoveForward = 1; 
+        this->MoveForward--;
+        if(this->MoveForward < 1) 
+            this->MoveForward = 1; 
         break;
     }
 }
