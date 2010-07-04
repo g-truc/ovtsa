@@ -12,27 +12,27 @@ public:
     ~parser();
 
 private:
-    void RayTracer(TiXmlElement* pElement);
-    void Objects(TiXmlElement* pElement);
-    void Triangle(TiXmlElement* pElement);
-    void Plane(TiXmlElement* pElement);
-    void Sphere(TiXmlElement* pElement);
-    void Cylinder(TiXmlElement* pElement);
-    std::vector<glm::vec3> Positions(TiXmlElement* pElement);
-    material Material(TiXmlElement* pElement);
-    glm::vec4 ColorMaterial(TiXmlElement* pElement);
-    glm::mat4 Transforms(TiXmlElement* pElement);
-    glm::mat4 Transform(TiXmlElement* pElement);
-    void Lights(TiXmlElement* pElement);
-    void LightSpots(TiXmlElement* pElement);
-    void LightSpot(TiXmlElement* pElement);
-    void LightPoints(TiXmlElement* pElement);
-    void LightPoint(TiXmlElement* pElement);
-    void LightDirections(TiXmlElement* pElement);
-    void LightDirection(TiXmlElement* pElement);
-    glm::vec3 Position(TiXmlElement* pElement);
-    glm::vec3 Direction(TiXmlElement* pElement);
-    glm::vec3 Color(TiXmlElement* pElement);
+    void parseRaytracer(TiXmlElement* pElement);
+    void parseObjects(TiXmlElement* pElement);
+    void parseTriangle(TiXmlElement* pElement);
+    void parsePlane(TiXmlElement* pElement);
+    void parseSphere(TiXmlElement* pElement);
+    void parseCylinder(TiXmlElement* pElement);
+    std::vector<glm::vec3> getPositions(TiXmlElement* pElement);
+    material getMaterial(TiXmlElement* pElement);
+    glm::vec4 getColorMaterial(TiXmlElement* pElement);
+    glm::mat4 getTransforms(TiXmlElement* pElement);
+    glm::mat4 getTransform(TiXmlElement* pElement);
+    void parseLights(TiXmlElement* pElement);
+    void parseLightSpots(TiXmlElement* pElement);
+    void parseLightSpot(TiXmlElement* pElement);
+    void parseLightPoints(TiXmlElement* pElement);
+    void parseLightPoint(TiXmlElement* pElement);
+    void parseLightDirections(TiXmlElement* pElement);
+    void parseLightDirection(TiXmlElement* pElement);
+    glm::vec3 getPosition(TiXmlElement* pElement);
+    glm::vec3 getDirection(TiXmlElement* pElement);
+    glm::vec3 getColor(TiXmlElement* pElement);
 };
 
 #endif //PARSER_INCLUDED

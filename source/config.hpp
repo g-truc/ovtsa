@@ -20,18 +20,18 @@ class config : public singleton<config>
 public:
 	void load(std::string const & Filename);
 
-	int WindowWidth() const {return m_iWindowWidth;}
-    int WindowHeight() const {return m_iWindowHeight;}
-    int Depth() const {return m_iDepth;}
-    int AntiAliasingLevel() const {return m_iAntiAliasing;}
-    float AntiAliasingAccuracy() const {return m_fAAAccuracy;}
-    EAntiAlias AntiAliasingType() const {return m_AAType;}
-    int ReflectionRays() const {return m_iReflectionRays;}
-    int RefractionRays() const {return m_iRefractionRays;}
-    float ReflectionAccuracy() const {return m_fReflectionAccuracy;}
-    float ReflactionAccuracy() const {return m_fReflactionAccuracy;}
-    std::string File() const {return m_File;}
-    std::string Config() const {return m_Config;}
+	int getWindowWidth() const {return m_iWindowWidth;}
+    int getWindowHeight() const {return m_iWindowHeight;}
+    int getDepth() const {return m_iDepth;}
+    int getAntiAliasingLevel() const {return m_iAntiAliasing;}
+    float getAntiAliasingAccuracy() const {return m_fAAAccuracy;}
+    EAntiAlias getAntiAliasingType() const {return m_AAType;}
+    int getReflectionRays() const {return m_iReflectionRays;}
+    int getRefractionRays() const {return m_iRefractionRays;}
+    float getReflectionAccuracy() const {return m_fReflectionAccuracy;}
+    float getReflactionAccuracy() const {return m_fReflactionAccuracy;}
+    std::string getFile() const {return m_File;}
+    std::string getConfig() const {return m_Config;}
 
     int& WindowWidth() {return m_iWindowWidth;}
     int& WindowHeight() {return m_iWindowHeight;}

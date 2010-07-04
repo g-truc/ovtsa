@@ -19,7 +19,7 @@ material::material() :
 	}
 }
 
-glm::vec3 material::Ambient(const glm::vec3 & Position) const
+glm::vec3 material::ambient(const glm::vec3 & Position) const
 {
     switch(m_Type)
     {
@@ -29,56 +29,56 @@ glm::vec3 material::Ambient(const glm::vec3 & Position) const
     case MATERIAL_FLAT:
         return m_Ambient;
     case MATERIAL_GRID:
-        return ColorGrid(Position, m_Ambient, m_AmbientSecondary);
+        return colorGrid(Position, m_Ambient, m_AmbientSecondary);
     case MATERIAL_LINE_X:
-        return ColorLineX(Position, m_Ambient, m_AmbientSecondary);
+        return colorLineX(Position, m_Ambient, m_AmbientSecondary);
     case MATERIAL_LINE_Y:
-        return ColorLineY(Position, m_Ambient, m_AmbientSecondary);
+        return colorLineY(Position, m_Ambient, m_AmbientSecondary);
     case MATERIAL_LINE_Z:
-        return ColorLineZ(Position, m_Ambient, m_AmbientSecondary);
+        return colorLineZ(Position, m_Ambient, m_AmbientSecondary);
     case MATERIAL_NOISE:
-        return ColorNoise(Position, m_Ambient, m_AmbientSecondary);
+        return colorNoise(Position, m_Ambient, m_AmbientSecondary);
     case MATERIAL_PERLIN:
-        return ColorPerlin(Position, m_Ambient, m_AmbientSecondary);
+        return colorPerlin(Position, m_Ambient, m_AmbientSecondary);
     case MATERIAL_MARBLE:
-        return ColorMarble(Position, m_Ambient, m_AmbientSecondary);
+        return colorMarble(Position, m_Ambient, m_AmbientSecondary);
     case MATERIAL_WOOD:
-        return ColorWood(Position, m_Ambient, m_AmbientSecondary);
+        return colorWood(Position, m_Ambient, m_AmbientSecondary);
     }
 }
 
-void material::Ambient(const glm::vec3 & Color, float fFactor)
+void material::setAmbient(const glm::vec3 & Color, float fFactor)
 {
     m_Ambient = Color * fFactor;
 }
 
-void material::AmbientSecondary(const glm::vec3 & Color, float fFactor)
+void material::setAmbientSecondary(const glm::vec3 & Color, float fFactor)
 {
     m_AmbientSecondary = Color * fFactor;
 }
 
-void material::Diffuse(const glm::vec3 & Color, float fFactor)
+void material::setDiffuse(const glm::vec3 & Color, float fFactor)
 {
     m_Diffuse = Color * fFactor;
     m_bDiffuse = fFactor > 0.0f;
 }
-void material::Specular(const glm::vec3 & Color, float fFactor)
+void material::setSpecular(const glm::vec3 & Color, float fFactor)
 {
     m_Specular = Color * fFactor;
     m_bSpecular = fFactor > 0.0f;
 }
 
-bool material::IsDiffuse() const
+bool material::isDiffuse() const
 {
     return m_bDiffuse;
 }
 
-bool material::IsSpecular() const
+bool material::isSpecular() const
 {
     return m_bSpecular;
 }
 
-glm::vec3 material::ColorGrid(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
+glm::vec3 material::colorGrid(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
 {
     bool x = (int((Position.x - 1000) * m_Repeat) % 2) == 0;
     bool y = (int((Position.y - 1000) * m_Repeat) % 2) == 0;
@@ -100,7 +100,7 @@ glm::vec3 material::ColorGrid(const glm::vec3 & Position, const glm::vec3 & Colo
     }
 }
 
-glm::vec3 material::ColorLineX(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
+glm::vec3 material::colorLineX(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
 {
     bool y = (int((Position.y - 1000) * m_Repeat) % 2) == 0;
     bool z = (int((Position.z - 1000) * m_Repeat) % 2) == 0;
@@ -121,7 +121,7 @@ glm::vec3 material::ColorLineX(const glm::vec3 & Position, const glm::vec3 & Col
     }
 }
 
-glm::vec3 material::ColorLineY(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
+glm::vec3 material::colorLineY(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
 {
     bool x = (int((Position.x - 1000) * m_Repeat) % 2) == 0;
     bool z = (int((Position.z - 1000) * m_Repeat) % 2) == 0;
@@ -142,7 +142,7 @@ glm::vec3 material::ColorLineY(const glm::vec3 & Position, const glm::vec3 & Col
     }
 }
 
-glm::vec3 material::ColorLineZ(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
+glm::vec3 material::colorLineZ(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
 {
     bool x = (int((Position.x - 1000) * m_Repeat) % 2) == 0;
     bool y = (int((Position.y - 1000) * m_Repeat) % 2) == 0;
@@ -163,13 +163,13 @@ glm::vec3 material::ColorLineZ(const glm::vec3 & Position, const glm::vec3 & Col
     }
 }
 
-glm::vec3 material::ColorNoise(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
+glm::vec3 material::colorNoise(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
 {
     float noise = float(std::rand()) / RAND_MAX;
     return ColorPrimary * noise + ColorSecondary * (1.0f - noise);  
 }
 
-glm::vec3 material::ColorPerlin(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
+glm::vec3 material::colorPerlin(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
 {
     float noise = g_Perlin.Noise3(Position.x * m_Repeat, Position.y * m_Repeat, Position.z * m_Repeat);
     if(noise < -0.5f)
@@ -180,7 +180,7 @@ glm::vec3 material::ColorPerlin(const glm::vec3 & Position, const glm::vec3 & Co
         return ColorPrimary;
 }
 
-glm::vec3 material::ColorMarble(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
+glm::vec3 material::colorMarble(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
 {
     float noise = g_Perlin.Noise3(Position.x * m_Repeat, Position.y * m_Repeat, Position.z * m_Repeat);
     float marble = glm::cos(Position.x + noise);
@@ -193,7 +193,7 @@ glm::vec3 material::ColorMarble(const glm::vec3 & Position, const glm::vec3 & Co
         return ColorPrimary;
 }
 
-glm::vec3 material::ColorWood(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
+glm::vec3 material::colorWood(const glm::vec3 & Position, const glm::vec3 & ColorPrimary, const glm::vec3 & ColorSecondary) const
 {
     float noise = 100.f * g_Perlin.Noise3(Position.x * m_Repeat, Position.y * m_Repeat, Position.z * m_Repeat);
     float wood = noise - glm::abs(noise);

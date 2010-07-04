@@ -15,13 +15,13 @@ parser::parser(std::string const & Filename)
     if(!Document.LoadFile())
 		return;
     TiXmlElement* pRoot = Document.FirstChild("raytrace")->ToElement();
-    RayTracer(pRoot);
+    parseRaytracer(pRoot);
 }
 
 parser::~parser()
 {}
 
-void parser::RayTracer(TiXmlElement * pElement)
+void parser::parseRaytracer(TiXmlElement * pElement)
 {
     config * pConfig = &config::instance();
     std::string AAType;
@@ -61,11 +61,11 @@ void parser::RayTracer(TiXmlElement * pElement)
     else if(!strcmp("force", AAType.c_str()))
         pConfig->AntiAliasingType() = AA_FORCE;
 
-    Objects(pElement->FirstChildElement("objects"));
-    Lights(pElement->FirstChildElement("lights"));
+    parseObjects(pElement->FirstChildElement("objects"));
+    parseLights(pElement->FirstChildElement("lights"));
 }
 
-void parser::Objects(TiXmlElement* pElement)
+void parser::parseObjects(TiXmlElement* pElement)
 {
     TiXmlElement* pChild = 0;
 
@@ -74,7 +74,7 @@ void parser::Objects(TiXmlElement* pElement)
     {
         do
         {
-            Plane(pChild);
+            parsePlane(pChild);
         }
         while(pChild = pChild->NextSiblingElement("plane"));
     }
@@ -84,7 +84,7 @@ void parser::Objects(TiXmlElement* pElement)
     {
         do
         {
-            Sphere(pChild);
+            parseSphere(pChild);
         }
         while(pChild = pChild->NextSiblingElement("sphere"));
     }
@@ -94,7 +94,7 @@ void parser::Objects(TiXmlElement* pElement)
     {
         do
         {
-            Cylinder(pChild);
+            parseCylinder(pChild);
         }
         while(pChild = pChild->NextSiblingElement("cylinder"));
     }
@@ -104,45 +104,45 @@ void parser::Objects(TiXmlElement* pElement)
     {
         do
         {
-            Triangle(pChild);
+            parseTriangle(pChild);
         }
         while(pChild = pChild->NextSiblingElement("triangle"));
     }
 }
 
-void parser::Plane(TiXmlElement* pElement)
+void parser::parsePlane(TiXmlElement* pElement)
 {
     material Material;
     glm::mat4 Transform;
 
     TiXmlElement* pChildMaterial = pElement->FirstChildElement("material");
     if(pChildMaterial)
-        Material = this->Material(pChildMaterial);
+        Material = this->getMaterial(pChildMaterial);
 
     TiXmlElement* pChildTransform = pElement->FirstChildElement("transforms");
     if(pChildTransform)
-        Transform = this->Transforms(pChildTransform);
+        Transform = this->getTransforms(pChildTransform);
 
     object::create(shape::PLANE, Material, Transform);
 }
 
-void parser::Sphere(TiXmlElement* pElement)
+void parser::parseSphere(TiXmlElement* pElement)
 {
     material Material;
     glm::mat4 Transform;
 
     TiXmlElement* pChildMaterial = pElement->FirstChildElement("material");
     if(pChildMaterial)
-        Material = this->Material(pChildMaterial);
+        Material = this->getMaterial(pChildMaterial);
 
     TiXmlElement* pChildTransform = pElement->FirstChildElement("transforms");
     if(pChildTransform)
-        Transform = this->Transforms(pChildTransform);
+        Transform = this->getTransforms(pChildTransform);
 
     object::create(shape::SPHERE, Material, Transform);
 }
 
-void parser::Triangle(TiXmlElement* pElement)
+void parser::parseTriangle(TiXmlElement* pElement)
 {
     std::vector<glm::vec3> Positions;
     material Material;
@@ -150,50 +150,50 @@ void parser::Triangle(TiXmlElement* pElement)
 
     TiXmlElement* pChildMaterial = pElement->FirstChildElement("material");
     if(pChildMaterial)
-        Material = this->Material(pChildMaterial);
+        Material = this->getMaterial(pChildMaterial);
 
     TiXmlElement* pChildTransform = pElement->FirstChildElement("transforms");
     if(pChildTransform)
-        Transform = this->Transforms(pChildTransform);
+        Transform = this->getTransforms(pChildTransform);
 
     object * pObject = object::create(shape::TRIANGLE, Material, Transform);
 
     TiXmlElement* pChildPositions = pElement->FirstChildElement("positions");
     if(pChildPositions)
-        static_cast<triangle*>(pObject->getShape())->Positions(this->Positions(pChildPositions));
+        static_cast<triangle*>(pObject->getShape())->setPositions(this->getPositions(pChildPositions));
 }
 
-void parser::Cylinder(TiXmlElement* pElement)
+void parser::parseCylinder(TiXmlElement* pElement)
 {
     material Material;
     glm::mat4 Transform;
 
     TiXmlElement* pChildMaterial = pElement->FirstChildElement("material");
     if(pChildMaterial)
-        Material = this->Material(pChildMaterial);
+        Material = this->getMaterial(pChildMaterial);
 
     TiXmlElement* pChildTransform = pElement->FirstChildElement("transforms");
     if(pChildTransform)
-        Transform = this->Transforms(pChildTransform);
+        Transform = this->getTransforms(pChildTransform);
 
     object::create(shape::CYLINDER, Material, Transform);
 }
 
-std::vector<glm::vec3> parser::Positions(TiXmlElement* pElement)
+std::vector<glm::vec3> parser::getPositions(TiXmlElement* pElement)
 {
     std::vector<glm::vec3> Positions;
 
     TiXmlElement* pChild = pElement->FirstChildElement("position");
     do
     {
-        Positions.push_back(Position(pChild));
+        Positions.push_back(getPosition(pChild));
     }
     while(pChild = pChild->NextSiblingElement());
    
     return Positions;
 }
 
-material parser::Material(TiXmlElement* pElement)
+material parser::getMaterial(TiXmlElement* pElement)
 {
     material Material;
     std::string type;
@@ -204,61 +204,61 @@ material parser::Material(TiXmlElement* pElement)
  		if(!strcmp("opacity", pAttribute->Name()))
 			Material.setOpacity(float(atof(pAttribute->Value())));
         else if(!strcmp("reflection", pAttribute->Name()))
-            Material.ReflectionFactor(float(atof(pAttribute->Value())));
+            Material.setReflectionFactor(float(atof(pAttribute->Value())));
         else if(!strcmp("refraction", pAttribute->Name()))
-            Material.RefractionFactor(float(atof(pAttribute->Value())));
+            Material.setRefractionFactor(float(atof(pAttribute->Value())));
         else if(!strcmp("environment-index", pAttribute->Name()))
-            Material.EnvironmentIndex(float(atof(pAttribute->Value())));
+            Material.setEnvironmentIndex(float(atof(pAttribute->Value())));
         else if(!strcmp("specular-exponent", pAttribute->Name()))
-            Material.SpecularExponent(float(atof(pAttribute->Value())));
+            Material.setSpecularExponent(float(atof(pAttribute->Value())));
         else if(!strcmp("repeat", pAttribute->Name()))
-            Material.Repeat(float(atof(pAttribute->Value())));
+            Material.setRepeat(float(atof(pAttribute->Value())));
         else if(!strcmp("type", pAttribute->Name()))
             type = pAttribute->Value();
     }    
     while (pAttribute = pAttribute->Next());
 
     if(!strcmp("flat", type.c_str()))
-		Material.Type(material::MATERIAL_FLAT);
+		Material.setType(material::MATERIAL_FLAT);
     else if(!strcmp("grid", type.c_str()))
-        Material.Type(material::MATERIAL_GRID);
+        Material.setType(material::MATERIAL_GRID);
     else if(!strcmp("line-x", type.c_str()))
-        Material.Type(material::MATERIAL_LINE_X);
+        Material.setType(material::MATERIAL_LINE_X);
     else if(!strcmp("line-y", type.c_str()))
-        Material.Type(material::MATERIAL_LINE_Y);
+        Material.setType(material::MATERIAL_LINE_Y);
     else if(!strcmp("line-z", type.c_str()))
-        Material.Type(material::MATERIAL_LINE_Z);
+        Material.setType(material::MATERIAL_LINE_Z);
     else if(!strcmp("noise", type.c_str()))
-        Material.Type(material::MATERIAL_NOISE);
+        Material.setType(material::MATERIAL_NOISE);
     else if(!strcmp("perlin", type.c_str()))
-        Material.Type(material::MATERIAL_PERLIN);
+        Material.setType(material::MATERIAL_PERLIN);
     else if(!strcmp("marble", type.c_str()))
-        Material.Type(material::MATERIAL_MARBLE);
+        Material.setType(material::MATERIAL_MARBLE);
     else if(!strcmp("wood", type.c_str()))
-        Material.Type(material::MATERIAL_WOOD);
+        Material.setType(material::MATERIAL_WOOD);
     else
-        Material.Type(material::MATERIAL_FLAT);
+        Material.setType(material::MATERIAL_FLAT);
 
-    glm::vec4 Ambient = ColorMaterial(pElement->FirstChildElement("ambient"));
-    Material.Ambient(glm::vec3(Ambient), Ambient.a);
+    glm::vec4 Ambient = getColorMaterial(pElement->FirstChildElement("ambient"));
+    Material.setAmbient(glm::vec3(Ambient), Ambient.a);
 
     TiXmlElement* pAmbientSecondary = pElement->FirstChildElement("ambient-secondary");
     if(pAmbientSecondary)
     {
-        glm::vec4 AmbientSecondary = ColorMaterial(pAmbientSecondary);
-        Material.AmbientSecondary(glm::vec3(AmbientSecondary), AmbientSecondary.a);
+        glm::vec4 AmbientSecondary = getColorMaterial(pAmbientSecondary);
+        Material.setAmbientSecondary(glm::vec3(AmbientSecondary), AmbientSecondary.a);
     }
 
-    glm::vec4 Diffuse = ColorMaterial(pElement->FirstChildElement("diffuse"));
-    Material.Diffuse(glm::vec3(Diffuse), Diffuse.a);
+    glm::vec4 Diffuse = getColorMaterial(pElement->FirstChildElement("diffuse"));
+    Material.setDiffuse(glm::vec3(Diffuse), Diffuse.a);
 
-    glm::vec4 Specular = ColorMaterial(pElement->FirstChildElement("specular"));
-    Material.Specular(glm::vec3(Specular), Specular.a);
+    glm::vec4 Specular = getColorMaterial(pElement->FirstChildElement("specular"));
+    Material.setSpecular(glm::vec3(Specular), Specular.a);
 
     return Material;
 }
 
-glm::vec4 parser::ColorMaterial(TiXmlElement* pElement)
+glm::vec4 parser::getColorMaterial(TiXmlElement* pElement)
 {
     glm::vec4 Color;
 
@@ -279,21 +279,21 @@ glm::vec4 parser::ColorMaterial(TiXmlElement* pElement)
     return Color;
 }
 
-glm::mat4 parser::Transforms(TiXmlElement* pElement)
+glm::mat4 parser::getTransforms(TiXmlElement* pElement)
 {
     glm::mat4 Transform = glm::mat4(1.0f);
 
     TiXmlElement* pChild = pElement->FirstChildElement();
     do
     {
-        Transform *= this->Transform(pChild);
+        Transform *= this->getTransform(pChild);
     }
     while(pChild = pChild->NextSiblingElement());
 
     return Transform;
 }
 
-glm::mat4 parser::Transform(TiXmlElement* pElement)
+glm::mat4 parser::getTransform(TiXmlElement* pElement)
 {
     float value = 0.0f;
     std::string type;
@@ -331,32 +331,32 @@ glm::mat4 parser::Transform(TiXmlElement* pElement)
     return glm::mat4(1.0f);
 }
 
-void parser::Lights(TiXmlElement* pElement)
+void parser::parseLights(TiXmlElement* pElement)
 {
     TiXmlElement* pChildSpots = pElement->FirstChildElement("light-spots");
     if(pChildSpots)
-        LightSpots(pChildSpots);
+        parseLightSpots(pChildSpots);
 
     TiXmlElement* pChildDirections = pElement->FirstChildElement("light-directions");
     if(pChildDirections)
-        LightDirections(pChildDirections);
+        parseLightDirections(pChildDirections);
 
     TiXmlElement* pChildPoints = pElement->FirstChildElement("light-points");
     if(pChildPoints)
-        LightPoints(pChildPoints);
+        parseLightPoints(pChildPoints);
 }
 
-void parser::LightSpots(TiXmlElement* pElement)
+void parser::parseLightSpots(TiXmlElement* pElement)
 {
     TiXmlElement* pChild = pElement->FirstChildElement("light-spot");
     do
     {
-        LightSpot(pChild);
+        parseLightSpot(pChild);
     }
     while(pChild = pChild->NextSiblingElement());
 }
 
-void parser::LightSpot(TiXmlElement* pElement)
+void parser::parseLightSpot(TiXmlElement* pElement)
 {
     spot * pLight = spot::create();
 
@@ -372,22 +372,22 @@ void parser::LightSpot(TiXmlElement* pElement)
     }    
     while(pAttribute = pAttribute->Next());
 
-    pLight->setPosition(Position(pElement->FirstChildElement("position")));
-    pLight->setDirection(Direction(pElement->FirstChildElement("direction")));
-    pLight->setColor(Color(pElement->FirstChildElement("color")));
+    pLight->setPosition(getPosition(pElement->FirstChildElement("position")));
+    pLight->setDirection(getDirection(pElement->FirstChildElement("direction")));
+    pLight->setColor(getColor(pElement->FirstChildElement("color")));
 }
 
-void parser::LightPoints(TiXmlElement* pElement)
+void parser::parseLightPoints(TiXmlElement* pElement)
 {
     TiXmlElement* pChild = pElement->FirstChildElement("light-point");
     do
     {
-        LightPoint(pChild);
+        parseLightPoint(pChild);
     }
     while(pChild = pChild->NextSiblingElement());
 }
 
-void parser::LightPoint(TiXmlElement* pElement)
+void parser::parseLightPoint(TiXmlElement* pElement)
 {
     point* pLight = point::create();
 
@@ -401,21 +401,21 @@ void parser::LightPoint(TiXmlElement* pElement)
     }    
     while(pAttribute = pAttribute->Next());
 
-    pLight->setPosition(Position(pElement->FirstChildElement("position")));
-    pLight->setColor(Color(pElement->FirstChildElement("color")));
+    pLight->setPosition(getPosition(pElement->FirstChildElement("position")));
+    pLight->setColor(getColor(pElement->FirstChildElement("color")));
 }
 
-void parser::LightDirections(TiXmlElement* pElement)
+void parser::parseLightDirections(TiXmlElement* pElement)
 {
     TiXmlElement* pChild = pElement->FirstChildElement("light-direction");
     do
     {
-        LightDirection(pChild);
+        parseLightDirection(pChild);
     }
     while(pChild = pChild->NextSiblingElement());
 }
 
-void parser::LightDirection(TiXmlElement* pElement)
+void parser::parseLightDirection(TiXmlElement* pElement)
 {
     directional* pLight = directional::create();
 
@@ -429,11 +429,11 @@ void parser::LightDirection(TiXmlElement* pElement)
     }    
     while(pAttribute = pAttribute->Next());
 
-    pLight->setDirection(Direction(pElement->FirstChildElement("direction")));
-    pLight->setColor(Color(pElement->FirstChildElement("color")));
+    pLight->setDirection(getDirection(pElement->FirstChildElement("direction")));
+    pLight->setColor(getColor(pElement->FirstChildElement("color")));
 }
 
-glm::vec3 parser::Position(TiXmlElement* pElement)
+glm::vec3 parser::getPosition(TiXmlElement* pElement)
 {
     glm::vec3 Position;
     TiXmlAttribute* pAttribute = pElement->FirstAttribute();
@@ -450,7 +450,7 @@ glm::vec3 parser::Position(TiXmlElement* pElement)
     return Position;
 }
 
-glm::vec3 parser::Direction(TiXmlElement* pElement)
+glm::vec3 parser::getDirection(TiXmlElement* pElement)
 {
     glm::vec3 Direction;
     TiXmlAttribute* pAttribute = pElement->FirstAttribute();
@@ -467,7 +467,7 @@ glm::vec3 parser::Direction(TiXmlElement* pElement)
     return Direction;
 }
 
-glm::vec3 parser::Color(TiXmlElement* pElement)
+glm::vec3 parser::getColor(TiXmlElement* pElement)
 {
     glm::vec3 Color;
     float Alpha;

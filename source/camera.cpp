@@ -23,7 +23,7 @@ glm::vec3 camera::shade
 	glm::vec3 const & View
 )
 {
-    glm::vec3 Color = Material.Ambient(Intersection.getGlobalPosition());
+    glm::vec3 Color = Material.ambient(Intersection.getGlobalPosition());
 
     lightFactory & LightFactory = lightFactory::instance();
     for(lightFactory::size_type i = 0; i < LightFactory.size(); i++)
@@ -82,39 +82,39 @@ glm::vec3 camera::trace
     if(iDepth)
     {
         iDepth--;
-        if(Material.ReflectionFactor() > EPSILON && Config.ReflectionRays() > 0)
+        if(Material.getReflectionFactor() > EPSILON && Config.getReflectionRays() > 0)
         {
             Ray.setPosition(NearestIntersection.getGlobalPosition());
             
             glm::vec3 ReflectionColor(0);
-            int ReflectionCount = Config.ReflectionRays();
+            int ReflectionCount = Config.getReflectionRays();
             while(ReflectionCount--)
             {
                 Ray.setDirection(glm::reflect(
-                    glm::normalize(Ray.getDirection() + glm::vecRand3(0.0f, Config.ReflectionAccuracy())), 
+                    glm::normalize(Ray.getDirection() + glm::vecRand3(0.0f, Config.getReflectionAccuracy())), 
                     glm::normalize(NearestIntersection.getNormal())));
-                ReflectionColor += this->trace(Ray, iDepth) * Material.ReflectionFactor();
+                ReflectionColor += this->trace(Ray, iDepth) * Material.getReflectionFactor();
             }
             Color += ReflectionColor / float(Config.ReflectionRays());
         }
 
-        if(Material.RefractionFactor() > EPSILON && Config.RefractionRays() > 0)
+        if(Material.getRefractionFactor() > EPSILON && Config.getRefractionRays() > 0)
         {
             Ray.setPosition(NearestIntersection.getGlobalPosition());
             
             glm::vec3 RefractionColor(0);
-            int RefractionCount = Config.RefractionRays();
+            int RefractionCount = Config.getRefractionRays();
             while(RefractionCount--)
             {
                 Ray.setDirection(glm::refract(
-					glm::normalize(Ray.getDirection() + glm::vecRand3(0.0f, Config.ReflactionAccuracy())), 
+					glm::normalize(Ray.getDirection() + glm::vecRand3(0.0f, Config.getReflactionAccuracy())), 
 						glm::normalize(NearestIntersection.getNormal()), 
-						(Ray.getEnvironmentIndex() == 1.0f ? 1.0f / Material.EnvironmentIndex() : Material.EnvironmentIndex())));
+						(Ray.getEnvironmentIndex() == 1.0f ? 1.0f / Material.getEnvironmentIndex() : Material.getEnvironmentIndex())));
 
-                Ray.setEnvironmentIndex(Ray.getEnvironmentIndex() == 1.0f ? Material.EnvironmentIndex() : 1.0f);
-                RefractionColor += this->trace(Ray, iDepth) * Material.RefractionFactor();
+                Ray.setEnvironmentIndex(Ray.getEnvironmentIndex() == 1.0f ? Material.getEnvironmentIndex() : 1.0f);
+                RefractionColor += this->trace(Ray, iDepth) * Material.getRefractionFactor();
             }
-            Color += RefractionColor / float(Config.RefractionRays());
+            Color += RefractionColor / float(Config.getRefractionRays());
         }
     }
     return Color;

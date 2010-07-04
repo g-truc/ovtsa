@@ -34,7 +34,7 @@ bool triangle::intersect
     return false;
 }
 
-void triangle::Positions
+void triangle::setPositions
 (
 	std::vector<glm::vec3> const & Data
 )

@@ -20,7 +20,7 @@ public:
         m_Normal = -glm::cross(glm::normalize(B - A), glm::normalize(C - A));
     }
 
-    void Positions(
+    void setPositions(
 		std::vector<glm::vec3> const & Data);
 
     virtual glm::vec3 computeNormal(

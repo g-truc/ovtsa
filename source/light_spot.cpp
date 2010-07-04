@@ -31,17 +31,17 @@ glm::vec3 spot::shade
 	    float fDiffuse = glm::dot(Intersection.getNormal(), LightVector);
 		if(fDiffuse > 0.0f)
 	    {
-	        if(Material.IsDiffuse())
-	            Color += this->Color * Material.Diffuse() * fDiffuse;
+	        if(Material.isDiffuse())
+	            Color += this->Color * Material.diffuse() * fDiffuse;
 
-	        if(Material.IsSpecular())
+	        if(Material.isSpecular())
 	        {
 	            glm::vec3 Reflect = glm::reflect(
 	                glm::normalize(-LightVector),
 	                glm::normalize( Intersection.getNormal()));
 	            float fDot = glm::dot(Reflect, View);
-	            float fSpecular = glm::pow(fDot > 0 ? fDot : 0, Material.SpecularExponent());
-	            Color += Material.Specular() * fSpecular;
+	            float fSpecular = glm::pow(fDot > 0.0f ? fDot : 0.0f, Material.getSpecularExponent());
+	            Color += Material.specular() * fSpecular;
 	        }
 	    }
 	}
