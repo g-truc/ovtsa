@@ -21,3 +21,5 @@ add_executable(
 	${INLINE_FILES}
 	${HEADER_FILES}
 	${DATA_FILES})
+
+add_dependencies(${NAME} ${TARGET_DATA_COPY})
