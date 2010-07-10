@@ -74,7 +74,7 @@ void material::setDiffuse
 	float fFactor
 )
 {
-    m_Diffuse = Color * fFactor;
+    this->Diffuse = Color * fFactor;
 	this->DiffuseEnabled = fFactor > 0.0f;
 }
 void material::setSpecular
@@ -83,7 +83,7 @@ void material::setSpecular
 	float Factor
 )
 {
-    m_Specular = Color * Factor;
+    this->Specular = Color * Factor;
     this->SpecularEnabled = Factor > 0.0f;
 }
 
