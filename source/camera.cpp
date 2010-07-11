@@ -94,7 +94,7 @@ glm::vec3 camera::trace
                     glm::normalize(NearestIntersection.getNormal())));
                 ReflectionColor += this->trace(Ray, iDepth) * Material.getReflectionFactor();
             }
-            Color += ReflectionColor / float(Config.ReflectionRays());
+            Color += ReflectionColor / float(Config.getReflectionRays());
         }
 
         if(Material.getRefractionFactor() > EPSILON && Config.getRefractionRays() > 0)
@@ -180,7 +180,7 @@ void camera::shootAliasing
 	    }
 	}
 
-	Surface.SaveAs(Config.File());
+	Surface.SaveAs(Config.getFile());
 }
 
 void camera::shootAntiAliasing
@@ -224,7 +224,7 @@ void camera::shootAntiAliasing
 		}
     }
 
-    Surface.SaveAs(config::instance().File());
+    Surface.SaveAs(config::instance().getFile());
 }
 
 /*
@@ -367,21 +367,21 @@ bool camera::checkAliasing
     glm::vec3 ColorP0 = Surface.getTexel(glm::uvec2(x + 1, y + 0)) / Adaptator.getFactor(glm::uvec2(x + 1, y + 0));
     glm::vec3 ColorPP = Surface.getTexel(glm::uvec2(x + 1, y + 1)) / Adaptator.getFactor(glm::uvec2(x + 1, y + 1));
 
-    if(glm::any(glm::greaterThan(glm::abs(ColorMM - Color00), glm::vec3(Config.AntiAliasingAccuracy()))))
+    if(glm::any(glm::greaterThan(glm::abs(ColorMM - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
         return true;
-    if(glm::any(glm::greaterThan(glm::abs(ColorM0 - Color00), glm::vec3(Config.AntiAliasingAccuracy()))))
+    if(glm::any(glm::greaterThan(glm::abs(ColorM0 - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
         return true;
-    if(glm::any(glm::greaterThan(glm::abs(ColorMP - Color00), glm::vec3(Config.AntiAliasingAccuracy()))))
+    if(glm::any(glm::greaterThan(glm::abs(ColorMP - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
         return true;
-    if(glm::any(glm::greaterThan(glm::abs(Color0M - Color00), glm::vec3(Config.AntiAliasingAccuracy()))))
+    if(glm::any(glm::greaterThan(glm::abs(Color0M - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
         return true;
-    if(glm::any(glm::greaterThan(glm::abs(Color0P - Color00), glm::vec3(Config.AntiAliasingAccuracy()))))
+    if(glm::any(glm::greaterThan(glm::abs(Color0P - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
         return true;
-    if(glm::any(glm::greaterThan(glm::abs(ColorPM - Color00), glm::vec3(Config.AntiAliasingAccuracy()))))
+    if(glm::any(glm::greaterThan(glm::abs(ColorPM - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
         return true;
-    if(glm::any(glm::greaterThan(glm::abs(ColorP0 - Color00), glm::vec3(Config.AntiAliasingAccuracy()))))
+    if(glm::any(glm::greaterThan(glm::abs(ColorP0 - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
         return true;
-    if(glm::any(glm::greaterThan(glm::abs(ColorPP - Color00), glm::vec3(Config.AntiAliasingAccuracy()))))
+    if(glm::any(glm::greaterThan(glm::abs(ColorPP - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
         return true;
     return false;
 }
@@ -441,7 +441,7 @@ void camera::shootAntiAliasingAdaptative
 
     delete[] pAnti;
 
-    Surface.SaveAs(config::instance().File());
+    Surface.SaveAs(config::instance().getFile());
 }
 
 void camera::rotateX

@@ -38,21 +38,20 @@ void raytrace::render()
 	clock_t TimeStart = clock();
 
 	camera().shoot(
-		Config.Depth(), 
-		Config.AntiAliasingLevel(), 
-		glm::uvec2(Config.WindowWidth(), 
-		Config.WindowHeight()));
+		Config.getDepth(), 
+		Config.getAntiAliasingLevel(), 
+		glm::uvec2(Config.getWindowSize()));
 
 	printf("Time: %d\n", clock() - TimeStart);
 
     printf("===========================\n");
     printf("Objects : %d\n", objectFactory::instance().size());
     printf("Lights : %d\n", lightFactory::instance().size());
-    printf("Bounding count %d\n", Config.Depth());
-    printf("Antialiasing %dX\n", Config.AntiAliasingLevel());
-    printf("Reflection %dX\n", Config.ReflectionRays());
-    printf("Refraction %dX\n", Config.RefractionRays());
-    printf("Image size: (%d, %d) pixels\n", Config.WindowWidth(), Config.WindowHeight());
+    printf("Bounding count %d\n", Config.getDepth());
+    printf("Antialiasing %dX\n", Config.getAntiAliasingLevel());
+    printf("Reflection %dX\n", Config.getReflectionRays());
+    printf("Refraction %dX\n", Config.getRefractionRays());
+    printf("Image size: (%d, %d) pixels\n", Config.getWindowSize().x, Config.getWindowSize().y);
 
 	system("pause");
 }

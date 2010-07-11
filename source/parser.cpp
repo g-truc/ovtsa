@@ -23,43 +23,47 @@ parser::~parser()
 
 void parser::parseRaytracer(TiXmlElement * pElement)
 {
-    config * pConfig = &config::instance();
+    config * pConfig = & config::instance();
     std::string AAType;
+	glm::ivec2 WindowSize(0);
 
     TiXmlAttribute* pAttribute = pElement->FirstAttribute();
     do
     {
         if(!strcmp("file", pAttribute->Name()))
-            pConfig->File() = std::string(pAttribute->Value());
+            pConfig->SetFile(pAttribute->Value());
         else if(!strcmp("width", pAttribute->Name()))
-            pConfig->WindowWidth() = atoi(pAttribute->Value());
+            WindowSize.x = atoi(pAttribute->Value());
         else if(!strcmp("height", pAttribute->Name()))
-            pConfig->WindowHeight() = atoi(pAttribute->Value());
+            WindowSize.y = atoi(pAttribute->Value());
         else if(!strcmp("depth", pAttribute->Name()))
-            pConfig->Depth() = atoi(pAttribute->Value());
+            pConfig->SetDepth(atoi(pAttribute->Value()));
         else if(!strcmp("antialiasing", pAttribute->Name()))
-            pConfig->AntiAliasingLevel() = atoi(pAttribute->Value());
+            pConfig->SetAntiAliasingLevel(atoi(pAttribute->Value()));
         else if(!strcmp("aa-accuracy", pAttribute->Name()))
-            pConfig->AntiAliasingAccuracy() = float(atof(pAttribute->Value()));
+            pConfig->SetAntiAliasingAccuracy(float(atof(pAttribute->Value())));
         else if(!strcmp("aa-type", pAttribute->Name()))
             AAType = pAttribute->Value();
         else if(!strcmp("reflection-rays", pAttribute->Name()))
-            pConfig->ReflectionRays() = atoi(pAttribute->Value());
+            pConfig->SetReflectionRays(atoi(pAttribute->Value()));
         else if(!strcmp("refraction-rays", pAttribute->Name()))
-            pConfig->RefractionRays() = atoi(pAttribute->Value());
+            pConfig->SetRefractionRays(atoi(pAttribute->Value()));
         else if(!strcmp("reflection-accuracy", pAttribute->Name()))
-            pConfig->ReflectionAccuracy() = float(atof(pAttribute->Value()));
+            pConfig->SetReflectionAccuracy(float(atof(pAttribute->Value())));
         else if(!strcmp("refraction-accuracy", pAttribute->Name()))
-            pConfig->ReflactionAccuracy() = float(atof(pAttribute->Value()));
+            pConfig->SetReflactionAccuracy(float(atof(pAttribute->Value())));
     }    
     while (pAttribute = pAttribute->Next());
 
     if(!strcmp("none", AAType.c_str()))
-        pConfig->AntiAliasingType() = AA_NONE;
+        pConfig->SetAntiAliasingType(AA_NONE);
     else if(!strcmp("adapt", AAType.c_str()))
-        pConfig->AntiAliasingType() = AA_ADAPT;
+        pConfig->SetAntiAliasingType(AA_ADAPT);
     else if(!strcmp("force", AAType.c_str()))
-        pConfig->AntiAliasingType() = AA_FORCE;
+        pConfig->SetAntiAliasingType(AA_FORCE);
+
+
+	pConfig->SetWindowSize(WindowSize);
 
     parseObjects(pElement->FirstChildElement("objects"));
     parseLights(pElement->FirstChildElement("lights"));

@@ -20,45 +20,42 @@ class config : public singleton<config>
 public:
 	void load(std::string const & Filename);
 
-	int getWindowWidth() const {return m_iWindowWidth;}
-    int getWindowHeight() const {return m_iWindowHeight;}
-    int getDepth() const {return m_iDepth;}
-    int getAntiAliasingLevel() const {return m_iAntiAliasing;}
-    float getAntiAliasingAccuracy() const {return m_fAAAccuracy;}
-    EAntiAlias getAntiAliasingType() const {return m_AAType;}
-    int getReflectionRays() const {return m_iReflectionRays;}
-    int getRefractionRays() const {return m_iRefractionRays;}
-    float getReflectionAccuracy() const {return m_fReflectionAccuracy;}
-    float getReflactionAccuracy() const {return m_fReflactionAccuracy;}
-    std::string getFile() const {return m_File;}
-    std::string getConfig() const {return m_Config;}
+	glm::ivec2 getWindowSize() const {return this->WindowSize;}
+    int getDepth() const {return this->Depth;}
+    int getAntiAliasingLevel() const {return this->AntiAliasing;}
+    float getAntiAliasingAccuracy() const {return this->AAAccuracy;}
+    EAntiAlias getAntiAliasingType() const {return this->AAType;}
+    int getReflectionRays() const {return this->ReflectionRays;}
+    int getRefractionRays() const {return this->RefractionRays;}
+    float getReflectionAccuracy() const {return this->ReflectionAccuracy;}
+    float getReflactionAccuracy() const {return this->ReflactionAccuracy;}
+    std::string getFile() const {return this->File;}
+    std::string getConfig() const {return this->Config;}
 
-    int& WindowWidth() {return m_iWindowWidth;}
-    int& WindowHeight() {return m_iWindowHeight;}
-    int& Depth() {return m_iDepth;}
-    int& AntiAliasingLevel() {return m_iAntiAliasing;}
-    float& AntiAliasingAccuracy() {return m_fAAAccuracy;}
-    EAntiAlias& AntiAliasingType() {return m_AAType;}
-    int& ReflectionRays() {return m_iReflectionRays;}
-    int& RefractionRays() {return m_iRefractionRays;}
-    float& ReflectionAccuracy() {return m_fReflectionAccuracy;}
-    float& ReflactionAccuracy() {return m_fReflactionAccuracy;}
-    std::string& File() {return m_File;}
-    std::string& Config() {return m_Config;}
+	void SetWindowSize(glm::ivec2 const & WindowSize) {this->WindowSize = WindowSize;}
+    void SetDepth(int Depth) {this->Depth = Depth;}
+    void SetAntiAliasingLevel(int AntiAliasing) {this->AntiAliasing = AntiAliasing;}
+    void SetAntiAliasingAccuracy(float AAAccuracy) {this->AAAccuracy = AAAccuracy;}
+    void SetAntiAliasingType(EAntiAlias AAType) {this->AAType = AAType;}
+    void SetReflectionRays(int ReflectionRays) {this->ReflectionRays = ReflectionRays;}
+    void SetRefractionRays(int RefractionRays) {this->RefractionRays = RefractionRays;}
+    void SetReflectionAccuracy(float ReflectionAccuracy) {this->ReflectionAccuracy = ReflectionAccuracy;}
+    void SetReflactionAccuracy(float ReflactionAccuracy) {this->ReflactionAccuracy = ReflactionAccuracy;}
+    void SetFile(std::string const & File) {this->File = File;}
+    void SetConfig(std::string const & Config) {this->Config = Config;}
 
 private:
-    int m_iWindowWidth;
-    int m_iWindowHeight;
-    int m_iDepth;
-    int m_iAntiAliasing;
-    float m_fAAAccuracy;
-    EAntiAlias m_AAType;
-    int m_iReflectionRays;
-    int m_iRefractionRays;
-    float m_fReflectionAccuracy;
-    float m_fReflactionAccuracy;
-    std::string m_File;
-    std::string m_Config;
+	glm::ivec2 WindowSize;
+    int Depth;
+    int AntiAliasing;
+    float AAAccuracy;
+    EAntiAlias AAType;
+    int ReflectionRays;
+    int RefractionRays;
+    float ReflectionAccuracy;
+    float ReflactionAccuracy;
+    std::string File;
+    std::string Config;
 };
 
 #endif //CONFIG_INCLUDED
