@@ -30,7 +30,7 @@ inline factory<T>::~factory()
 {
     for
     (
-        std::vector<T*>::iterator it = this->Objects.begin();
+        typename std::vector<T*>::iterator it = this->Objects.begin();
         it != this->Objects.end();
         it++
     )
