@@ -66,7 +66,7 @@ void raytrace::end()
 int main(int argc, char *argv[])
 {
     printf("===========================\n");
-	printf("G-Truc Creation's Raytracer\n");
+	printf("Ovt'sa\n");
 
     if(argc > 1)
     {
