@@ -44,16 +44,14 @@ void raytrace::render()
 
 	printf("Time: %d\n", clock() - TimeStart);
 
-    printf("===========================\n");
-    printf("Objects : %d\n", objectFactory::instance().size());
-    printf("Lights : %d\n", lightFactory::instance().size());
-    printf("Bounding count %d\n", Config.getDepth());
-    printf("Antialiasing %dX\n", Config.getAntiAliasingLevel());
-    printf("Reflection %dX\n", Config.getReflectionRays());
-    printf("Refraction %dX\n", Config.getRefractionRays());
-    printf("Image size: (%d, %d) pixels\n", Config.getWindowSize().x, Config.getWindowSize().y);
-
-	system("pause");
+    //printf("===========================\n");
+    //printf("Objects : %d\n", objectFactory::instance().size());
+    //printf("Lights : %d\n", lightFactory::instance().size());
+    //printf("Bounding count %d\n", Config.getDepth());
+    //printf("Antialiasing %dX\n", Config.getAntiAliasingLevel());
+    //printf("Reflection %dX\n", Config.getReflectionRays());
+    //printf("Refraction %dX\n", Config.getRefractionRays());
+    //printf("Image size: (%d, %d) pixels\n", Config.getWindowSize().x, Config.getWindowSize().y);
 }
 
 void raytrace::end()

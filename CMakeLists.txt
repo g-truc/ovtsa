@@ -11,11 +11,11 @@ execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Debu
 
 ###########
 # Add GLM 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/glm-0.9.1.A")
 
 ###########
 # Add GLI
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/gli")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/gli-0.3.0.1")
 
 ################################
 # Add output directory

@@ -43,23 +43,23 @@ void surface::div
 
 void surface::SaveAs(std::string const & Filename)
 {
-	gli::image Image(1);
-	Image[0] = gli::image::mipmap(glm::uvec3(this->Size, glm::uint(1)), gli::RGB8U);
+	gli::texture2D Texture2D(1);
+	Texture2D[0] = gli::image(this->Size, gli::RGB8U);
 
-	for(glm::uint y = 0; y < Image[0].dimensions().y; y++)
-    for(glm::uint x = 0; x < Image[0].dimensions().x; x++)
+	for(glm::uint y = 0; y < Texture2D[0].dimensions().y; y++)
+    for(glm::uint x = 0; x < Texture2D[0].dimensions().x; x++)
     {
         glm::vec3 Color = this->Data[x + y * this->Size.x];
 		Color = glm::clamp(Color * 256.f, 0.0f, 255.f);
 		glm::u8vec3 ColorLDR(Color);
 
 		gli::texelWrite<glm::u8vec3>(
-			Image,
+			Texture2D,
 			glm::uvec2(x, y),
 			0,
 			ColorLDR);
     }
 
-	gli::export_as(Image, 0, Filename);
+	gli::save(Texture2D, Filename);
 }
 

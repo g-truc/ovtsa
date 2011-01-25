@@ -15,15 +15,16 @@
 
 //#include <boost/noncopyable.hpp>
 
-#include <omp.h>
+//#include <omp.h>
 
 #include <glm/glm.hpp>
-#include <glm/gtx/inverse.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/random.hpp>
 #include <glm/gtx/component_wise.hpp>
 
 #include <gli/gli.hpp>
+#include <gli/gtx/loader.hpp>
+#include <gli/gtx/fetch.hpp>
 
 #define EPSILON     0.001f
 
