@@ -59,11 +59,13 @@ add_definitions(-O3)
 add_definitions(-mfpmath=sse)
 add_definitions(-msse2)
 add_definitions(-ffast-math)
+add_definitions(-flto)
 add_definitions(-s)
 
 #add_definitions(-O3)
 #add_definitions(-mfpmath=387)
 #add_definitions(-ffast-math)
+#add_definitions(-flto)
 
 ################################
 # Add subdirectory
