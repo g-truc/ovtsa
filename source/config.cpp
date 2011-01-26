@@ -20,3 +20,13 @@ void config::load(std::string const & Filename)
 {
     parser(Filename.c_str());
 }
+
+void config::load
+(
+	std::string const & Filename,
+	std::string const & output
+)
+{
+    parser(Filename.c_str());
+}
+

@@ -19,6 +19,7 @@ class config : public singleton<config>
 
 public:
 	void load(std::string const & Filename);
+	void load(std::string const & Filename, std::string const & output);
 
 	glm::ivec2 getWindowSize() const {return this->WindowSize;}
     int getDepth() const {return this->Depth;}

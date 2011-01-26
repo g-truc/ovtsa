@@ -180,7 +180,7 @@ void camera::shootAliasing
 	    }
 	}
 
-	Surface.SaveAs(Config.getFile());
+	Surface.save(Config.getFile());
 }
 
 void camera::shootAntiAliasing
@@ -224,7 +224,7 @@ void camera::shootAntiAliasing
 		}
     }
 
-    Surface.SaveAs(config::instance().getFile());
+    Surface.save(config::instance().getFile());
 }
 
 /*
@@ -441,7 +441,7 @@ void camera::shootAntiAliasingAdaptative
 
     delete[] pAnti;
 
-    Surface.SaveAs(config::instance().getFile());
+    Surface.save(config::instance().getFile());
 }
 
 void camera::rotateX

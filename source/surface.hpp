@@ -11,7 +11,7 @@ public:
 
     glm::vec3 * getData() {return &this->Data[0];}
     glm::vec3 const & getTexel(glm::uvec2 const & Position) const;
-	void SaveAs(std::string const & Filename);
+	void save(std::string const & Filename);
 
     void add(
 		glm::uvec2 const & Position, 

@@ -41,16 +41,17 @@ void surface::div
     this->Data[Position.x + Position.y * this->Size.x] /= Value;
 }
 
-void surface::SaveAs(std::string const & Filename)
+void surface::save(std::string const & Filename)
 {
 	gli::texture2D Texture2D(1);
 	Texture2D[0] = gli::image(this->Size, gli::RGB8U);
 
-	for(glm::uint y = 0; y < Texture2D[0].dimensions().y; y++)
-    for(glm::uint x = 0; x < Texture2D[0].dimensions().x; x++)
+	gli::texture2D::dimensions_type Dimensions = Texture2D[0].dimensions();
+	for(glm::uint y = 0; y < Dimensions.y; y++)
+    for(glm::uint x = 0; x < Dimensions.x; x++)
     {
         glm::vec3 Color = this->Data[x + y * this->Size.x];
-		Color = glm::clamp(Color * 256.f, 0.0f, 255.f);
+		Color = glm::clamp(Color * 255.f, 0.0f, 255.f);
 		glm::u8vec3 ColorLDR(Color);
 
 		gli::texelWrite<glm::u8vec3>(

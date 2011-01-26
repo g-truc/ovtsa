@@ -48,6 +48,23 @@ add_definitions(
 #add_definitions(
 #	/openmp)	
 
+#add_definitions(-O2)
+#add_definitions(-mfpmath=sse)
+#add_definitions(-msse2)
+
+#add_definitions(-O2)
+#add_definitions(-mfpmath=387)
+
+add_definitions(-O3)
+add_definitions(-mfpmath=sse)
+add_definitions(-msse2)
+add_definitions(-ffast-math)
+add_definitions(-s)
+
+#add_definitions(-O3)
+#add_definitions(-mfpmath=387)
+#add_definitions(-ffast-math)
+
 ################################
 # Add subdirectory
 

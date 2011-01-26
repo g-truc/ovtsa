@@ -16,6 +16,16 @@ raytrace::raytrace
 	this->end();
 }
 
+raytrace::raytrace(std::string const & Filename, std::string const & Output)
+{
+	config::instance().load(Filename, Output);
+	config::instance().SetFile(Output);
+
+    this->begin();
+    this->render();
+	this->end();
+}
+
 raytrace::~raytrace()
 {
 
@@ -32,8 +42,8 @@ void raytrace::render()
     timer Time;
     Time.init();
 
-    printf("===========================\n");
-	printf("processing...\n");
+    //printf("===========================\n");
+	//printf("processing...\n");
 
 	clock_t TimeStart = clock();
 
@@ -63,10 +73,15 @@ void raytrace::end()
 
 int main(int argc, char *argv[])
 {
-    printf("===========================\n");
-	printf("Ovt'sa\n");
+    //printf("===========================\n");
+	//printf("Ovt'sa\n");
 
-    if(argc > 1)
+    if(argc > 2)
+    {
+        printf("Filename: %s\n", argv[1]);
+        raytrace Raytrace(argv[1], argv[2]);
+    }
+    else if(argc > 1)
     {
         printf("Filename: %s\n", argv[1]);
         raytrace Raytrace(argv[1]);
