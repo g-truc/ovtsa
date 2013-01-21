@@ -22,7 +22,7 @@ public:
 		glm::vec3 const & Position, 
 		glm::vec3 const & RayDirection) const = 0;
 
-    virtual bool intersect(
+	virtual bool intersect(
 		ray const & Ray, 
 		intersection & Intersection) const = 0;
 };

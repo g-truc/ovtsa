@@ -20,7 +20,7 @@ glm::vec3 const & surface::getTexel(glm::uvec2 const & Position) const
 {
 	glm::uvec2 PositionClamped = glm::clamp(Position, glm::uvec2(0), this->Size - glm::uvec2(1));
 	assert(glm::all(glm::lessThan(PositionClamped, this->Size)));
-    return this->Data[PositionClamped.x + PositionClamped.y * this->Size.x];
+	return this->Data[PositionClamped.x + PositionClamped.y * this->Size.x];
 }
 
 void surface::add
@@ -30,7 +30,7 @@ void surface::add
 )
 {
 	assert(glm::all(glm::lessThan(Position, this->Size)));
-    this->Data[Position.x + Position.y * this->Size.x] += Color;
+	this->Data[Position.x + Position.y * this->Size.x] += Color;
 }
 
 void surface::div
@@ -40,7 +40,7 @@ void surface::div
 )
 {
 	assert(glm::all(glm::lessThan(Position, this->Size)));
-    this->Data[Position.x + Position.y * this->Size.x] /= Value;
+	this->Data[Position.x + Position.y * this->Size.x] /= Value;
 }
 
 void surface::SaveAs(std::string const & Filename)
@@ -49,9 +49,9 @@ void surface::SaveAs(std::string const & Filename)
 	Texture[0] = gli::image2D(this->Size, gli::RGB8U);
 
 	for(glm::uint y = 0; y < Texture[0].dimensions().y; y++)
-    for(glm::uint x = 0; x < Texture[0].dimensions().x; x++)
-    {
-        glm::vec3 Color = this->Data[x + y * this->Size.x];
+	for(glm::uint x = 0; x < Texture[0].dimensions().x; x++)
+	{
+		glm::vec3 Color = this->Data[x + y * this->Size.x];
 		Color = glm::clamp(Color * 256.f, 0.0f, 255.f);
 		glm::u8vec3 ColorLDR(Color);
 
@@ -60,7 +60,7 @@ void surface::SaveAs(std::string const & Filename)
 			glm::uvec2(x, y),
 			0,
 			ColorLDR);
-    }
+	}
 
 	gli::save(Texture, Filename);
 }

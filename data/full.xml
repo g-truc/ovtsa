@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<raytrace file="../full.tga" width="320" height="240" depth="2" antialiasing="4" reflection-rays="1" refraction-rays="1" reflection-accuracy="0.0" refraction-accuracy="0.002">
+<raytrace file="../full.tga" width="320" height="240" depth="0" antialiasing="128" reflection-rays="0" refraction-rays="0" reflection-accuracy="0.0" refraction-accuracy="0.002">
   <objects>
     <plane>
       <material opacity="0.8" reflection="0.3" refraction="0.0" environment-index="1.0" specular-exponent="8" type="grid" repeat="1">
@@ -47,7 +47,7 @@
       </transforms>
     </sphere>
     <sphere>
-      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="16" type="wood" repeat="10">
+      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="64" type="flat" repeat="10">
         <ambient r="1.0" g="0.0" b="0.0" a="0.1" />
         <ambient-secondary r="1.0" g="0.0" b="0.0" a="0.0" />
         <diffuse r="1.0" g="0.0" b="0.0" a="0.5" />
@@ -59,7 +59,7 @@
       </transforms>
     </sphere>
     <sphere>
-      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="16" type="wood" repeat="10">
+      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="64" type="flat" repeat="10">
         <ambient r="1.0" g="1.0" b="0.0" a="0.1" />
         <ambient-secondary r="1.0" g="1.0" b="0.0" a="0.0" />
         <diffuse r="1.0" g="1.0" b="0.0" a="0.5" />
@@ -71,7 +71,7 @@
       </transforms>
     </sphere>
     <sphere>
-      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="16" type="wood" repeat="10">
+      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="64" type="flat" repeat="10">
         <ambient r="0.0" g="1.0" b="0.0" a="0.1" />
         <ambient-secondary r="0.0" g="1.0" b="0.0" a="0.0" />
         <diffuse r="0.0" g="1.0" b="0.0" a="0.5" />
@@ -83,7 +83,7 @@
       </transforms>
     </sphere>
     <sphere>
-      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="16" type="wood" repeat="10">
+      <material opacity="0.5" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="64" type="flat" repeat="10">
         <ambient r="0.0" g="0.0" b="1.0" a="0.1" />
         <ambient-secondary r="0.0" g="0.0" b="1.0" a="0.0" />
         <diffuse r="0.0" g="0.0" b="1.0" a="0.5" />

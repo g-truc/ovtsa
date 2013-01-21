@@ -6,22 +6,22 @@
 class surface// : boost::noncopyable
 {
 public:
-    surface(glm::uvec2 const & Size);
-    ~surface();
+	surface(glm::uvec2 const & Size);
+	~surface();
 
-    glm::vec3 * getData() {return &this->Data[0];}
-    glm::vec3 const & getTexel(glm::uvec2 const & Position) const;
+	glm::vec3 * getData() {return &this->Data[0];}
+	glm::vec3 const & getTexel(glm::uvec2 const & Position) const;
 	void SaveAs(std::string const & Filename);
 
-    void add(
+	void add(
 		glm::uvec2 const & Position, 
 		glm::vec3 const & Color);
-    void div(
+	void div(
 		glm::uvec2 const & Position, 
 		float const & Value);
 
 private:
-    void init(glm::uvec2 const & Size);
+	void init(glm::uvec2 const & Size);
 
 	glm::uvec2 Size;
 	std::vector<glm::vec3> Data;

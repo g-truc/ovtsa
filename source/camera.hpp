@@ -18,47 +18,47 @@ public:
 	};
 
 public:
-    camera();
-    ~camera();
+	camera();
+	~camera();
 
 	void shoot(
 		int Depth, 
 		int Antialising, 
 		glm::uvec2 const & WindowSize);
 
-    void rotateX(action const & Action);
-    void rotateZ(action const & Action);
-    void move(action const & Action);
+	void rotateX(action const & Action);
+	void rotateZ(action const & Action);
+	void move(action const & Action);
 
 private:
-    bool checkAliasing(
+	bool checkAliasing(
 		surface const & Surface, 
 		adaptator const & Adaptator, 
 		int x, int y);
-    void shootAntiAliasingAdaptative(
+	void shootAntiAliasingAdaptative(
 		glm::mat4 const & ModelView,
 		int Depth, 
 		int Antialising);
-    void shootAntiAliasing(
+	void shootAntiAliasing(
 		glm::mat4 const & ModelView,
 		int Depth, 
 		int Antialising);
-    void shootAliasing(
+	void shootAliasing(
 		glm::mat4 const & ModelView,
 		int Depth);
 
-    glm::vec3 shade(
+	glm::vec3 shade(
 		intersection const & Intersection, 
 		material const & Material, 
 		glm::vec3 const & View);
-    glm::vec3 trace(
+	glm::vec3 trace(
 		ray const & Ray, 
 		int iDepth);
     
-    //glm::mat4 ModelView;
-    glm::uvec2 WindowSize;
-    float MoveForward;
-    float MoveUp;
+	//glm::mat4 ModelView;
+	glm::uvec2 WindowSize;
+	float MoveForward;
+	float MoveUp;
 	glm::vec3 Rotate;
 };
 

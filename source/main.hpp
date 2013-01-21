@@ -9,12 +9,12 @@ class raytrace
 {
 public:
 	raytrace(std::string const & Filename);
-    ~raytrace();
+	~raytrace();
 
 private:
-    void render();
-    void begin();
-    void end();
+	void render();
+	void begin();
+	void end();
 };
 
 #endif //MAIN_INCLUDED

@@ -18,7 +18,7 @@ glm::vec4 transform::computeMatrix
 	glm::vec4 const & v
 ) const
 {
-    return v * this->TransformMatrix;
+	return v * this->TransformMatrix;
 }
 
 glm::vec4 transform::computeInverse
@@ -26,7 +26,7 @@ glm::vec4 transform::computeInverse
 	glm::vec4 const & v
 ) const
 {
-    return v * this->InverseMatrix;
+	return v * this->InverseMatrix;
 }
 
 glm::vec4 transform::computeNormal
@@ -34,6 +34,6 @@ glm::vec4 transform::computeNormal
 	glm::vec4 const & Normal
 ) const
 {
-    return Normal * this->InverseTransposeMatrix;
+	return Normal * this->InverseTransposeMatrix;
 }
 

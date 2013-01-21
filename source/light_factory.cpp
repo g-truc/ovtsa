@@ -8,25 +8,25 @@ light* lightFactory::create
 	light::type const & Type
 )
 {
-    light * Light = 0;
-    switch(Type)
-    {
-    default:
-        break;
-    case light::POINT:
-        Light = new point;
-        break;
-    case light::SPOT:
-        Light = new spot;
-        break;
-    case light::DIRECTIONAL:
-        Light = new directional;
-        break;
-    }
+	light * Light = 0;
+	switch(Type)
+	{
+	default:
+		break;
+	case light::POINT:
+		Light = new point;
+		break;
+	case light::SPOT:
+		Light = new spot;
+		break;
+	case light::DIRECTIONAL:
+		Light = new directional;
+		break;
+	}
 
-    if(!Light)
-        return 0;
+	if(!Light)
+		return 0;
 
-    this->Objects.push_back(Light);
-    return Light;
+	this->Objects.push_back(Light);
+	return Light;
 }

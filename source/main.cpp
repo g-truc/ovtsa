@@ -11,8 +11,8 @@ raytrace::raytrace
 {
 	config::instance().load(Filename);
 
-    this->begin();
-    this->render();
+	this->begin();
+	this->render();
 	this->end();
 }
 
@@ -28,11 +28,11 @@ void raytrace::begin()
 
 void raytrace::render()
 {
-    config & Config = config::instance();
-    timer Time;
-    Time.init();
+	config & Config = config::instance();
+	timer Time;
+	Time.init();
 
-    printf("===========================\n");
+	printf("===========================\n");
 	printf("processing...\n");
 
 	clock_t TimeStart = clock();
@@ -44,40 +44,40 @@ void raytrace::render()
 
 	printf("Time: %d\n", clock() - TimeStart);
 
-    printf("===========================\n");
-    printf("Objects : %d\n", objectFactory::instance().size());
-    printf("Lights : %d\n", lightFactory::instance().size());
-    printf("Bounding count %d\n", Config.getDepth());
-    printf("Antialiasing %dX\n", Config.getAntiAliasingLevel());
-    printf("Reflection %dX\n", Config.getReflectionRays());
-    printf("Refraction %dX\n", Config.getRefractionRays());
-    printf("Image size: (%d, %d) pixels\n", Config.getWindowSize().x, Config.getWindowSize().y);
+	printf("===========================\n");
+	printf("Objects : %d\n", objectFactory::instance().size());
+	printf("Lights : %d\n", lightFactory::instance().size());
+	printf("Bounding count %d\n", Config.getDepth());
+	printf("Antialiasing %dX\n", Config.getAntiAliasingLevel());
+	printf("Reflection %dX\n", Config.getReflectionRays());
+	printf("Refraction %dX\n", Config.getRefractionRays());
+	printf("Image size: (%d, %d) pixels\n", Config.getWindowSize().x, Config.getWindowSize().y);
 
 	system("pause");
 }
 
 void raytrace::end()
 {
-    lightFactory::destroy();
-    objectFactory::destroy();
-    config::destroy();
+	lightFactory::destroy();
+	objectFactory::destroy();
+	config::destroy();
 }
 
 int main(int argc, char *argv[])
 {
-    printf("===========================\n");
+	printf("===========================\n");
 	printf("Ovt'sa\n");
 
-    if(argc > 1)
-    {
-        printf("Filename: %s\n", argv[1]);
-        raytrace Raytrace(argv[1]);
-    }
-    else
-    {
-        raytrace Raytrace("../data/full.xml");
-    }
+	if(argc > 1)
+	{
+		printf("Filename: %s\n", argv[1]);
+		raytrace Raytrace(argv[1]);
+	}
+	else
+	{
+		raytrace Raytrace("../data/full.xml");
+	}
 
-    return 0;
+	return 0;
 }
 

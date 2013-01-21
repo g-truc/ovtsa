@@ -9,10 +9,10 @@ class objectFactory :
 	public singleton<objectFactory>,
 	public factory<object>
 {
-    friend class singleton<objectFactory>;
+	friend class singleton<objectFactory>;
 
 public:
-    object * create();
+	object * create();
 };
 
 #endif //OBJECT_FACTORY_INCLUDED

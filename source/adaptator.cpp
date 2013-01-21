@@ -13,12 +13,12 @@ bool adaptator::init(glm::uvec2 const & Size)
 	this->Size = Size;
 	this->Data.resize(this->Size.x * this->Size.y, 0);
 
-    return true;
+	return true;
 }
 
 void adaptator::add(glm::uvec2 const & Position)
 {
-    this->Data[Position.x + Position.y * this->Size.x]++;
+	this->Data[Position.x + Position.y * this->Size.x]++;
 }
 
 float adaptator::getFactor(glm::uvec2 const & Position) const
