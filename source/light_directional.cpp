@@ -24,7 +24,7 @@ glm::vec3 directional::shade
     glm::vec3 Color(0.0f);
 
     glm::vec3 Position = -m_Direction * 100000.f;
-    glm::vec3 LightVector = glm::normalize(Position - Intersection.getGlobalPosition() + glm::vecRand3(0.0f, this->Inaccuracy));
+    glm::vec3 LightVector = glm::normalize(Position - Intersection.getGlobalPosition() + glm::sphericalRand(this->Inaccuracy));
 
 	if(!this->shadow(Intersection.getGlobalPosition(), Position, LightVector))
 	{

@@ -9,13 +9,17 @@ project("ovtsa")
 execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Release)
 execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 
-###########
+################################
 # Add GLM 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
 
-###########
-# Add GLI
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/gli")
+set(GLM_DIRECTORY glm-0.9.4.2)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLM_DIRECTORY})
+
+################################
+# Add GLI 
+
+set(GLI_DIRECTORY gli-0.3.1.0)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLI_DIRECTORY})
 
 ################################
 # Add output directory

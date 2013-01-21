@@ -1,4 +1,6 @@
 #include "surface.hpp"
+#include <gli/gtx/fetch.hpp>
+#include <gli/gtx/loader.hpp>
 
 surface::surface(glm::uvec2 const & Size)
 {
@@ -43,23 +45,23 @@ void surface::div
 
 void surface::SaveAs(std::string const & Filename)
 {
-	gli::image Image(1);
-	Image[0] = gli::image::mipmap(glm::uvec3(this->Size, glm::uint(1)), gli::RGB8U);
+	gli::texture2D Texture(1);
+	Texture[0] = gli::image2D(this->Size, gli::RGB8U);
 
-	for(glm::uint y = 0; y < Image[0].dimensions().y; y++)
-    for(glm::uint x = 0; x < Image[0].dimensions().x; x++)
+	for(glm::uint y = 0; y < Texture[0].dimensions().y; y++)
+    for(glm::uint x = 0; x < Texture[0].dimensions().x; x++)
     {
         glm::vec3 Color = this->Data[x + y * this->Size.x];
 		Color = glm::clamp(Color * 256.f, 0.0f, 255.f);
 		glm::u8vec3 ColorLDR(Color);
 
 		gli::texelWrite<glm::u8vec3>(
-			Image,
+			Texture,
 			glm::uvec2(x, y),
 			0,
 			ColorLDR);
     }
 
-	gli::export_as(Image, 0, Filename);
+	gli::save(Texture, Filename);
 }
 

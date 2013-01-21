@@ -13,7 +13,10 @@ parser::parser(std::string const & Filename)
 {
     TiXmlDocument Document(Filename.c_str());
     if(!Document.LoadFile())
+	{
+		assert(0);
 		return;
+	}
     TiXmlElement* pRoot = Document.FirstChild("raytrace")->ToElement();
     parseRaytracer(pRoot);
 }

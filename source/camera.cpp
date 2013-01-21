@@ -22,18 +22,18 @@ glm::vec3 camera::shade
 	glm::vec3 const & View
 )
 {
-    glm::vec3 Color = Material.ambient(Intersection.getGlobalPosition());
+	glm::vec3 Color = Material.ambient(Intersection.getGlobalPosition());
 
-    lightFactory & LightFactory = lightFactory::instance();
-    for(lightFactory::size_type i = 0; i < LightFactory.size(); i++)
-    {
-        glm::vec3 LightingColor;
-        int Lighting = LightFactory[i]->getRayNumber();
-        while(Lighting--)
-            LightingColor += LightFactory[i]->shade(Intersection, Material, View);
-        Color += LightingColor / float(LightFactory[i]->getRayNumber());
-    }
-    return Color;   
+	lightFactory & LightFactory = lightFactory::instance();
+	for(lightFactory::size_type i = 0; i < LightFactory.size(); i++)
+	{
+		glm::vec3 LightingColor;
+		int Lighting = LightFactory[i]->getRayNumber();
+		while(Lighting--)
+			LightingColor += LightFactory[i]->shade(Intersection, Material, View);
+		Color += LightingColor / float(LightFactory[i]->getRayNumber());
+	}
+	return Color;   
 }
 
 glm::vec3 camera::trace
@@ -42,81 +42,81 @@ glm::vec3 camera::trace
 	int iDepth
 )
 {
-    config & Config = config::instance();
-    ray LocalRay;
+	config & Config = config::instance();
+	ray LocalRay;
 	ray Ray = RayCopy;
-    intersection Intersection;
-    intersection NearestIntersection;
-    material Material;
-    float fDistanceMin = MAX_DISTANCE;
+	intersection Intersection;
+	intersection NearestIntersection;
+	material Material;
+	float fDistanceMin = MAX_DISTANCE;
 
-    objectFactory & ObjectFactory = objectFactory::instance();
+	objectFactory & ObjectFactory = objectFactory::instance();
 	for(objectFactory::size_type i = 0; i < ObjectFactory.size(); ++i)
-    {
-        LocalRay.setPosition(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.getPosition(), 1.0f))));
-        LocalRay.setDirection(glm::normalize(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.getDirection(), 0.0f)))));
-        if(ObjectFactory[i]->getShape()->intersect(LocalRay, Intersection))
-        {
-            Intersection.setGlobalPosition(glm::vec3(ObjectFactory[i]->getTransform()->computeMatrix(glm::vec4(Intersection.getLocalPosition(), 1.0f))));
-            float fDistance = glm::distance(Ray.getPosition(), Intersection.getGlobalPosition());
-            if(fDistance < fDistanceMin)
-            {
-                fDistanceMin = fDistance;
-                NearestIntersection = Intersection;
-                glm::vec3 Normal = ObjectFactory[i]->getShape()->computeNormal(Intersection.getLocalPosition(), LocalRay.getDirection());
-                NearestIntersection.setNormal(glm::vec3(ObjectFactory[i]->getTransform()->computeNormal(glm::vec4(Normal, 0.0f))));
-                Material = *ObjectFactory[i]->getMaterial();
-            }
-        }
-    }
+	{
+		LocalRay.setPosition(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.getPosition(), 1.0f))));
+		LocalRay.setDirection(glm::normalize(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.getDirection(), 0.0f)))));
+		if(ObjectFactory[i]->getShape()->intersect(LocalRay, Intersection))
+		{
+			Intersection.setGlobalPosition(glm::vec3(ObjectFactory[i]->getTransform()->computeMatrix(glm::vec4(Intersection.getLocalPosition(), 1.0f))));
+			float fDistance = glm::distance(Ray.getPosition(), Intersection.getGlobalPosition());
+			if(fDistance < fDistanceMin)
+			{
+				fDistanceMin = fDistance;
+				NearestIntersection = Intersection;
+				glm::vec3 Normal = ObjectFactory[i]->getShape()->computeNormal(Intersection.getLocalPosition(), LocalRay.getDirection());
+				NearestIntersection.setNormal(glm::vec3(ObjectFactory[i]->getTransform()->computeNormal(glm::vec4(Normal, 0.0f))));
+				Material = *ObjectFactory[i]->getMaterial();
+			}
+		}
+	}
 
-    if(fDistanceMin > MAX_DISTANCE)
+	if(fDistanceMin > MAX_DISTANCE)
 		return glm::vec3(1.0f);
 
-    glm::vec3 Color = this->shade(
+	glm::vec3 Color = this->shade(
 		NearestIntersection, 
 		Material, 
 		-glm::vec3(Ray.getDirection())) * Material.getOpacity();
 
-    if(iDepth)
-    {
-        iDepth--;
-        if(Material.getReflectionFactor() > EPSILON && Config.getReflectionRays() > 0)
-        {
-            Ray.setPosition(NearestIntersection.getGlobalPosition());
-            
-            glm::vec3 ReflectionColor(0);
-            int ReflectionCount = Config.getReflectionRays();
-            while(ReflectionCount--)
-            {
-                Ray.setDirection(glm::reflect(
-                    glm::normalize(Ray.getDirection() + glm::vecRand3(0.0f, Config.getReflectionAccuracy())), 
-                    glm::normalize(NearestIntersection.getNormal())));
-                ReflectionColor += this->trace(Ray, iDepth) * Material.getReflectionFactor();
-            }
-            Color += ReflectionColor / float(Config.getReflectionRays());
-        }
+	if(iDepth)
+	{
+		iDepth--;
+		if(Material.getReflectionFactor() > EPSILON && Config.getReflectionRays() > 0)
+		{
+			Ray.setPosition(NearestIntersection.getGlobalPosition());
 
-        if(Material.getRefractionFactor() > EPSILON && Config.getRefractionRays() > 0)
-        {
-            Ray.setPosition(NearestIntersection.getGlobalPosition());
-            
-            glm::vec3 RefractionColor(0);
-            int RefractionCount = Config.getRefractionRays();
-            while(RefractionCount--)
-            {
-                Ray.setDirection(glm::refract(
-					glm::normalize(Ray.getDirection() + glm::vecRand3(0.0f, Config.getReflactionAccuracy())), 
+			glm::vec3 ReflectionColor(0);
+			int ReflectionCount = Config.getReflectionRays();
+			while(ReflectionCount--)
+			{
+				Ray.setDirection(glm::reflect(
+					glm::normalize(Ray.getDirection() + glm::sphericalRand(Config.getReflectionAccuracy())), 
+					glm::normalize(NearestIntersection.getNormal())));
+				ReflectionColor += this->trace(Ray, iDepth) * Material.getReflectionFactor();
+			}
+			Color += ReflectionColor / float(Config.getReflectionRays());
+		}
+
+		if(Material.getRefractionFactor() > EPSILON && Config.getRefractionRays() > 0)
+		{
+			Ray.setPosition(NearestIntersection.getGlobalPosition());
+
+			glm::vec3 RefractionColor(0);
+			int RefractionCount = Config.getRefractionRays();
+			while(RefractionCount--)
+			{
+				Ray.setDirection(glm::refract(
+					glm::normalize(Ray.getDirection() + glm::sphericalRand(Config.getReflactionAccuracy())), 
 						glm::normalize(NearestIntersection.getNormal()), 
 						(Ray.getEnvironmentIndex() == 1.0f ? 1.0f / Material.getEnvironmentIndex() : Material.getEnvironmentIndex())));
 
-                Ray.setEnvironmentIndex(Ray.getEnvironmentIndex() == 1.0f ? Material.getEnvironmentIndex() : 1.0f);
-                RefractionColor += this->trace(Ray, iDepth) * Material.getRefractionFactor();
-            }
-            Color += RefractionColor / float(Config.getRefractionRays());
-        }
-    }
-    return Color;
+				Ray.setEnvironmentIndex(Ray.getEnvironmentIndex() == 1.0f ? Material.getEnvironmentIndex() : 1.0f);
+				RefractionColor += this->trace(Ray, iDepth) * Material.getRefractionFactor();
+			}
+			Color += RefractionColor / float(Config.getRefractionRays());
+		}
+	}
+	return Color;
 }
 
 void camera::shoot
@@ -126,27 +126,27 @@ void camera::shoot
 	glm::uvec2 const & WindowSize
 )
 {
-    config & Config = config::instance();
+	config & Config = config::instance();
 
 	glm::mat4 ModelView(1.0f);
-    ModelView = glm::translate(0.0f, 0.0f, MoveUp);
-    ModelView = glm::rotate(ModelView, Rotate.z, 0.0f, 0.0f, 1.0f);
-    ModelView = glm::rotate(ModelView, Rotate.x, 1.0f, 0.0f, 0.0f);
-    ModelView = glm::translate(ModelView, 0.0f, 0.0f, MoveForward);
+	ModelView = glm::translate(0.0f, 0.0f, MoveUp);
+	ModelView = glm::rotate(ModelView, Rotate.z, 0.0f, 0.0f, 1.0f);
+	ModelView = glm::rotate(ModelView, Rotate.x, 1.0f, 0.0f, 0.0f);
+	ModelView = glm::translate(ModelView, 0.0f, 0.0f, MoveForward);
 
-    this->WindowSize = WindowSize;
-    //if(pConfig->AntiAliasingType() == AA_ADAPT && iAntialising > 1)
-    //    ShootAntiAliasingAdaptative(iDepth, iAntialising);
-    //else if(pConfig->AntiAliasingType() == AA_FORCE && iAntialising > 1)
-    //    ShootAntiAliasing(iDepth, iAntialising);
-    //else
-    //    ShootAliasing(iDepth);
+	this->WindowSize = WindowSize;
+	//if(pConfig->AntiAliasingType() == AA_ADAPT && iAntialising > 1)
+	//    ShootAntiAliasingAdaptative(iDepth, iAntialising);
+	//else if(pConfig->AntiAliasingType() == AA_FORCE && iAntialising > 1)
+	//    ShootAntiAliasing(iDepth, iAntialising);
+	//else
+	//    ShootAliasing(iDepth);
 
-    if(iAntialising > 1)
-        //this->shootAntiAliasingAdaptative(ModelView, iDepth, iAntialising);
+	if(iAntialising > 1)
+		//this->shootAntiAliasingAdaptative(ModelView, iDepth, iAntialising);
 		this->shootAntiAliasing(ModelView, iDepth, iAntialising);
-    else
-        this->shootAliasing(ModelView, iDepth);
+	else
+		this->shootAliasing(ModelView, iDepth);
 }
 
 void camera::shootAliasing
@@ -155,29 +155,29 @@ void camera::shootAliasing
 	int iDepth
 )
 {
-    config & Config = config::instance();
+	config & Config = config::instance();
 
 	surface Surface(this->WindowSize);
 
-    ray Ray;
-    Ray.setEnvironmentIndex(1.0f);
+	ray Ray;
+	Ray.setEnvironmentIndex(1.0f);
 
 	std::size_t Total = glm::compMul(this->WindowSize);
 	std::size_t Count = 0;
 
 	//#pragma omp parallel for
-    for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
+	for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
 	{
 		printf("%2.3f%\r", float(Count) / float(Total) * 100.f);
 
 		for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
-	    {
-	        Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x), float(y), -float(this->WindowSize.y), 0.0f))));
-	        Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+		{
+			Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x), float(y), -float(this->WindowSize.y), 0.0f))));
+			Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 			glm::vec3 Color = this->trace(Ray, iDepth);
 			Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
 			Count++;
-	    }
+		}
 	}
 
 	Surface.SaveAs(Config.getFile());
@@ -190,41 +190,41 @@ void camera::shootAntiAliasing
 	int Antialising
 )
 {
-    ray Ray;
-    Ray.setEnvironmentIndex(1.0f);
+	ray Ray;
+	Ray.setEnvironmentIndex(1.0f);
 
-    surface Surface(this->WindowSize);
+	surface Surface(this->WindowSize);
 
 	std::vector<glm::vec2> AntialisingBias(Antialising);
-    for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
-        AntialisingBias[i] = glm::compRand2(-0.5f, 0.5f);
+	for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
+		AntialisingBias[i] = glm::linearRand(glm::vec2(-0.5f), glm::vec2(0.5f));
 	//AntialisingBias[0] = glm::vec2(-1.0f);
 	//AntialisingBias[1] = glm::vec2(1.0f);
 
 	std::size_t Total = glm::compMul(this->WindowSize) * AntialisingBias.size();
 	std::size_t Count = 0;
-    for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
-    {
+	for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
+	{
 		//#pragma omp parallel for
-        for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
+		for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
 		{
 			printf("%2.3f%\r", float(Count) / float(Total) * 100.f);
 
 			for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
-	        {
+			{
 				glm::ivec2 WindowPosition(x, y);
-	            Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
-	            Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-	            //Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition), -float(m_WindowSize.y), 0.0f))));
-	            //Ray.setPosition(glm::vec3(ModelView * glm::vec4(AntialisingBias[i], 0.0f, 1.0f)));
+				Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
+				Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+				//Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition), -float(m_WindowSize.y), 0.0f))));
+				//Ray.setPosition(glm::vec3(ModelView * glm::vec4(AntialisingBias[i], 0.0f, 1.0f)));
 				glm::vec3 Color = this->trace(Ray, iDepth) / float(Antialising);
 				Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
 				Count++;
-	        }
+			}
 		}
-    }
+	}
 
-    Surface.SaveAs(config::instance().getFile());
+	Surface.SaveAs(config::instance().getFile());
 }
 
 /*
@@ -403,8 +403,8 @@ void camera::shootAntiAliasingAdaptative
     glm::vec2 *pAnti = new glm::vec2[iAntialising];
     for(int i = 0; i < iAntialising; i++)
     {
-        pAnti[i].x = glm::compRand1(0.0f, 1.0f) * 2.0f - 1.0f;
-        pAnti[i].y = glm::compRand1(0.0f, 1.0f) * 2.0f - 1.0f;
+        pAnti[i].x = glm::linearRand(0.0f, 1.0f) * 2.0f - 1.0f;
+        pAnti[i].y = glm::linearRand(0.0f, 1.0f) * 2.0f - 1.0f;
     }
 
 	std::size_t Total = glm::compMul(this->WindowSize) * iAntialising;

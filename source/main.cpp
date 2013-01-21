@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        raytrace Raytrace("../../data/full.xml");
+        raytrace Raytrace("../data/full.xml");
     }
 
     return 0;

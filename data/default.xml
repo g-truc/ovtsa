@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<raytrace file="../../default.tga" width="640" depth="4" height="480" antialiasing="4" >
+<raytrace file="default.tga" width="640" depth="4" height="480" antialiasing="4" >
     <objects>
         <plane>
             <material reflection="1.0" refraction="0.0" specular-exponent="10" type="flat">

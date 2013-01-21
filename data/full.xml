@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<raytrace file="../../full.tga" width="640" height="400" depth="3" antialiasing="4" reflection-rays="1" refraction-rays="32" reflection-accuracy="0.0" refraction-accuracy="0.002">
+<raytrace file="full.tga" width="320" height="240" depth="1" antialiasing="1" reflection-rays="1" refraction-rays="1" reflection-accuracy="0.0" refraction-accuracy="0.002">
   <objects>
     <plane>
       <material opacity="0.8" reflection="0.3" refraction="0.0" environment-index="1.0" specular-exponent="8" type="grid" repeat="1">

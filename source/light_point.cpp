@@ -25,7 +25,7 @@ glm::vec3 point::shade
 {
     glm::vec3 Color(0.0f);
 
-    glm::vec3 LightVector = glm::normalize(this->getPosition() - Intersection.getGlobalPosition() + glm::vecRand3(0.0f, this->Inaccuracy));
+    glm::vec3 LightVector = glm::normalize(this->getPosition() - Intersection.getGlobalPosition() + glm::sphericalRand(this->Inaccuracy));
 
 	if(!this->shadow(Intersection.getGlobalPosition(), this->getPosition(), LightVector))
 	{
