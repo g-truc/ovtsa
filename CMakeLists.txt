@@ -9,13 +9,17 @@ project("ovtsa")
 execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Release)
 execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 
-###########
+################################
 # Add GLM 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/glm-0.9.1.A")
 
-###########
-# Add GLI
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/external/gli-0.3.0.1")
+set(GLM_DIRECTORY glm-0.9.4.2)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLM_DIRECTORY})
+
+################################
+# Add GLI 
+
+set(GLI_DIRECTORY gli-0.3.1.0)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLI_DIRECTORY})
 
 ################################
 # Add output directory
@@ -43,10 +47,12 @@ set(OGL_DATA_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
 ################################
 # Add definitions
 
-add_definitions(
-	-D_CRT_SECURE_NO_WARNINGS)
-#add_definitions(
-#	/openmp)	
+if(MSVC)
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+	add_definitions(/arch:IA32)
+	#add_definitions(/Ox)
+	add_definitions(/openmp)
+endif()
 
 #add_definitions(-O2)
 #add_definitions(-mfpmath=sse)
@@ -55,12 +61,14 @@ add_definitions(
 #add_definitions(-O2)
 #add_definitions(-mfpmath=387)
 
-add_definitions(-O3)
-add_definitions(-mfpmath=sse)
-add_definitions(-msse2)
-add_definitions(-ffast-math)
-add_definitions(-flto)
-add_definitions(-s)
+if(CMAKE_COMPILER_IS_GNUCXX)
+	add_definitions(-O3)
+	add_definitions(-mfpmath=sse)
+	add_definitions(-msse2)
+	add_definitions(-ffast-math)
+	add_definitions(-flto)
+	add_definitions(-s)
+endif()
 
 #add_definitions(-O3)
 #add_definitions(-mfpmath=387)

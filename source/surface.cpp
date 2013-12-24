@@ -1,4 +1,6 @@
 #include "surface.hpp"
+#include <gli/gtx/fetch.hpp>
+#include <gli/gtx/loader.hpp>
 
 surface::surface(glm::uvec2 const & Size)
 {
@@ -18,7 +20,7 @@ glm::vec3 const & surface::getTexel(glm::uvec2 const & Position) const
 {
 	glm::uvec2 PositionClamped = glm::clamp(Position, glm::uvec2(0), this->Size - glm::uvec2(1));
 	assert(glm::all(glm::lessThan(PositionClamped, this->Size)));
-    return this->Data[PositionClamped.x + PositionClamped.y * this->Size.x];
+	return this->Data[PositionClamped.x + PositionClamped.y * this->Size.x];
 }
 
 void surface::add
@@ -28,7 +30,7 @@ void surface::add
 )
 {
 	assert(glm::all(glm::lessThan(Position, this->Size)));
-    this->Data[Position.x + Position.y * this->Size.x] += Color;
+	this->Data[Position.x + Position.y * this->Size.x] += Color;
 }
 
 void surface::div
@@ -38,29 +40,28 @@ void surface::div
 )
 {
 	assert(glm::all(glm::lessThan(Position, this->Size)));
-    this->Data[Position.x + Position.y * this->Size.x] /= Value;
+	this->Data[Position.x + Position.y * this->Size.x] /= Value;
 }
 
 void surface::save(std::string const & Filename)
 {
-	gli::texture2D Texture2D(1);
-	Texture2D[0] = gli::image(this->Size, gli::RGB8U);
+	gli::texture2D Texture(1);
+	Texture[0] = gli::image2D(this->Size, gli::RGB8U);
 
-	gli::texture2D::dimensions_type Dimensions = Texture2D[0].dimensions();
-	for(glm::uint y = 0; y < Dimensions.y; y++)
-    for(glm::uint x = 0; x < Dimensions.x; x++)
-    {
-        glm::vec3 Color = this->Data[x + y * this->Size.x];
-		Color = glm::clamp(Color * 255.f, 0.0f, 255.f);
+	for(glm::uint y = 0; y < Texture[0].dimensions().y; y++)
+	for(glm::uint x = 0; x < Texture[0].dimensions().x; x++)
+	{
+		glm::vec3 Color = this->Data[x + y * this->Size.x];
+		Color = glm::clamp(Color * 256.f, 0.0f, 255.f);
 		glm::u8vec3 ColorLDR(Color);
 
 		gli::texelWrite<glm::u8vec3>(
-			Texture2D,
+			Texture,
 			glm::uvec2(x, y),
 			0,
 			ColorLDR);
-    }
+	}
 
-	gli::save(Texture2D, Filename);
+	gli::save(Texture, Filename);
 }
 

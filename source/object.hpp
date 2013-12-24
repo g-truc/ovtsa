@@ -8,28 +8,28 @@
 class object
 {
 public:
-    static object * create(
+	static object * create(
 		shape::type const & Shape, 
 		material const & Material, 
 		glm::mat4 const & Transform);
 
-    object();
-    ~object();
+	object();
+	~object();
 
-    object(
+	object(
 		shape * const Shape, 
 		material const & Material, 
 		glm::mat4 const & Transform);
 
-    shape * getShape() {return this->Shape;}
-    shape * const getShape() const {return this->Shape;}
-    material const * getMaterial() const {return &this->Material;}
-    transform const * getTransform() const {return &this->Transform;}
+	shape * getShape() {return this->Shape;}
+	shape * const getShape() const {return this->Shape;}
+	material const * getMaterial() const {return &this->Material;}
+	transform const * getTransform() const {return &this->Transform;}
 
 private:
-    shape * Shape;
-    material Material;
-    transform Transform;
+	shape * Shape;
+	material Material;
+	transform Transform;
 };
 
 #endif //OBJECT_INCLUDED

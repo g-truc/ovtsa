@@ -18,8 +18,8 @@
 //#include <omp.h>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/random.hpp>
 #include <glm/gtx/transform.hpp>
-#include <glm/gtx/random.hpp>
 #include <glm/gtx/component_wise.hpp>
 
 #include <gli/gli.hpp>
