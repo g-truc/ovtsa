@@ -2,7 +2,7 @@
 #define SHAPE_POLYHEDRON_INCLUDED
 
 #include "shape.hpp"
-#include "util.hpp"
+#include <glm/vec3.hpp>
 
 class triangle : public shape
 {
@@ -12,16 +12,12 @@ private:
 	int DominantAxis;
 
 public:
-	triangle() : 
-		A(glm::vec3( 0, 0, 1)), 
-		B(glm::vec3(-1, 0, 0)),
-		C(glm::vec3( 1, 0, 0))
-	{
-		m_Normal = -glm::cross(glm::normalize(B - A), glm::normalize(C - A));
-	}
+	triangle();
 
 	void setPositions(
-		std::vector<glm::vec3> const & Data);
+		glm::vec3 const & A,
+		glm::vec3 const & B,
+		glm::vec3 const & C);
 
 	virtual glm::vec3 computeNormal(
 		glm::vec3 const & Position, 

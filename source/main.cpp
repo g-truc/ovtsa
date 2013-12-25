@@ -3,10 +3,11 @@
 #include "config.hpp"
 #include "object_factory.hpp"
 #include "light_factory.hpp"
+#include <ctime>
 
 raytrace::raytrace
 (
-	std::string const & Filename
+	char const * Filename
 )
 {
 	config::instance().load(Filename);
@@ -16,13 +17,13 @@ raytrace::raytrace
 	this->end();
 }
 
-raytrace::raytrace(std::string const & Filename, std::string const & Output)
+raytrace::raytrace(char const * Filename, char const * Output)
 {
 	config::instance().load(Filename, Output);
 	config::instance().SetFile(Output);
 
-    this->begin();
-    this->render();
+	this->begin();
+	this->render();
 	this->end();
 }
 

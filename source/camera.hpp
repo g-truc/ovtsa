@@ -7,6 +7,9 @@
 #include "timer.hpp"
 #include "surface.hpp"
 #include "adaptator.hpp"
+#include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec2.hpp>
 
 class camera
 {
@@ -54,7 +57,7 @@ private:
 	glm::vec3 trace(
 		ray const & Ray, 
 		int iDepth);
-    
+
 	//glm::mat4 ModelView;
 	glm::uvec2 WindowSize;
 	float MoveForward;

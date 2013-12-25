@@ -1,7 +1,7 @@
 #include "light_spot.hpp"
 #include "light_factory.hpp"
-#include "util.hpp"
 #include "main.hpp"
+#include <glm/geometric.hpp>
 
 spot * spot::create()
 {

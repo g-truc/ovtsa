@@ -1,4 +1,5 @@
 #include "timer.hpp"
+#include <ctime>
 
 timer::timer()
 {

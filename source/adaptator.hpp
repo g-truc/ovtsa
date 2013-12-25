@@ -1,7 +1,8 @@
 #ifndef ADAPTATOR_INCLUDED
 #define ADAPTATOR_INCLUDED
 
-#include "util.hpp"
+#include <glm/vec2.hpp>
+#include <vector>
 
 class adaptator// : boost::noncopyable
 {

@@ -1,8 +1,6 @@
 #ifndef TIMER_INCLUDED
 #define TIMER_INCLUDED
 
-#include "util.hpp"
-
 class timer 
 {
 public:

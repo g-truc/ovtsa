@@ -2,6 +2,15 @@
 #include "main.hpp"
 #include "transform.hpp"
 #include "material.hpp"
+#include <glm/geometric.hpp>
+
+triangle::triangle() : 
+	A(glm::vec3( 0, 0, 1)), 
+	B(glm::vec3(-1, 0, 0)),
+	C(glm::vec3( 1, 0, 0))
+{
+	m_Normal = -glm::cross(glm::normalize(B - A), glm::normalize(C - A));
+}
 
 glm::vec3 triangle::computeNormal
 (
@@ -36,10 +45,12 @@ bool triangle::intersect
 
 void triangle::setPositions
 (
-	std::vector<glm::vec3> const & Data
+	glm::vec3 const & A,
+	glm::vec3 const & B,
+	glm::vec3 const & C
 )
 {
-	A = Data[0];
-	B = Data[1];
-	C = Data[2];
+	this->A = A;
+	this->B = B;
+	this->C = C;
 }

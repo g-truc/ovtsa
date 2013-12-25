@@ -1,6 +1,7 @@
 #include "shape_cylinder.hpp"
 #include "main.hpp"
 #include "transform.hpp"
+#include <glm/geometric.hpp>
 
 glm::vec3 cylinder::computeNormal
 (

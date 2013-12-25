@@ -1,4 +1,8 @@
 #include "material.hpp"
+#include <glm/trigonometric.hpp>
+#include <glm/vector_relational.hpp>
+#include <glm/common.hpp>
+#include <cstdlib>
 
 perlin g_Perlin;
 

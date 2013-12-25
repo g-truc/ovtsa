@@ -1,6 +1,6 @@
 #include "surface.hpp"
-#include <gli/gtx/fetch.hpp>
-#include <gli/gtx/loader.hpp>
+#include <gli/core/save_dds.hpp>
+#include <gli/core/fetch.hpp>
 
 surface::surface(glm::uvec2 const & Size)
 {
@@ -43,25 +43,18 @@ void surface::div
 	this->Data[Position.x + Position.y * this->Size.x] /= Value;
 }
 
-void surface::save(std::string const & Filename)
+void surface::save(char const * Filename)
 {
-	gli::texture2D Texture(1);
-	Texture[0] = gli::image2D(this->Size, gli::RGB8U);
+	gli::texture2D Texture(1, gli::RGB8U, this->Size);
 
-	for(glm::uint y = 0; y < Texture[0].dimensions().y; y++)
-	for(glm::uint x = 0; x < Texture[0].dimensions().x; x++)
+	for(glm::uint y = 0; y < Texture.dimensions().y; y++)
+	for(glm::uint x = 0; x < Texture.dimensions().x; x++)
 	{
-		glm::vec3 Color = this->Data[x + y * this->Size.x];
-		Color = glm::clamp(Color * 256.f, 0.0f, 255.f);
-		glm::u8vec3 ColorLDR(Color);
+		glm::u8vec3 Color(glm::clamp(this->Data[x + y * this->Size.x] * 256.f, 0.0f, 255.f));
 
-		gli::texelWrite<glm::u8vec3>(
-			Texture,
-			glm::uvec2(x, y),
-			0,
-			ColorLDR);
+		gli::texelWrite<glm::u8vec3>(Texture, gli::texture2D::dimensions_type(x, y), 0, Color);
 	}
 
-	gli::save(Texture, Filename);
+	gli::save_dds(Texture, Filename);
 }
 

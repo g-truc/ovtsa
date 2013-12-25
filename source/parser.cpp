@@ -8,10 +8,11 @@
 #include "light_directional.hpp"
 #include "light_factory.hpp"
 #include "config.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
-parser::parser(std::string const & Filename)
+parser::parser(char const * Filename)
 {
-	TiXmlDocument Document(Filename.c_str());
+	TiXmlDocument Document(Filename);
 	if(!Document.LoadFile())
 	{
 		assert(0);
@@ -167,7 +168,10 @@ void parser::parseTriangle(TiXmlElement* pElement)
 
 	TiXmlElement* pChildPositions = pElement->FirstChildElement("positions");
 	if(pChildPositions)
-		static_cast<triangle*>(pObject->getShape())->setPositions(this->getPositions(pChildPositions));
+	{
+		std::vector<glm::vec3> const & Data = this->getPositions(pChildPositions);
+		static_cast<triangle*>(pObject->getShape())->setPositions(Data[0], Data[1], Data[2]);
+	}
 }
 
 void parser::parseCylinder(TiXmlElement* pElement)
@@ -312,29 +316,29 @@ glm::mat4 parser::getTransform(TiXmlElement* pElement)
 			value = float(atof(pAttribute->Value()));
 		if(!strcmp("type", pAttribute->Name()))
 			type = pAttribute->Value();
-	}    
+	}
 	while(pAttribute = pAttribute->Next());
 
 	if(!strcmp("identity", type.c_str()))
 		return glm::mat4(1.0f);
 	else if(!strcmp("translate-x", type.c_str()))
-		return glm::translate(glm::mat4(1.0f), value, 0.0f, 0.0f);
+		return glm::translate(glm::mat4(1.0f), glm::vec3(value, 0.0f, 0.0f));
 	else if(!strcmp("translate-y", type.c_str()))
-		return glm::translate(glm::mat4(1.0f), 0.0f, value, 0.0f);
+		return glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, value, 0.0f));
 	else if(!strcmp("translate-z", type.c_str()))
-		return glm::translate(glm::mat4(1.0f), 0.0f, 0.0f, value);
+		return glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, value));
 	else if(!strcmp("scale-x", type.c_str()))
-		return glm::scale(glm::mat4(1.0f), value, 1.0f, 1.0f);
+		return glm::scale(glm::mat4(1.0f), glm::vec3(value, 1.0f, 1.0f));
 	else if(!strcmp("scale-y", type.c_str()))
-		return glm::scale(glm::mat4(1.0f), 1.0f, value, 1.0f);
+		return glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, value, 1.0f));
 	else if(!strcmp("scale-z", type.c_str()))
-		return glm::scale(glm::mat4(1.0f), 1.0f, 1.0f, value);
+		return glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, value));
 	else if(!strcmp("rotate-x", type.c_str()))
-		return glm::rotate(glm::mat4(1.0f), value, 1.0f, 0.0f, 0.0f);
+		return glm::rotate(glm::mat4(1.0f), value, glm::vec3(1.0f, 0.0f, 0.0f));
 	else if(!strcmp("rotate-y", type.c_str()))
-		return glm::rotate(glm::mat4(1.0f), value, 0.0f, 1.0f, 0.0f);
+		return glm::rotate(glm::mat4(1.0f), value, glm::vec3(0.0f, 1.0f, 0.0f));
 	else if(!strcmp("rotate-z", type.c_str()))
-		return glm::rotate(glm::mat4(1.0f), value, 0.0f, 0.0f, 1.0f);
+		return glm::rotate(glm::mat4(1.0f), value, glm::vec3(0.0f, 0.0f, 1.0f));
 	return glm::mat4(1.0f);
 }
 

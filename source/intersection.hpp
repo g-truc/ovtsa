@@ -1,7 +1,7 @@
 #ifndef INTERSECTION_INCLUDED
 #define INTERSECTION_INCLUDED
 
-#include "util.hpp"
+#include <glm/vec3.hpp>
 
 class intersection
 {

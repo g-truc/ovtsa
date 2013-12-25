@@ -1,7 +1,7 @@
 #include "light_directional.hpp"
 #include "light_factory.hpp"
 #include "main.hpp"
-#include "util.hpp"
+#include <glm/geometric.hpp>
 
 directional * directional::create()
 {

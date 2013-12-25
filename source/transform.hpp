@@ -1,7 +1,8 @@
 #ifndef TRANSFORM_INCLUDED
 #define TRANSFORM_INCLUDED
 
-#include "util.hpp"
+#include <glm/mat4x4.hpp>
+#include <glm/vec4.hpp>
 
 class transform
 {

@@ -1,8 +1,9 @@
 #ifndef CONFIG_INCLUDED
 #define CONFIG_INCLUDED
 
-#include "util.hpp"
 #include "singleton.hpp"
+#include <glm/vec2.hpp>
+#include <string>
 
 enum EAntiAlias
 {

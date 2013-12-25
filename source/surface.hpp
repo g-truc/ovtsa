@@ -1,7 +1,9 @@
 #ifndef SURFACE_INCLUDED
 #define SURFACE_INCLUDED
 
-#include "util.hpp"
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <vector>
 
 class surface// : boost::noncopyable
 {
@@ -11,7 +13,7 @@ public:
 
 	glm::vec3 * getData() {return &this->Data[0];}
 	glm::vec3 const & getTexel(glm::uvec2 const & Position) const;
-	void save(std::string const & Filename);
+	void save(char const * Filename);
 
 	void add(
 		glm::uvec2 const & Position, 

@@ -1,7 +1,7 @@
 #ifndef PERLIN_INCLUDED
 #define PERLIN_INCLUDED
 
-#include "util.hpp"
+#include <cstddef>
 
 std::size_t const PERLIN_SIZE = 256;
 

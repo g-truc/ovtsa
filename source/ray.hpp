@@ -1,7 +1,7 @@
 #ifndef RAY_INCLUDED
 #define RAY_INCLUDED
 
-#include "util.hpp"
+#include <glm/vec3.hpp>
 
 class ray
 {

@@ -2,9 +2,12 @@
 #include "main.hpp"
 #include "light_factory.hpp"
 #include "object_factory.hpp"
-#include "util.hpp"
 #include "config.hpp"
 #include "adaptator.hpp"
+#include <glm/gtx/component_wise.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/random.hpp>
+#include <glm/gtc/constants.hpp>
 
 camera::camera() :
 	MoveForward(12.f),
@@ -33,7 +36,7 @@ glm::vec3 camera::shade
 			LightingColor += LightFactory[i]->shade(Intersection, Material, View);
 		Color += LightingColor / float(LightFactory[i]->getRayNumber());
 	}
-	return Color;   
+	return Color;
 }
 
 glm::vec3 camera::trace
@@ -81,7 +84,7 @@ glm::vec3 camera::trace
 	if(iDepth)
 	{
 		iDepth--;
-		if(Material.getReflectionFactor() > EPSILON && Config.getReflectionRays() > 0)
+		if(Material.getReflectionFactor() > glm::epsilon<float>() && Config.getReflectionRays() > 0)
 		{
 			Ray.setPosition(NearestIntersection.getGlobalPosition());
 
@@ -97,7 +100,7 @@ glm::vec3 camera::trace
 			Color += ReflectionColor / float(Config.getReflectionRays());
 		}
 
-		if(Material.getRefractionFactor() > EPSILON && Config.getRefractionRays() > 0)
+		if(Material.getRefractionFactor() > glm::epsilon<float>() && Config.getRefractionRays() > 0)
 		{
 			Ray.setPosition(NearestIntersection.getGlobalPosition());
 
@@ -113,7 +116,7 @@ glm::vec3 camera::trace
 				Ray.setEnvironmentIndex(Ray.getEnvironmentIndex() == 1.0f ? Material.getEnvironmentIndex() : 1.0f);
 				RefractionColor += this->trace(Ray, iDepth) * Material.getRefractionFactor();
 			}
-			Color += RefractionColor / float(Config.getRefractionRays());
+			Color += RefractionColor / static_cast<float>(Config.getRefractionRays());
 		}
 	}
 	return Color;
@@ -129,10 +132,10 @@ void camera::shoot
 	config & Config = config::instance();
 
 	glm::mat4 ModelView(1.0f);
-	ModelView = glm::translate(0.0f, 0.0f, MoveUp);
-	ModelView = glm::rotate(ModelView, Rotate.z, 0.0f, 0.0f, 1.0f);
-	ModelView = glm::rotate(ModelView, Rotate.x, 1.0f, 0.0f, 0.0f);
-	ModelView = glm::translate(ModelView, 0.0f, 0.0f, MoveForward);
+	ModelView = glm::translate(ModelView, glm::vec3(0.0f, 0.0f, MoveUp));
+	ModelView = glm::rotate(ModelView, Rotate.z, glm::vec3(0.0f, 0.0f, 1.0f));
+	ModelView = glm::rotate(ModelView, Rotate.x, glm::vec3(1.0f, 0.0f, 0.0f));
+	ModelView = glm::translate(ModelView, glm::vec3(0.0f, 0.0f, MoveForward));
 
 	this->WindowSize = WindowSize;
 	//if(pConfig->AntiAliasingType() == AA_ADAPT && iAntialising > 1)
@@ -180,7 +183,7 @@ void camera::shootAliasing
 		}
 	}
 
-	Surface.save(Config.getFile());
+	Surface.save(Config.getFile().c_str());
 }
 
 void camera::shootAntiAliasing
@@ -226,7 +229,7 @@ void camera::shootAntiAliasing
 		}
 	}
 
-	Surface.save(config::instance().getFile());
+	Surface.save(config::instance().getFile().c_str());
 }
 
 /*
@@ -443,7 +446,7 @@ void camera::shootAntiAliasingAdaptative
 
 	delete[] pAnti;
 
-	Surface.save(config::instance().getFile());
+	Surface.save(config::instance().getFile().c_str());
 }
 
 void camera::rotateX

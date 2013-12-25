@@ -1,7 +1,7 @@
 #include "light_point.hpp"
 #include "light_factory.hpp"
-#include "util.hpp"
 #include "main.hpp"
+#include <glm/geometric.hpp>
 
 point* point::create()
 {

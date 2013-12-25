@@ -1,4 +1,6 @@
 #include "adaptator.hpp"
+#include <glm/geometric.hpp>
+#include <cassert>
 
 adaptator::adaptator(glm::uvec2 const & Size)
 {

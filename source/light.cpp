@@ -1,6 +1,7 @@
 #include "light.hpp"
 #include "ray.hpp"
 #include "object_factory.hpp"
+#include <glm/geometric.hpp>
 
 light::light() :
 	Inaccuracy(0.0f),

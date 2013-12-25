@@ -3,6 +3,7 @@
 
 #include "ray.hpp"
 #include "intersection.hpp"
+#include <glm/vec3.hpp>
 
 class shape
 {

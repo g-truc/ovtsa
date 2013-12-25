@@ -1,7 +1,7 @@
 #ifndef MATERIAL_INCLUDED
 #define MATERIAL_INCLUDED
 
-#include "util.hpp"
+#include <glm/vec3.hpp>
 #include "perlin.hpp"
 
 extern perlin g_Perlin;

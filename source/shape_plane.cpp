@@ -1,5 +1,6 @@
 #include "shape_plane.hpp"
-#include "util.hpp"
+#include <glm/gtc/constants.hpp>
+#include <glm/common.hpp>
 
 glm::vec3 plane::computeNormal
 (
@@ -24,7 +25,7 @@ bool plane::intersect
 	if(glm::abs(Ray.getDirection().z) > 0.0f)
 	{
 		float t = -Ray.getPosition().z / Ray.getDirection().z;
-		if (t > EPSILON)
+		if (t > glm::epsilon<float>())
 		{
 			Intersection.setLocalPosition(Ray.getPosition() + Ray.getDirection() * t);
 			hit = true;
