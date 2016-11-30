@@ -89,12 +89,6 @@ namespace loader_tga
 		texture2D Image(1);
 		Image[0] = Mipmap;
 
-		// TGA images are saved in BGR or BGRA format.
-		if(TexelSize == 24)
-			Image.swizzle<glm::u8vec3>(glm::B, glm::G, glm::R, glm::A);
-		if(TexelSize == 32)
-			Image.swizzle<glm::u8vec4>(glm::B, glm::G, glm::R, glm::A);
-
 		return Image;
 	}
 
@@ -122,11 +116,6 @@ namespace loader_tga
 		unsigned short Height = Image[0].dimensions().y;
 		unsigned char TexelSize = (unsigned char)(Image[0].value_size());
 		unsigned char Descriptor = 0;
-
-		if(TexelSize == 24)
-			Image.swizzle<glm::u8vec3>(glm::B, glm::G, glm::R, glm::A);
-		if(TexelSize == 32)
-			Image.swizzle<glm::u8vec4>(glm::B, glm::G, glm::R, glm::A);
 
 		FileOut.write((char*)&IdentificationFieldSize, sizeof(IdentificationFieldSize));
 		FileOut.write((char*)&ColorMapType, sizeof(ColorMapType));

@@ -9,7 +9,7 @@
 camera::camera() :
 	MoveForward(12.f),
 	MoveUp(-1.0f),
-	Rotate(60.f, 0.0f, 15.f)
+	Rotate(glm::radians(60.f), 0.0f, glm::radians(15.f))
 {}
 
 camera::~camera()
@@ -129,10 +129,10 @@ void camera::shoot
 	config & Config = config::instance();
 
 	glm::mat4 ModelView(1.0f);
-	ModelView = glm::translate(0.0f, 0.0f, MoveUp);
-	ModelView = glm::rotate(ModelView, Rotate.z, 0.0f, 0.0f, 1.0f);
-	ModelView = glm::rotate(ModelView, Rotate.x, 1.0f, 0.0f, 0.0f);
-	ModelView = glm::translate(ModelView, 0.0f, 0.0f, MoveForward);
+	ModelView = glm::translate(ModelView, glm::vec3(0.0f, 0.0f, MoveUp));
+	ModelView = glm::rotate(ModelView, this->Rotate.z, glm::vec3(0.0f, 0.0f, 1.0f));
+	ModelView = glm::rotate(ModelView, this->Rotate.x, glm::vec3(1.0f, 0.0f, 0.0f));
+	ModelView = glm::translate(ModelView, glm::vec3(0.0f, 0.0f, MoveForward));
 
 	this->WindowSize = WindowSize;
 	//if(pConfig->AntiAliasingType() == AA_ADAPT && iAntialising > 1)

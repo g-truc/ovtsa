@@ -19,6 +19,9 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
+#include <glm/gtc/noise.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/component_wise.hpp>
 

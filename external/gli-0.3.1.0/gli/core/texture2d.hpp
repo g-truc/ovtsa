@@ -44,9 +44,6 @@ namespace gli
 		level_type levels() const;
 		void resize(level_type const & Levels);
 
-		template <typename genType>
-		void swizzle(glm::comp X, glm::comp Y, glm::comp Z, glm::comp W);
-
 	private:
 		std::vector<image2D> Images;
 	};

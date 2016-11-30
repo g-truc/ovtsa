@@ -10,10 +10,9 @@ execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Rele
 execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 
 ################################
-# Add GLM 
+# Add external
 
-set(GLM_DIRECTORY glm-0.9.4.2)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLM_DIRECTORY})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
 
 ################################
 # Add GLI 
@@ -40,7 +39,7 @@ endif(MSVC)
 set(TARGET_DATA_COPY DATA_COPY)
 add_custom_target(
 	${TARGET_DATA_COPY}
- 	COMMAND cmake -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data)
+	COMMAND cmake -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data)
 
 set(OGL_DATA_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
 
@@ -50,7 +49,7 @@ set(OGL_DATA_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
 add_definitions(
 	-D_CRT_SECURE_NO_WARNINGS)
 #add_definitions(
-#	/openmp)	
+#	/openmp)
 
 ################################
 # Add subdirectory

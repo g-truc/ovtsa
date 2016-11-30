@@ -85,31 +85,6 @@ namespace gli
 		this->Images.resize(Levels);
 	}
 
-	template <typename genType>
-	inline void texture2D::swizzle(glm::comp X, glm::comp Y, glm::comp Z, glm::comp W)
-	{
-		for(texture2D::level_type Level = 0; Level < this->levels(); ++Level)
-		{
-			genType * Data = reinterpret_cast<genType*>(this->Images[Level].data());
-			texture2D::size_type Components = this->Images[Level].components();
-			//gli::detail::getComponents(this->Images[Level].format());
-			texture2D::size_type Size = (glm::compMul(this->Images[Level].dimensions()) * Components) / sizeof(genType);
-
-			for(texture2D::size_type i = 0; i < Size; ++i)
-			{
-				genType Copy = Data[i];
-				if(Components > 0)
-					Data[i][0] = Copy[X];
-				if(Components > 1)
-					Data[i][1] = Copy[Y];
-				if(Components > 2)
-					Data[i][2] = Copy[Z];
-				if(Components > 3)
-					Data[i][3] = Copy[W];
-			}
-		}
-	}
-
 /*
 	template <typename T>
 	inline T texture<T>::texture(float x, float y) const

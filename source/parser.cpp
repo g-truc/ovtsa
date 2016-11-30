@@ -318,23 +318,23 @@ glm::mat4 parser::getTransform(TiXmlElement* pElement)
 	if(!strcmp("identity", type.c_str()))
 		return glm::mat4(1.0f);
 	else if(!strcmp("translate-x", type.c_str()))
-		return glm::translate(glm::mat4(1.0f), value, 0.0f, 0.0f);
+		return glm::translate(glm::mat4(1.0f), glm::vec3(value, 0.0f, 0.0f));
 	else if(!strcmp("translate-y", type.c_str()))
-		return glm::translate(glm::mat4(1.0f), 0.0f, value, 0.0f);
+		return glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, value, 0.0f));
 	else if(!strcmp("translate-z", type.c_str()))
-		return glm::translate(glm::mat4(1.0f), 0.0f, 0.0f, value);
+		return glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, value));
 	else if(!strcmp("scale-x", type.c_str()))
-		return glm::scale(glm::mat4(1.0f), value, 1.0f, 1.0f);
+		return glm::scale(glm::mat4(1.0f), glm::vec3(value, 1.0f, 1.0f));
 	else if(!strcmp("scale-y", type.c_str()))
-		return glm::scale(glm::mat4(1.0f), 1.0f, value, 1.0f);
+		return glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, value, 1.0f));
 	else if(!strcmp("scale-z", type.c_str()))
-		return glm::scale(glm::mat4(1.0f), 1.0f, 1.0f, value);
+		return glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, value));
 	else if(!strcmp("rotate-x", type.c_str()))
-		return glm::rotate(glm::mat4(1.0f), value, 1.0f, 0.0f, 0.0f);
+		return glm::rotate(glm::mat4(1.0f), glm::radians(value), glm::vec3(1.0f, 0.0f, 0.0f));
 	else if(!strcmp("rotate-y", type.c_str()))
-		return glm::rotate(glm::mat4(1.0f), value, 0.0f, 1.0f, 0.0f);
+		return glm::rotate(glm::mat4(1.0f), glm::radians(value), glm::vec3(0.0f, 1.0f, 0.0f));
 	else if(!strcmp("rotate-z", type.c_str()))
-		return glm::rotate(glm::mat4(1.0f), value, 0.0f, 0.0f, 1.0f);
+		return glm::rotate(glm::mat4(1.0f), glm::radians(value), glm::vec3(0.0f, 0.0f, 1.0f));
 	return glm::mat4(1.0f);
 }
 
