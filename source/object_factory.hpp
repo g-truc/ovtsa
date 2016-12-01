@@ -1,5 +1,4 @@
-#ifndef OBJECT_FACTORY_INCLUDED
-#define OBJECT_FACTORY_INCLUDED
+#pragma once
 
 #include "object.hpp"
 #include "singleton.hpp"
@@ -15,4 +14,3 @@ public:
 	object * create();
 };
 
-#endif //OBJECT_FACTORY_INCLUDED

@@ -1,5 +1,4 @@
-#ifndef LIGHT_SPOT_INCLUDED
-#define LIGHT_SPOT_INCLUDED
+#pragma once
 
 #include "light.hpp"
 
@@ -34,5 +33,3 @@ private:
 	float CutOff;
 	glm::vec3 Color;
 };
-
-#endif //LIGHT_SPOT_INCLUDED

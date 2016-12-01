@@ -1,5 +1,4 @@
-#ifndef MAIN_INCLUDED
-#define MAIN_INCLUDED
+#pragma once
 
 #include "util.hpp"
 
@@ -17,4 +16,3 @@ private:
 	void end();
 };
 
-#endif //MAIN_INCLUDED

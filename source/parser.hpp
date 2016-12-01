@@ -1,5 +1,4 @@
-#ifndef PARSER_INCLUDED
-#define PARSER_INCLUDED
+#pragma once
 
 #include "tinyxml.h"
 #include "util.hpp"
@@ -35,4 +34,3 @@ private:
 	glm::vec3 getColor(TiXmlElement* pElement);
 };
 
-#endif //PARSER_INCLUDED

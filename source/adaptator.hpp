@@ -1,5 +1,4 @@
-#ifndef ADAPTATOR_INCLUDED
-#define ADAPTATOR_INCLUDED
+#pragma once
 
 #include "util.hpp"
 
@@ -18,5 +17,3 @@ private:
 	std::vector<float> Data;
 	glm::uvec2 Size;
 };
-
-#endif //ADAPTATOR_INCLUDED

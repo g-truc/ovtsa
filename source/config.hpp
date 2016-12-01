@@ -1,5 +1,4 @@
-#ifndef CONFIG_INCLUDED
-#define CONFIG_INCLUDED
+#pragma once
 
 #include "util.hpp"
 #include "singleton.hpp"
@@ -58,4 +57,3 @@ private:
 	std::string Config;
 };
 
-#endif //CONFIG_INCLUDED

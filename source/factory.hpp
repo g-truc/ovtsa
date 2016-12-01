@@ -1,5 +1,4 @@
-#ifndef FACTORY_INCLUDED
-#define FACTORY_INCLUDED
+#pragma once
 
 #include <vector>
 
@@ -53,5 +52,3 @@ inline typename factory<T>::size_type factory<T>::size() const
 {
 	return this->Objects.size();
 }
-
-#endif //FACTORY_INCLUDED

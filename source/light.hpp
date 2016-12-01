@@ -1,5 +1,4 @@
-#ifndef LIGHT_INCLUDED
-#define LIGHT_INCLUDED
+#pragma once
 
 #include "intersection.hpp"
 #include "material.hpp"
@@ -37,4 +36,3 @@ protected:
 	int RayNumber;
 };
 
-#endif //LIGHT_INCLUDED

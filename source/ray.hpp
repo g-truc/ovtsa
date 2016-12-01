@@ -1,5 +1,4 @@
-#ifndef RAY_INCLUDED
-#define RAY_INCLUDED
+#pragma once
 
 #include "util.hpp"
 
@@ -20,4 +19,3 @@ private:
 	float EnvironmentIndex;
 };
 
-#endif //RAY_INCLUDED

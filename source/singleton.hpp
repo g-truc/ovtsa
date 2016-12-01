@@ -1,5 +1,4 @@
-#ifndef SINGLETON_INCLUDED
-#define SINGLETON_INCLUDED
+#pragma once
 
 template <typename T> 
 class singleton
@@ -27,4 +26,3 @@ private:
 
 template <typename T> T* singleton<T>::Instance = 0;
 
-#endif //SINGLETON_INCLUDED

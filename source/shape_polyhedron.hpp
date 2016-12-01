@@ -1,5 +1,4 @@
-#ifndef SHAPE_POLYHEDRON_INCLUDED
-#define SHAPE_POLYHEDRON_INCLUDED
+#pragma once
 
 #include "shape.hpp"
 #include "util.hpp"
@@ -23,13 +22,7 @@ public:
 	void setPositions(
 		std::vector<glm::vec3> const & Data);
 
-	virtual glm::vec3 computeNormal(
-		glm::vec3 const & Position, 
-		glm::vec3 const & RayDirection) const;
-
-	virtual bool intersect(
-		ray const & Ray, 
-		intersection & Intersection) const;
+	virtual glm::vec3 computeNormal(glm::vec3 const& Position, glm::vec3 const& RayDirection) const;
+	virtual bool intersect(ray const& Ray, intersection& Intersection) const;
 };
 
-#endif //SHAPE_POLYHEDRON_INCLUDED

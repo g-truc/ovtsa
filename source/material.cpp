@@ -221,8 +221,8 @@ glm::vec3 material::colorPerlin
 	glm::vec3 const & ColorSecondary
 ) const
 {
-	float noise = glm::simplex(Position * this->Repeat);
-	//float noise = g_Perlin.Noise3(Position.x * this->Repeat, Position.y * this->Repeat, Position.z * this->Repeat);
+	//float noise = glm::simplex(Position * this->Repeat);
+	float noise = g_Perlin.Noise3(Position.x * this->Repeat, Position.y * this->Repeat, Position.z * this->Repeat);
 	if(noise < -0.5f)
 		return ColorSecondary;
 	else if((noise > -0.5f) && (noise < 0.5f))
@@ -238,8 +238,8 @@ glm::vec3 material::colorMarble
 	glm::vec3 const & ColorSecondary
 ) const
 {
-	//float noise = g_Perlin.Noise3(Position.x * this->Repeat, Position.y * this->Repeat, Position.z * this->Repeat);
-	float noise = glm::simplex(Position * this->Repeat);
+	float noise = g_Perlin.Noise3(Position.x * this->Repeat, Position.y * this->Repeat, Position.z * this->Repeat);
+	//float noise = glm::simplex(Position * this->Repeat);
 	float marble = glm::cos(Position.x + noise);
 
 	if(marble < -0.5f)
@@ -257,8 +257,8 @@ glm::vec3 material::colorWood
 	glm::vec3 const & ColorSecondary
 ) const
 {
-	//float noise = 100.f * g_Perlin.Noise3(Position.x * this->Repeat, Position.y * this->Repeat, Position.z * this->Repeat);
-	float noise = 100.f * glm::simplex(Position * this->Repeat);
+	float noise = 100.f * g_Perlin.Noise3(Position.x * this->Repeat, Position.y * this->Repeat, Position.z * this->Repeat);
+	//float noise = 100.f * glm::simplex(Position * this->Repeat);
 	float wood = noise - glm::abs(noise);
 
 	if(wood < -0.5f)

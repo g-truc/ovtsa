@@ -1,5 +1,4 @@
-#ifndef UTIL_INCLUDED
-#define UTIL_INCLUDED
+#pragma once
 
 #pragma warning(disable:4530)
 
@@ -29,4 +28,3 @@
 
 #define EPSILON     0.001f
 
-#endif //UTIL_INCLUDED

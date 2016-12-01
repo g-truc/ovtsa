@@ -1,5 +1,4 @@
-#ifndef PERLIN_INCLUDED
-#define PERLIN_INCLUDED
+#pragma once
 
 #include "util.hpp"
 
@@ -25,6 +24,3 @@ protected:
 	float gy[PERLIN_SIZE];
 	float gz[PERLIN_SIZE];
 };
-
-#endif//PERLIN_INCLUDED
-

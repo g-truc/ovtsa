@@ -1,5 +1,4 @@
-#ifndef LIGHT_POINT_INCLUDED
-#define LIGHT_POINT_INCLUDED
+#pragma once
 
 #include "light.hpp"
 
@@ -28,6 +27,3 @@ private:
 	glm::vec3 Position;
 	glm::vec3 Color;
 };
-
-#endif //LIGHT_POINT_INCLUDED
-

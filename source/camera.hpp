@@ -1,5 +1,4 @@
-#ifndef CAMERA_INCLUDED
-#define CAMERA_INCLUDED
+#pragma once
 
 #include "intersection.hpp"
 #include "material.hpp"
@@ -54,7 +53,7 @@ private:
 	glm::vec3 trace(
 		ray const & Ray, 
 		int iDepth);
-    
+
 	//glm::mat4 ModelView;
 	glm::uvec2 WindowSize;
 	float MoveForward;
@@ -62,6 +61,5 @@ private:
 	glm::vec3 Rotate;
 };
 
-#endif //CAMERA_INCLUDED
 
 

@@ -1,5 +1,4 @@
-#ifndef TIMER_INCLUDED
-#define TIMER_INCLUDED
+#pragma once
 
 #include "util.hpp"
 
@@ -15,4 +14,3 @@ private:
 	float StartTime;
 };
 
-#endif //TIMER_INCLUDED

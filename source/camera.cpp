@@ -168,7 +168,7 @@ void camera::shootAliasing
 	//#pragma omp parallel for
 	for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
 	{
-		printf("%2.3f%\r", float(Count) / float(Total) * 100.f);
+		printf("%2.3f\r", float(Count) / float(Total) * 100.f);
 
 		for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
 		{
@@ -210,7 +210,7 @@ void camera::shootAntiAliasing
 		//#pragma omp parallel for
 		for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
 		{
-			printf("%2.3f%\r", float(Count) / float(Total) * 100.f);
+			printf("%2.3f\r", float(Count) / float(Total) * 100.f);
 
 			for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
 			{
@@ -415,7 +415,7 @@ void camera::shootAntiAliasingAdaptative
 	{
 		for(int y = -int(this->WindowSize.y / 2); y < int(this->WindowSize.y / 2); y++)
 		{
-			printf("%2.3f%\r", float(Count) / float(Total) * 100.f);
+			printf("%2.3f\r", float(Count) / float(Total) * 100.f);
 
 			for(int x = -int(this->WindowSize.x / 2); x < int(this->WindowSize.x / 2); x++)
 			{

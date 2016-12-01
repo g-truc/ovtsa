@@ -1,5 +1,4 @@
-#ifndef INTERSECTION_INCLUDED
-#define INTERSECTION_INCLUDED
+#pragma once
 
 #include "util.hpp"
 
@@ -20,4 +19,3 @@ private:
 	glm::vec3 Normal;
 };
 
-#endif //INTERSECTION_INCLUDED

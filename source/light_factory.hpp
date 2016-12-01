@@ -1,5 +1,4 @@
-#ifndef LIGHT_FACTORY_INCLUDED
-#define LIGHT_FACTORY_INCLUDED
+#pragma once
 
 #include "singleton.hpp"
 #include "factory.hpp"
@@ -12,5 +11,3 @@ class lightFactory :
 public:
 	light * create(light::type const & Type);
 };
-
-#endif //LIGHT_FACTORY_INCLUDED

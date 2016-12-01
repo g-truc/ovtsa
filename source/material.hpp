@@ -1,5 +1,4 @@
-#ifndef MATERIAL_INCLUDED
-#define MATERIAL_INCLUDED
+#pragma once
 
 #include "util.hpp"
 #include "perlin.hpp"
@@ -79,6 +78,4 @@ private:
 	glm::vec3 colorMarble(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
 	glm::vec3 colorWood(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
 };
-
-#endif //MATERIAL_INCLUDED
 
