@@ -208,7 +208,7 @@ material parser::getMaterial(TiXmlElement* pElement)
 	TiXmlAttribute* pAttribute = pElement->FirstAttribute();
 	do
 	{
- 		if(!strcmp("opacity", pAttribute->Name()))
+		if(!strcmp("opacity", pAttribute->Name()))
 			Material.setOpacity(float(atof(pAttribute->Value())));
 		else if(!strcmp("reflection", pAttribute->Name()))
 			Material.setReflectionFactor(float(atof(pAttribute->Value())));
@@ -222,8 +222,8 @@ material parser::getMaterial(TiXmlElement* pElement)
 			Material.setRepeat(float(atof(pAttribute->Value())));
 		else if(!strcmp("type", pAttribute->Name()))
 			type = pAttribute->Value();
-	}    
-	while (pAttribute = pAttribute->Next());
+	}
+		while (pAttribute = pAttribute->Next());
 
 	if(!strcmp("flat", type.c_str()))
 		Material.setType(material::MATERIAL_FLAT);

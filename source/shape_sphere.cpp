@@ -30,17 +30,17 @@ bool sphere::intersect
 	float c = glm::dot(Ray.getPosition(), Ray.getPosition()) - 1.0f; // 1.0f => Radius
 	float d = b * b - c;
 
-	if(d > EPSILON)
+	if(d > glm::epsilon<float>())
 	{
 		float e = glm::sqrt(d);
 		float x1 = -b - e;
 		float x2 = -b + e;
-		if(x1 > EPSILON)
+		if(x1 > glm::epsilon<float>())
 		{
 			Intersection.setLocalPosition(Ray.getPosition() + Ray.getDirection() * x1);
 			bHit = true;
 		}
-		else if(x2 > EPSILON)
+		else if(x2 > glm::epsilon<float>())
 		{
 			Intersection.setLocalPosition(Ray.getPosition() + Ray.getDirection() * x2);
 			bHit = true;

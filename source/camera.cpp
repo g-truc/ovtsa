@@ -81,7 +81,7 @@ glm::vec3 camera::trace
 	if(iDepth)
 	{
 		iDepth--;
-		if(Material.getReflectionFactor() > EPSILON && Config.getReflectionRays() > 0)
+		if(Material.getReflectionFactor() > glm::epsilon<float>() && Config.getReflectionRays() > 0)
 		{
 			Ray.setPosition(NearestIntersection.getGlobalPosition());
 
@@ -97,7 +97,7 @@ glm::vec3 camera::trace
 			Color += ReflectionColor / float(Config.getReflectionRays());
 		}
 
-		if(Material.getRefractionFactor() > EPSILON && Config.getRefractionRays() > 0)
+		if(Material.getRefractionFactor() > glm::epsilon<float>() && Config.getRefractionRays() > 0)
 		{
 			Ray.setPosition(NearestIntersection.getGlobalPosition());
 

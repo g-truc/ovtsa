@@ -45,8 +45,8 @@ void raytrace::render()
 	printf("Time: %d\n", clock() - TimeStart);
 
 	printf("===========================\n");
-	printf("Objects : %d\n", objectFactory::instance().size());
-	printf("Lights : %d\n", lightFactory::instance().size());
+	printf("Objects : %d\n", static_cast<int>(objectFactory::instance().size()));
+	printf("Lights : %d\n", static_cast<int>(lightFactory::instance().size()));
 	printf("Bounding count %d\n", Config.getDepth());
 	printf("Antialiasing %dX\n", Config.getAntiAliasingLevel());
 	printf("Reflection %dX\n", Config.getReflectionRays());

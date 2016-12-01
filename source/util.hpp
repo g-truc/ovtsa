@@ -12,19 +12,15 @@
 #include <ctime>
 #include <vector>
 
-//#include <boost/noncopyable.hpp>
-
 #include <omp.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/noise.hpp>
+#include <glm/gtc/epsilon.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/component_wise.hpp>
 
 #include <gli/gli.hpp>
-
-#define EPSILON     0.001f
-

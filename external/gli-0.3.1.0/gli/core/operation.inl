@@ -14,14 +14,14 @@ namespace gli
 {
 	namespace detail
 	{
-		inline image2D duplicate(image2D const & Mipmap2D)
+		inline image2D duplicate(image2D const& Mipmap2D)
 		{
 			image2D Result(Mipmap2D.dimensions(), Mipmap2D.format());
 			memcpy(Result.data(), Mipmap2D.data(), Mipmap2D.capacity());
-			return Result;	
+			return Result;
 		}
 
-		inline image2D flip(image2D const & Mipmap2D)
+		inline image2D flip(image2D const& Mipmap2D)
 		{
 			image2D Result(Mipmap2D.dimensions(), Mipmap2D.format());
 			
@@ -40,7 +40,7 @@ namespace gli
 			return Result;
 		}
 
-		inline image2D mirror(image2D const & Mipmap2D)
+		inline image2D mirror(image2D const& Mipmap2D)
 		{
 			image2D Result(Mipmap2D.dimensions(), Mipmap2D.format());
 
@@ -59,11 +59,7 @@ namespace gli
 			return Result;
 		}
 
-		inline image2D swizzle
-		(
-			image2D const & Mipmap, 
-			glm::uvec4 const & Channel
-		)
+		inline image2D swizzle(image2D const& Mipmap, glm::uvec4 const& Channel)
 		{
 			image2D Result = detail::duplicate(Mipmap);
 
@@ -85,12 +81,7 @@ namespace gli
 			return Result;
 		}
 
-		inline image2D crop
-		(
-			image2D const & Image, 
-			image2D::dimensions_type const & Position, 
-			image2D::dimensions_type const & Size
-		)
+		inline image2D crop(image2D const& Image, image2D::dimensions_type const& Position, image2D::dimensions_type const& Size)
 		{
 			assert((Position.x + Size.x) <= Image.dimensions().x && (Position.y + Size.y) <= Image.dimensions().y);
 
@@ -139,7 +130,7 @@ namespace gli
 
 	}//namespace detail
 
-	inline texture2D duplicate(texture2D const & Texture2D)
+	inline texture2D duplicate(texture2D const& Texture2D)
 	{
 		texture2D Result(Texture2D.levels());
 		for(texture2D::level_type Level = 0; Level < Texture2D.levels(); ++Level)
@@ -147,7 +138,7 @@ namespace gli
 		return Result;
 	}
 
-	inline texture2D flip(texture2D const & Texture2D)
+	inline texture2D flip(texture2D const& Texture2D)
 	{
 		texture2D Result(Texture2D.levels());
 		for(texture2D::level_type Level = 0; Level < Texture2D.levels(); ++Level)
@@ -155,7 +146,7 @@ namespace gli
 		return Result;
 	}
 
-	inline texture2D mirror(texture2D const & Texture2D)
+	inline texture2D mirror(texture2D const& Texture2D)
 	{
 		texture2D Result(Texture2D.levels());
 		for(texture2D::level_type Level = 0; Level < Texture2D.levels(); ++Level)
@@ -165,9 +156,9 @@ namespace gli
 
 	inline texture2D crop
 	(
-		texture2D const & Texture2D,
-		texture2D::dimensions_type const & Position,
-		texture2D::dimensions_type const & Size
+		texture2D const& Texture2D,
+		texture2D::dimensions_type const& Position,
+		texture2D::dimensions_type const& Size
 	)
 	{
 		texture2D Result(Texture2D.levels());

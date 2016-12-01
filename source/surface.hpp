@@ -16,6 +16,9 @@ public:
 	void div(glm::uvec2 const& Position, float const& Value);
 
 private:
+	surface(surface const& Surface);
+	surface& operator=(surface const& Surface);
+
 	void init(glm::uvec2 const& Size);
 
 	glm::uvec2 Size;
