@@ -17,17 +17,17 @@ bool sphere::intersect(ray const& Ray, intersection& Intersection) const
 	float c = glm::dot(Ray.get_position(), Ray.get_position()) - 1.0f; // 1.0f => Radius
 	float d = b * b - c;
 
-	if(d > glm::epsilon<float>())
+	if(d > glm::epsilon<float>() * 1000.f)
 	{
 		float e = glm::sqrt(d);
 		float x1 = -b - e;
 		float x2 = -b + e;
-		if(x1 > glm::epsilon<float>())
+		if(x1 > glm::epsilon<float>() * 1000.f)
 		{
 			Intersection.setLocalPosition(Ray.get_position() + Ray.get_direction() * x1);
 			bHit = true;
 		}
-		else if(x2 > glm::epsilon<float>())
+		else if(x2 > glm::epsilon<float>() * 1000.f)
 		{
 			Intersection.setLocalPosition(Ray.get_position() + Ray.get_direction() * x2);
 			bHit = true;

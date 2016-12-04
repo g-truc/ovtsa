@@ -77,7 +77,7 @@ glm::vec3 camera::trace(ray const& RayCopy, int iDepth)
 	if(iDepth)
 	{
 		iDepth--;
-		if(Material.getReflectionFactor() > glm::epsilon<float>() && Config.getReflectionRays() > 0)
+		if(Material.getReflectionFactor() > glm::epsilon<float>() * 100.f && Config.getReflectionRays() > 0)
 		{
 			Ray.set_position(NearestIntersection.getGlobalPosition());
 
@@ -93,7 +93,7 @@ glm::vec3 camera::trace(ray const& RayCopy, int iDepth)
 			Color += ReflectionColor / float(Config.getReflectionRays());
 		}
 
-		if(Material.getRefractionFactor() > glm::epsilon<float>() && Config.getRefractionRays() > 0)
+		if(Material.getRefractionFactor() > glm::epsilon<float>() * 100.f && Config.getRefractionRays() > 0)
 		{
 			Ray.set_position(NearestIntersection.getGlobalPosition());
 
@@ -183,22 +183,24 @@ void camera::shootAntiAliasing(glm::mat4 const& ModelView, int Depth, int Antial
 
 	std::size_t Total = glm::compMul(this->WindowSize) * AntialisingBias.size();
 	std::size_t Count = 0;
-	for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
-	{
-		//#pragma omp parallel for
-		for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
-		{
-			printf("%2.3f\r", float(Count) / float(Total) * 100.f);
 
-			for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
+	//#pragma omp parallel for
+	for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
+	{
+		printf("%2.3f\r", float(Count) / float(Total) * 100.f);
+
+		for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
+		{
+			glm::ivec2 WindowPosition(x, y);
+
+			for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
 			{
-				glm::ivec2 WindowPosition(x, y);
 				Ray.set_direction(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
 				Ray.set_position(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 				glm::vec3 Color = this->trace(Ray, Depth) / float(Antialising);
 				Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
-				Count++;
 			}
+			Count++;
 		}
 	}
 
