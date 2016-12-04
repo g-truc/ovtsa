@@ -3,9 +3,9 @@
 #include "util.hpp"
 #include "main.hpp"
 
-spot * spot::create()
+spot* spot::create()
 {
-	return static_cast<spot*>(lightFactory::instance().create(SPOT));
+	return static_cast<spot*>(light_factory::instance().create(SPOT));
 }
 
 spot::spot()
@@ -14,12 +14,7 @@ spot::spot()
 spot::~spot()
 {}
 
-glm::vec3 spot::shade
-(
-	intersection const & Intersection, 
-	material const & Material, 
-	glm::vec3 const & View
-) const
+glm::vec3 spot::shade(intersection const& Intersection, material const& Material, glm::vec3 const& View) const
 {
 	glm::vec3 Color(0.0f);
 

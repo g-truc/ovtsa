@@ -4,13 +4,11 @@
 #include "singleton.hpp"
 #include "factory.hpp"
 
-class objectFactory : 
-	public singleton<objectFactory>,
-	public factory<object>
+class object_factory : public singleton<object_factory>, public factory<object>
 {
-	friend class singleton<objectFactory>;
+	friend class singleton<object_factory>;
 
 public:
-	object * create();
+	object* create();
 };
 

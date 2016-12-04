@@ -4,7 +4,7 @@
 
 class spot : public light
 {
-	friend class lightFactory;
+	friend class light_factory;
 
 public:
 	static spot * create();

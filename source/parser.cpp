@@ -167,7 +167,7 @@ void parser::parseTriangle(TiXmlElement* pElement)
 
 	TiXmlElement* pChildPositions = pElement->FirstChildElement("positions");
 	if(pChildPositions)
-		static_cast<triangle*>(pObject->getShape())->setPositions(this->getPositions(pChildPositions));
+		static_cast<triangle*>(pObject->getShape())->set_positions(this->getPositions(pChildPositions));
 }
 
 void parser::parseCylinder(TiXmlElement* pElement)
@@ -186,17 +186,15 @@ void parser::parseCylinder(TiXmlElement* pElement)
 	object::create(shape::CYLINDER, Material, Transform);
 }
 
-std::vector<glm::vec3> parser::getPositions(TiXmlElement* pElement)
+std::array<glm::vec3, 3> parser::getPositions(TiXmlElement* pElement)
 {
-	std::vector<glm::vec3> Positions;
+	std::array<glm::vec3, 3> Positions;
 
 	TiXmlElement* pChild = pElement->FirstChildElement("position");
-	do
-	{
-		Positions.push_back(getPosition(pChild));
-	}
-	while(pChild = pChild->NextSiblingElement());
-   
+	Positions[0] = getPosition(pChild);
+	Positions[1] = getPosition(pChild);
+	Positions[2] = getPosition(pChild);
+
 	return Positions;
 }
 

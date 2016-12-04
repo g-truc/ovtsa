@@ -19,13 +19,13 @@ bool light::shadow
 	intersection LocalIntersection;
 
 	bool Shadow = false;
-	objectFactory & ObjectFactory = objectFactory::instance();
-	for(objectFactory::size_type i = 0; i < ObjectFactory.size(); i++)
+	object_factory& ObjectFactory = object_factory::instance();
+	for(object_factory::size_type i = 0, n = ObjectFactory.size(); i < n; i++)
 	{
 		glm::vec3 Origin(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(GlobalIntersection, 1.0f)));
 		glm::vec3 Direction = glm::normalize(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(GlobalLightDirection, 0.0f))));
-		LocalLightRay.setPosition(Origin);
-		LocalLightRay.setDirection(Direction);
+		LocalLightRay.set_position(Origin);
+		LocalLightRay.set_direction(Direction);
 		if(ObjectFactory[i]->getShape()->intersect(LocalLightRay, LocalIntersection))
 		{
 			glm::vec3 Position(ObjectFactory[i]->getTransform()->computeMatrix(glm::vec4(LocalIntersection.getLocalPosition(), 1.0f)));

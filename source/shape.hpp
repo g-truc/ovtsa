@@ -17,7 +17,7 @@ public:
 		TORUS			// Not available
 	};
 	
-	virtual glm::vec3 computeNormal(glm::vec3 const& Position, glm::vec3 const& RayDirection) const = 0;
+	virtual glm::vec3 compute_normal(glm::vec3 const& Position, glm::vec3 const& RayDirection) const = 0;
 	virtual bool intersect(ray const& Ray, intersection& Intersection) const = 0;
 };
 

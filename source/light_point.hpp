@@ -4,7 +4,7 @@
 
 class point : public light
 {
-	friend class lightFactory;
+	friend class light_factory;
 
 public:
 	static point* create();

@@ -4,15 +4,12 @@
 
 class directional : public light
 {
-	friend class lightFactory;
+	friend class light_factory;
 
 public:
 	static directional* create();
 
-	virtual glm::vec3 shade(
-		intersection const & Intersection, 
-		material const & Material, 
-		glm::vec3 const & View) const;
+	virtual glm::vec3 shade(intersection const& Intersection, material const& Material, glm::vec3 const& View) const;
 
 	glm::vec3 const & getDirection() const {return this->m_Direction;}
 	glm::vec3 const & getColor() const {return this->m_Color;}

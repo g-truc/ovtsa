@@ -3,11 +3,12 @@
 #include "tinyxml.h"
 #include "util.hpp"
 #include "material.hpp"
+#include <array>
 
 class parser
 {
 public:
-	parser(std::string const & Filename);
+	parser(std::string const& Filename);
 	~parser();
 
 private:
@@ -17,7 +18,7 @@ private:
 	void parsePlane(TiXmlElement* pElement);
 	void parseSphere(TiXmlElement* pElement);
 	void parseCylinder(TiXmlElement* pElement);
-	std::vector<glm::vec3> getPositions(TiXmlElement* pElement);
+	std::array<glm::vec3, 3> getPositions(TiXmlElement* pElement);
 	material getMaterial(TiXmlElement* pElement);
 	glm::vec4 getColorMaterial(TiXmlElement* pElement);
 	glm::mat4 getTransforms(TiXmlElement* pElement);

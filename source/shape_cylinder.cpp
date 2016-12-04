@@ -2,11 +2,7 @@
 #include "main.hpp"
 #include "transform.hpp"
 
-glm::vec3 cylinder::computeNormal
-(
-	glm::vec3 const & Position, 
-	glm::vec3 const & RayDirection
-) const
+glm::vec3 cylinder::compute_normal(glm::vec3 const& Position, glm::vec3 const& RayDirection) const
 {
 	if(glm::dot(Position, RayDirection) < 0)
 		return glm::vec3(0, Position.y, Position.z);
@@ -14,11 +10,7 @@ glm::vec3 cylinder::computeNormal
 		return glm::vec3(0, -Position.y, -Position.z);
 }
 
-bool cylinder::intersect
-(
-	ray const & Ray, 
-	intersection & Intersection
-) const
+bool cylinder::intersect(ray const& Ray, intersection& Intersection) const
 {
 	bool bHit = false;
 

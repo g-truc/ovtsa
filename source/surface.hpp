@@ -2,18 +2,18 @@
 
 #include "util.hpp"
 
-class surface// : boost::noncopyable
+class surface
 {
 public:
 	surface(glm::uvec2 const& Size);
 	~surface();
 
-	glm::vec3* getData() {return &this->Data[0];}
-	glm::vec3 const& getTexel(glm::uvec2 const& Position) const;
-	void SaveAs(std::string const& Filename);
+	glm::vec3* get_data() {return &this->Data[0];}
+	glm::vec3 const& get_texel(glm::uvec2 const& Position) const;
+	void save_as(std::string const& Filename);
 
 	void add(glm::uvec2 const& Position, glm::vec3 const& Color);
-	void div(glm::uvec2 const& Position, float const& Value);
+	void div(glm::uvec2 const& Position, float Value);
 
 private:
 	surface(surface const& Surface);

@@ -5,7 +5,7 @@
 
 directional * directional::create()
 {
-	return static_cast<directional*>(lightFactory::instance().create(DIRECTIONAL));
+	return static_cast<directional*>(light_factory::instance().create(DIRECTIONAL));
 }
 
 directional::directional()
@@ -14,12 +14,7 @@ directional::directional()
 directional::~directional()
 {}
 
-glm::vec3 directional::shade
-(
-	intersection const & Intersection, 
-	material const & Material, 
-	glm::vec3 const & View
-) const
+glm::vec3 directional::shade(intersection const& Intersection, material const& Material, glm::vec3 const& View) const
 {
 	glm::vec3 Color(0.0f);
 

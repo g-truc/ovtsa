@@ -4,10 +4,8 @@
 #include "factory.hpp"
 #include "light.hpp"
 
-class lightFactory :
-	public singleton<lightFactory>,
-	public factory<light>
+class light_factory : public singleton<light_factory>, public factory<light>
 {
 public:
-	light * create(light::type const & Type);
+	light* create(light::type const& Type);
 };

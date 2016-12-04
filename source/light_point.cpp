@@ -5,7 +5,7 @@
 
 point* point::create()
 {
-	return static_cast<point*>(lightFactory::instance().create(POINT));
+	return static_cast<point*>(light_factory::instance().create(POINT));
 }
 
 point::point() :
@@ -16,15 +16,9 @@ point::point() :
 point::~point()
 {}
 
-glm::vec3 point::shade
-(
-	intersection const & Intersection, 
-	material const & Material, 
-	glm::vec3 const & View
-) const
+glm::vec3 point::shade(intersection const& Intersection, material const& Material, glm::vec3 const& View) const
 {
 	glm::vec3 Color(0.0f);
-
 	glm::vec3 LightVector = glm::normalize(this->getPosition() - Intersection.getGlobalPosition()/* + glm::sphericalRand(this->Inaccuracy)*/);
 
 	if(!this->shadow(Intersection.getGlobalPosition(), this->getPosition(), LightVector))

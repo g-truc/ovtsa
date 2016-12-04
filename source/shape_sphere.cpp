@@ -4,30 +4,17 @@
 #include "material.hpp"
 #include "util.hpp"
 
-glm::vec3 sphere::computeNormal(const glm::vec3 & Position, const glm::vec3 & RayDirection) const
+glm::vec3 sphere::compute_normal(const glm::vec3& Position, const glm::vec3& RayDirection) const
 {
-/*
-	if(dot(Position, RayDirection) < 0)
-		return glm::vec3(g_Perlin.Noise1(Position.x), g_Perlin.Noise1(Position.y), g_Perlin.Noise1(Position.z));
-	else
-		return glm::vec3(-g_Perlin.Noise1(-Position.x), -g_Perlin.Noise1(-Position.y), -g_Perlin.Noise1(-Position.z));
-*/
-	if (glm::dot(Position, RayDirection) < 0)
-		return glm::vec3(Position.x, Position.y, Position.z);
-	else
-		return glm::vec3(-Position.x, -Position.y, -Position.z);
+	return glm::mix(-Position, Position, glm::dot(Position, RayDirection) < 0);
 }
 
-bool sphere::intersect
-(
-	ray const & Ray, 
-	intersection & Intersection
-) const
+bool sphere::intersect(ray const& Ray, intersection& Intersection) const
 {
 	bool bHit = false;
 
-	float b = glm::dot(Ray.getPosition(), Ray.getDirection());
-	float c = glm::dot(Ray.getPosition(), Ray.getPosition()) - 1.0f; // 1.0f => Radius
+	float b = glm::dot(Ray.get_position(), Ray.get_direction());
+	float c = glm::dot(Ray.get_position(), Ray.get_position()) - 1.0f; // 1.0f => Radius
 	float d = b * b - c;
 
 	if(d > glm::epsilon<float>())
@@ -37,12 +24,12 @@ bool sphere::intersect
 		float x2 = -b + e;
 		if(x1 > glm::epsilon<float>())
 		{
-			Intersection.setLocalPosition(Ray.getPosition() + Ray.getDirection() * x1);
+			Intersection.setLocalPosition(Ray.get_position() + Ray.get_direction() * x1);
 			bHit = true;
 		}
 		else if(x2 > glm::epsilon<float>())
 		{
-			Intersection.setLocalPosition(Ray.getPosition() + Ray.getDirection() * x2);
+			Intersection.setLocalPosition(Ray.get_position() + Ray.get_direction() * x2);
 			bHit = true;
 		}
 	}

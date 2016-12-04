@@ -5,14 +5,9 @@
 #include "shape_cylinder.hpp"
 #include "shape_polyhedron.hpp"
 
-object* object::create
-(
-	shape::type const & Shape, 
-	material const & Material, 
-	glm::mat4 const & Transform
-)
+object* object::create(shape::type const& Shape, material const& Material, glm::mat4 const& Transform)
 {
-	object * Object = objectFactory::instance().create();
+	object* Object = object_factory::instance().create();
 	switch(Shape)
 	{
 	case shape::CONE:
@@ -53,12 +48,7 @@ object::~object()
 	}
 }
 
-object::object
-(
-	shape * const Shape, 
-	material const & Material, 
-	glm::mat4 const & Transform
-)
+object::object(shape* const Shape, material const& Material, glm::mat4 const& Transform)
 {
 	this->Shape = Shape;
 	this->Transform = transform(Transform);

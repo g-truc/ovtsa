@@ -24,8 +24,8 @@ glm::vec3 camera::shade
 {
 	glm::vec3 Color = Material.ambient(Intersection.getGlobalPosition());
 
-	lightFactory & LightFactory = lightFactory::instance();
-	for(lightFactory::size_type i = 0; i < LightFactory.size(); i++)
+	light_factory& LightFactory = light_factory::instance();
+	for(light_factory::size_type i = 0; i < LightFactory.size(); i++)
 	{
 		glm::vec3 LightingColor;
 		int Lighting = LightFactory[i]->getRayNumber();
@@ -33,16 +33,12 @@ glm::vec3 camera::shade
 			LightingColor += LightFactory[i]->shade(Intersection, Material, View);
 		Color += LightingColor / float(LightFactory[i]->getRayNumber());
 	}
-	return Color;   
+	return Color;
 }
 
-glm::vec3 camera::trace
-(
-	ray const & RayCopy, 
-	int iDepth
-)
+glm::vec3 camera::trace(ray const& RayCopy, int iDepth)
 {
-	config & Config = config::instance();
+	config& Config = config::instance();
 	ray LocalRay;
 	ray Ray = RayCopy;
 	intersection Intersection;
@@ -50,20 +46,20 @@ glm::vec3 camera::trace
 	material Material;
 	float fDistanceMin = MAX_DISTANCE;
 
-	objectFactory & ObjectFactory = objectFactory::instance();
-	for(objectFactory::size_type i = 0; i < ObjectFactory.size(); ++i)
+	object_factory& ObjectFactory = object_factory::instance();
+	for(object_factory::size_type i = 0, n = ObjectFactory.size(); i < n; ++i)
 	{
-		LocalRay.setPosition(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.getPosition(), 1.0f))));
-		LocalRay.setDirection(glm::normalize(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.getDirection(), 0.0f)))));
+		LocalRay.set_position(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.get_position(), 1.0f))));
+		LocalRay.set_direction(glm::normalize(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.get_direction(), 0.0f)))));
 		if(ObjectFactory[i]->getShape()->intersect(LocalRay, Intersection))
 		{
 			Intersection.setGlobalPosition(glm::vec3(ObjectFactory[i]->getTransform()->computeMatrix(glm::vec4(Intersection.getLocalPosition(), 1.0f))));
-			float fDistance = glm::distance(Ray.getPosition(), Intersection.getGlobalPosition());
+			float fDistance = glm::distance(Ray.get_position(), Intersection.getGlobalPosition());
 			if(fDistance < fDistanceMin)
 			{
 				fDistanceMin = fDistance;
 				NearestIntersection = Intersection;
-				glm::vec3 Normal = ObjectFactory[i]->getShape()->computeNormal(Intersection.getLocalPosition(), LocalRay.getDirection());
+				glm::vec3 Normal = ObjectFactory[i]->getShape()->compute_normal(Intersection.getLocalPosition(), LocalRay.get_direction());
 				NearestIntersection.setNormal(glm::vec3(ObjectFactory[i]->getTransform()->computeNormal(glm::vec4(Normal, 0.0f))));
 				Material = *ObjectFactory[i]->getMaterial();
 			}
@@ -76,21 +72,21 @@ glm::vec3 camera::trace
 	glm::vec3 Color = this->shade(
 		NearestIntersection, 
 		Material, 
-		-glm::vec3(Ray.getDirection())) * Material.getOpacity();
+		-glm::vec3(Ray.get_direction())) * Material.getOpacity();
 
 	if(iDepth)
 	{
 		iDepth--;
 		if(Material.getReflectionFactor() > glm::epsilon<float>() && Config.getReflectionRays() > 0)
 		{
-			Ray.setPosition(NearestIntersection.getGlobalPosition());
+			Ray.set_position(NearestIntersection.getGlobalPosition());
 
 			glm::vec3 ReflectionColor(0);
 			int ReflectionCount = Config.getReflectionRays();
 			while(ReflectionCount--)
 			{
-				Ray.setDirection(glm::reflect(
-					glm::normalize(Ray.getDirection()/* + glm::sphericalRand(Config.getReflectionAccuracy())*/), 
+				Ray.set_direction(glm::reflect(
+					glm::normalize(Ray.get_direction()/* + glm::sphericalRand(Config.getReflectionAccuracy())*/), 
 					glm::normalize(NearestIntersection.getNormal())));
 				ReflectionColor += this->trace(Ray, iDepth) * Material.getReflectionFactor();
 			}
@@ -99,18 +95,18 @@ glm::vec3 camera::trace
 
 		if(Material.getRefractionFactor() > glm::epsilon<float>() && Config.getRefractionRays() > 0)
 		{
-			Ray.setPosition(NearestIntersection.getGlobalPosition());
+			Ray.set_position(NearestIntersection.getGlobalPosition());
 
 			glm::vec3 RefractionColor(0);
 			int RefractionCount = Config.getRefractionRays();
 			while(RefractionCount--)
 			{
-				Ray.setDirection(glm::refract(
-					glm::normalize(Ray.getDirection()/* + glm::sphericalRand(Config.getReflactionAccuracy())*/), 
+				Ray.set_direction(glm::refract(
+					glm::normalize(Ray.get_direction()/* + glm::sphericalRand(Config.getReflactionAccuracy())*/), 
 						glm::normalize(NearestIntersection.getNormal()), 
-						(Ray.getEnvironmentIndex() == 1.0f ? 1.0f / Material.getEnvironmentIndex() : Material.getEnvironmentIndex())));
+						(Ray.get_environment_index() == 1.0f ? 1.0f / Material.getEnvironmentIndex() : Material.getEnvironmentIndex())));
 
-				Ray.setEnvironmentIndex(Ray.getEnvironmentIndex() == 1.0f ? Material.getEnvironmentIndex() : 1.0f);
+				Ray.set_environment_index(Ray.get_environment_index() == 1.0f ? Material.getEnvironmentIndex() : 1.0f);
 				RefractionColor += this->trace(Ray, iDepth) * Material.getRefractionFactor();
 			}
 			Color += RefractionColor / float(Config.getRefractionRays());
@@ -119,12 +115,7 @@ glm::vec3 camera::trace
 	return Color;
 }
 
-void camera::shoot
-(
-	int iDepth, 
-	int iAntialising, 
-	glm::uvec2 const & WindowSize
-)
+void camera::shoot(int iDepth, int iAntialising, glm::uvec2 const & WindowSize)
 {
 	config & Config = config::instance();
 
@@ -149,18 +140,14 @@ void camera::shoot
 		this->shootAliasing(ModelView, iDepth);
 }
 
-void camera::shootAliasing
-(
-	glm::mat4 const & ModelView,
-	int iDepth
-)
+void camera::shootAliasing(glm::mat4 const& ModelView, int Depth)
 {
 	config & Config = config::instance();
 
 	surface Surface(this->WindowSize);
 
 	ray Ray;
-	Ray.setEnvironmentIndex(1.0f);
+	Ray.set_environment_index(1.0f);
 
 	std::size_t Total = glm::compMul(this->WindowSize);
 	std::size_t Count = 0;
@@ -172,36 +159,27 @@ void camera::shootAliasing
 
 		for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
 		{
-			Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x), float(y), -float(this->WindowSize.y), 0.0f))));
-			Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-			glm::vec3 Color = this->trace(Ray, iDepth);
+			Ray.set_direction(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x), float(y), -float(this->WindowSize.y), 0.0f))));
+			Ray.set_position(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+			glm::vec3 Color = this->trace(Ray, Depth);
 			Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
 			Count++;
 		}
 	}
 
-	Surface.SaveAs(Config.getFile());
+	Surface.save_as(Config.getFile());
 }
 
-void camera::shootAntiAliasing
-(
-	glm::mat4 const & ModelView,
-	int iDepth, 
-	int Antialising
-)
+void camera::shootAntiAliasing(glm::mat4 const& ModelView, int Depth, int Antialising)
 {
 	ray Ray;
-	Ray.setEnvironmentIndex(1.0f);
+	Ray.set_environment_index(1.0f);
 
 	surface Surface(this->WindowSize);
 
 	std::vector<glm::vec2> AntialisingBias(Antialising);
 	for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
-		//AntialisingBias[i] = glm::circularRand(1.0f) * glm::linearRand(0.0f, glm::sqrt(2.0f) * 4.0f);
 		AntialisingBias[i] = glm::gaussRand(glm::vec2(0.0f), glm::vec2(0.7f));
-
-	//AntialisingBias[0] = glm::vec2(-1.0f);
-	//AntialisingBias[1] = glm::vec2(1.0f);
 
 	std::size_t Total = glm::compMul(this->WindowSize) * AntialisingBias.size();
 	std::size_t Count = 0;
@@ -215,18 +193,16 @@ void camera::shootAntiAliasing
 			for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
 			{
 				glm::ivec2 WindowPosition(x, y);
-				Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
-				Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-				//Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition), -float(m_WindowSize.y), 0.0f))));
-				//Ray.setPosition(glm::vec3(ModelView * glm::vec4(AntialisingBias[i], 0.0f, 1.0f)));
-				glm::vec3 Color = this->trace(Ray, iDepth) / float(Antialising);
+				Ray.set_direction(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
+				Ray.set_position(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+				glm::vec3 Color = this->trace(Ray, Depth) / float(Antialising);
 				Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
 				Count++;
 			}
 		}
 	}
 
-	Surface.SaveAs(config::instance().getFile());
+	Surface.save_as(config::instance().getFile());
 }
 
 /*
@@ -345,29 +321,24 @@ void camera::shootInThread (int i)
 	}
 }
 */
-bool camera::checkAliasing
-(
-	surface const & Surface, 
-	adaptator const & Adaptator, 
-	int x, int y
-)
+bool camera::checkAliasing(surface const& Surface, adaptator const& Adaptator, int x, int y)
 {
-	config & Config = config::instance();
+	config& Config = config::instance();
 
 	if(x < 1 || x >= int(this->WindowSize.x) || y < 1 || y >= int(this->WindowSize.y))
 		return false;
 
-	glm::vec3 ColorMM = Surface.getTexel(glm::uvec2(x - 1, y - 1)) / Adaptator.getFactor(glm::uvec2(x - 1, y - 1));
-	glm::vec3 ColorM0 = Surface.getTexel(glm::uvec2(x - 1, y + 0)) / Adaptator.getFactor(glm::uvec2(x - 1, y + 0));
-	glm::vec3 ColorMP = Surface.getTexel(glm::uvec2(x - 1, y + 1)) / Adaptator.getFactor(glm::uvec2(x - 1, y + 1));
+	glm::vec3 ColorMM = Surface.get_texel(glm::uvec2(x - 1, y - 1)) / Adaptator.get_factor(glm::uvec2(x - 1, y - 1));
+	glm::vec3 ColorM0 = Surface.get_texel(glm::uvec2(x - 1, y + 0)) / Adaptator.get_factor(glm::uvec2(x - 1, y + 0));
+	glm::vec3 ColorMP = Surface.get_texel(glm::uvec2(x - 1, y + 1)) / Adaptator.get_factor(glm::uvec2(x - 1, y + 1));
 
-	glm::vec3 Color0M = Surface.getTexel(glm::uvec2(x + 0, y - 1)) / Adaptator.getFactor(glm::uvec2(x + 0, y - 1));
-	glm::vec3 Color00 = Surface.getTexel(glm::uvec2(x + 0, y + 0)) / Adaptator.getFactor(glm::uvec2(x + 0, y + 0));
-	glm::vec3 Color0P = Surface.getTexel(glm::uvec2(x + 0, y + 1)) / Adaptator.getFactor(glm::uvec2(x + 0, y + 1));
+	glm::vec3 Color0M = Surface.get_texel(glm::uvec2(x + 0, y - 1)) / Adaptator.get_factor(glm::uvec2(x + 0, y - 1));
+	glm::vec3 Color00 = Surface.get_texel(glm::uvec2(x + 0, y + 0)) / Adaptator.get_factor(glm::uvec2(x + 0, y + 0));
+	glm::vec3 Color0P = Surface.get_texel(glm::uvec2(x + 0, y + 1)) / Adaptator.get_factor(glm::uvec2(x + 0, y + 1));
 
-	glm::vec3 ColorPM = Surface.getTexel(glm::uvec2(x + 1, y - 1)) / Adaptator.getFactor(glm::uvec2(x + 1, y - 1));
-	glm::vec3 ColorP0 = Surface.getTexel(glm::uvec2(x + 1, y + 0)) / Adaptator.getFactor(glm::uvec2(x + 1, y + 0));
-	glm::vec3 ColorPP = Surface.getTexel(glm::uvec2(x + 1, y + 1)) / Adaptator.getFactor(glm::uvec2(x + 1, y + 1));
+	glm::vec3 ColorPM = Surface.get_texel(glm::uvec2(x + 1, y - 1)) / Adaptator.get_factor(glm::uvec2(x + 1, y - 1));
+	glm::vec3 ColorP0 = Surface.get_texel(glm::uvec2(x + 1, y + 0)) / Adaptator.get_factor(glm::uvec2(x + 1, y + 0));
+	glm::vec3 ColorPP = Surface.get_texel(glm::uvec2(x + 1, y + 1)) / Adaptator.get_factor(glm::uvec2(x + 1, y + 1));
 
 	if(glm::any(glm::greaterThan(glm::abs(ColorMM - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
 		return true;
@@ -388,30 +359,25 @@ bool camera::checkAliasing
 	return false;
 }
 
-void camera::shootAntiAliasingAdaptative
-(
-	glm::mat4 const & ModelView,
-	int iDepth, 
-	int iAntialising
-)
+void camera::shootAntiAliasingAdaptative(glm::mat4 const& ModelView, int Depth, int Antialising)
 {
 	adaptator Adaptator(this->WindowSize);
 
 	ray Ray;
-	Ray.setEnvironmentIndex(1.0f);
+	Ray.set_environment_index(1.0f);
 
 	surface Surface(this->WindowSize);
 
-	glm::vec2 *pAnti = new glm::vec2[iAntialising];
-	for(int i = 0; i < iAntialising; i++)
+	glm::vec2 *pAnti = new glm::vec2[Antialising];
+	for(int i = 0; i < Antialising; ++i)
 	{
 		pAnti[i].x = 0.0f;//glm::linearRand(0.0f, 1.0f) * 2.0f - 1.0f;
 		pAnti[i].y = 0.0f;//glm::linearRand(0.0f, 1.0f) * 2.0f - 1.0f;
 	}
 
-	std::size_t Total = glm::compMul(this->WindowSize) * iAntialising;
+	std::size_t Total = glm::compMul(this->WindowSize) * Antialising;
 	std::size_t Count = 0;
-	for(int i = 0; i < iAntialising; i++)
+	for(int i = 0; i < Antialising; i++)
 	{
 		for(int y = -int(this->WindowSize.y / 2); y < int(this->WindowSize.y / 2); y++)
 		{
@@ -427,9 +393,9 @@ void camera::shootAntiAliasingAdaptative
 				if(bAnti)
 				{
 					// 05/02/2005 - A same value is used to depth and height.
-					Ray.setDirection(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x + pAnti[i].x), float(y + pAnti[i].y), -float(this->WindowSize.y), 0.0f))));
-					Ray.setPosition(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-					Surface.add(glm::uvec2(x_tmp, y_tmp), this->trace(Ray, iDepth));
+					Ray.set_direction(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x + pAnti[i].x), float(y + pAnti[i].y), -float(this->WindowSize.y), 0.0f))));
+					Ray.set_position(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+					Surface.add(glm::uvec2(x_tmp, y_tmp), this->trace(Ray, Depth));
 					Adaptator.add(glm::uvec2(x_tmp, y_tmp));
 					Count++;
 				}
@@ -439,17 +405,14 @@ void camera::shootAntiAliasingAdaptative
 
 	for(glm::uint y = 0; y < this->WindowSize.y; y++)
 	for(glm::uint x = 0; x < this->WindowSize.x; x++)
-		Surface.div(glm::uvec2(x, y), Adaptator.getFactor(glm::uvec2(x, y)));
+		Surface.div(glm::uvec2(x, y), Adaptator.get_factor(glm::uvec2(x, y)));
 
 	delete[] pAnti;
 
-	Surface.SaveAs(config::instance().getFile());
+	Surface.save_as(config::instance().getFile());
 }
 
-void camera::rotateX
-(
-	action const & Move
-)
+void camera::rotateX(action const& Move)
 {
 	switch(Move)
 	{
@@ -462,10 +425,7 @@ void camera::rotateX
 	}
 }
 
-void camera::rotateZ
-(
-	action const & Move
-)
+void camera::rotateZ(action const& Move)
 {
 	switch(Move)
 	{
@@ -478,10 +438,7 @@ void camera::rotateZ
 	}
 }
 
-void camera::move
-(
-	action const & Move
-)
+void camera::move(action const& Move)
 {
 	switch(Move)
 	{
@@ -497,6 +454,3 @@ void camera::move
 		break;
 	}
 }
-
-
-

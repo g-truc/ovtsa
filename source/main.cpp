@@ -45,8 +45,8 @@ void raytrace::render()
 	printf("Time: %d\n", clock() - TimeStart);
 
 	printf("===========================\n");
-	printf("Objects : %d\n", static_cast<int>(objectFactory::instance().size()));
-	printf("Lights : %d\n", static_cast<int>(lightFactory::instance().size()));
+	printf("Objects : %d\n", static_cast<int>(object_factory::instance().size()));
+	printf("Lights : %d\n", static_cast<int>(light_factory::instance().size()));
 	printf("Bounding count %d\n", Config.getDepth());
 	printf("Antialiasing %dX\n", Config.getAntiAliasingLevel());
 	printf("Reflection %dX\n", Config.getReflectionRays());
@@ -58,8 +58,8 @@ void raytrace::render()
 
 void raytrace::end()
 {
-	lightFactory::destroy();
-	objectFactory::destroy();
+	light_factory::destroy();
+	object_factory::destroy();
 	config::destroy();
 }
 

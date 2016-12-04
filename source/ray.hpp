@@ -5,13 +5,13 @@
 class ray
 {
 public:
-	glm::vec3 const & getPosition() const {return this->Position;}
-	glm::vec3 const & getDirection() const {return this->Direction;}
-	float getEnvironmentIndex() const {return this->EnvironmentIndex;}
+	glm::vec3 const& get_position() const {return this->Position;}
+	glm::vec3 const& get_direction() const {return this->Direction;}
+	float get_environment_index() const {return this->EnvironmentIndex;}
 
-	void setPosition(glm::vec3 const & Position) {this->Position = Position;}
-	void setDirection(glm::vec3 const & Direction) {this->Direction = Direction;}
-	void setEnvironmentIndex(float EnvironmentIndex) {this->EnvironmentIndex = EnvironmentIndex;}
+	void set_position(glm::vec3 const& Position) {this->Position = Position;}
+	void set_direction(glm::vec3 const& Direction) {this->Direction = Direction;}
+	void set_environment_index(float EnvironmentIndex) {this->EnvironmentIndex = EnvironmentIndex;}
 
 private:
 	glm::vec3 Position;

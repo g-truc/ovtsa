@@ -2,6 +2,7 @@
 
 #include "shape.hpp"
 #include "util.hpp"
+#include <array>
 
 class triangle : public shape
 {
@@ -19,10 +20,9 @@ public:
 		m_Normal = -glm::cross(glm::normalize(B - A), glm::normalize(C - A));
 	}
 
-	void setPositions(
-		std::vector<glm::vec3> const & Data);
+	void set_positions(std::array<glm::vec3, 3> const& Data);
 
-	virtual glm::vec3 computeNormal(glm::vec3 const& Position, glm::vec3 const& RayDirection) const;
+	virtual glm::vec3 compute_normal(glm::vec3 const& Position, glm::vec3 const& RayDirection) const;
 	virtual bool intersect(ray const& Ray, intersection& Intersection) const;
 };
 

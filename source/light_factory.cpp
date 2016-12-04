@@ -3,12 +3,9 @@
 #include "light_point.hpp"
 #include "light_directional.hpp"
 
-light* lightFactory::create
-(
-	light::type const & Type
-)
+light* light_factory::create(light::type const& Type)
 {
-	light * Light = 0;
+	light* Light = 0;
 	switch(Type)
 	{
 	default:

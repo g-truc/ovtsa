@@ -12,17 +12,13 @@ public:
 protected:
 	std::vector<T*> Objects;
 
-	factory();
+	factory(){}
 	~factory();
 
 public:
-	T const * const operator[](size_type const & index) const;
+	T const *const operator[](size_type Index) const;
 	size_type size() const;
 };
-
-template <typename T>
-inline factory<T>::factory()
-{}
 
 template <typename T>
 inline factory<T>::~factory()
@@ -39,12 +35,9 @@ inline factory<T>::~factory()
 }
 
 template <typename T>
-inline T const * const factory<T>::operator[]
-(
-	size_type const & index
-) const
+inline T const *const factory<T>::operator[](size_type Index) const
 {
-	return this->Objects[index];
+	return this->Objects[Index];
 }
 
 template <typename T>
