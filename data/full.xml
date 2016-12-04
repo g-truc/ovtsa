@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 
-<raytrace file="../full.tga" width="720" height="480" depth="1" antialiasing="16" reflection-rays="1" refraction-rays="0" reflection-accuracy="0.0" refraction-accuracy="0.0">
+<raytrace file="../full.dds" width="720" height="480" depth="2" antialiasing="16" reflection-rays="16" refraction-rays="16" reflection-accuracy="0.1" refraction-accuracy="0.1">
 	<objects>
 		<plane>
-			<material opacity="1.0" reflection="0.2" refraction="0.0" environment-index="1.0" specular-exponent="8" type="flat" repeat="10">
+			<material opacity="1.0" reflection="0.2" refraction="0.0" environment-index="1.0" specular-exponent="8" type="grid" repeat="1">
 				<ambient r="1.0" g="1.0" b="1.0" a="0.3" />
-				<ambient-secondary r="1.0" g="0.5" b="0.0" a="0.3" />
+				<ambient-secondary r="0.9" g="0.9" b="0.9" a="0.3" />
 				<diffuse r="1.0" g="1.0" b="1.0" a="0.5" />
 				<specular r="1.0" g="1.0" b="1.0" a="0.4" />
 			</material>
@@ -14,9 +14,9 @@
 			</transforms>
 		</plane>
 		<sphere>
-			<material opacity="1.0" reflection="0.8" refraction="0.0" environment-index="1.0" specular-exponent="4" type="flat" repeat="5">
-				<ambient r="1.0" g="0.5" b="0.0" a="1.0" />
-				<diffuse r="1.0" g="0.5" b="0.0" a="0.1" />
+			<material opacity="1.0" reflection="1.0" refraction="0.0" environment-index="1.0" specular-exponent="4" type="flat" repeat="5">
+				<ambient r="1.0" g="0.5" b="0.0" a="0.1" />
+				<diffuse r="1.0" g="0.5" b="0.0" a="1.0" />
 				<specular r="1.0" g="1.0" b="1.0" a="0.1" />
 			</material>
 			<transforms>
@@ -24,10 +24,10 @@
 			</transforms>
 		</sphere>
 		<sphere>
-			<material opacity="0.7" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="64" type="flat" repeat="10">
-				<ambient r="1.0" g="0.0" b="0.0" a="0.2" />
+			<material opacity="0.3" reflection="0.5" refraction="0.8" environment-index="1.05" specular-exponent="16" type="flat" repeat="10">
+				<ambient r="1.0" g="0.0" b="0.0" a="0.05" />
 				<ambient-secondary r="1.0" g="0.0" b="0.0" a="0.0" />
-				<diffuse r="1.0" g="0.0" b="0.0" a="0.7" />
+				<diffuse r="1.0" g="0.0" b="0.0" a="1.0" />
 				<specular r="1.0" g="1.0" b="1.0" a="1.0" />
 			</material>
 			<transforms>
@@ -36,10 +36,10 @@
 			</transforms>
 		</sphere>
 		<sphere>
-			<material opacity="0.7" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="64" type="flat" repeat="10">
-				<ambient r="1.0" g="1.0" b="0.0" a="0.2" />
+			<material opacity="0.3" reflection="0.5" refraction="0.8" environment-index="1.05" specular-exponent="16" type="flat" repeat="10">
+				<ambient r="1.0" g="1.0" b="0.0" a="0.05" />
 				<ambient-secondary r="1.0" g="1.0" b="0.0" a="0.0" />
-				<diffuse r="1.0" g="1.0" b="0.0" a="0.7" />
+				<diffuse r="1.0" g="1.0" b="0.0" a="1.0" />
 				<specular r="1.0" g="1.0" b="1.0" a="1.0" />
 			</material>
 			<transforms>
@@ -48,10 +48,10 @@
 			</transforms>
 		</sphere>
 		<sphere>
-			<material opacity="0.7" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="64" type="flat" repeat="10">
-				<ambient r="0.0" g="1.0" b="0.0" a="0.2" />
+			<material opacity="0.3" reflection="0.5" refraction="0.8" environment-index="1.05" specular-exponent="16" type="flat" repeat="10">
+				<ambient r="0.0" g="1.0" b="0.0" a="0.05" />
 				<ambient-secondary r="0.0" g="1.0" b="0.0" a="0.0" />
-				<diffuse r="0.0" g="1.0" b="0.0" a="0.7" />
+				<diffuse r="0.0" g="1.0" b="0.0" a="1.0" />
 				<specular r="1.0" g="1.0" b="1.0" a="1.0" />
 			</material>
 			<transforms>
@@ -60,10 +60,10 @@
 			</transforms>
 		</sphere>
 		<sphere>
-			<material opacity="1.0" reflection="0.1" refraction="0.7" environment-index="1.05" specular-exponent="64" type="flat" repeat="10">
-				<ambient r="0.0" g="0.0" b="1.0" a="0.2" />
+			<material opacity="0.3" reflection="0.5" refraction="0.8" environment-index="1.05" specular-exponent="16" type="flat" repeat="10">
+				<ambient r="0.0" g="0.0" b="1.0" a="0.05" />
 				<ambient-secondary r="0.0" g="0.0" b="1.0" a="0.0" />
-				<diffuse r="0.0" g="0.0" b="1.0" a="0.7" />
+				<diffuse r="0.0" g="0.0" b="1.0" a="1.0" />
 				<specular r="1.0" g="1.0" b="1.0" a="1.0" />
 			</material>
 			<transforms>
@@ -73,16 +73,16 @@
 		</sphere>
 	</objects>
 	<lights>
-		<!--light-points>
+		<light-points>
 			<light-point rays-number="1" inaccuracy="0.0">
-				<color r="1.0" g="1.0" b="1.0" a="0.5" />
+				<color r="1.0" g="1.0" b="1.0" a="0.1" />
 				<position x="8" y="-8" z="8" />
 			</light-point>
 			<light-point rays-number="1" inaccuracy="0.0">
-				<color r="1.0" g="1.0" b="1.0" a="0.5" />
+				<color r="1.0" g="1.0" b="1.0" a="0.1" />
 				<position x="-8" y="-8" z="8" />
 			</light-point>
-		</light-points-->
+		</light-points>
 		<light-spots>
 			<light-spot rays-number="1" inaccuracy="0.5" cutoff="0.8">
 				<color r="1.0" g="1.0" b="1.0" a="0.25" />

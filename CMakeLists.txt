@@ -15,12 +15,6 @@ execute_process(COMMAND cmake -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Debu
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
 
 ################################
-# Add GLI 
-
-set(GLI_DIRECTORY gli-0.3.1.0)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLI_DIRECTORY})
-
-################################
 # Add output directory
 
 if(MSVC)
@@ -55,4 +49,3 @@ add_definitions(
 # Add subdirectory
 
 add_subdirectory(source)
-

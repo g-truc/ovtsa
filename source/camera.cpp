@@ -140,11 +140,28 @@ void camera::shoot(int iDepth, int iAntialising, glm::uvec2 const & WindowSize)
 		this->shootAliasing(ModelView, iDepth);
 }
 
+gli::texture2d scale_clamp(gli::texture2d const& Surface, float MinVal, float MaxVal)
+{
+	gli::texture2d SurfaceClamped(Surface.format(), Surface.extent(), 1);
+
+	gli::sampler2d<float> SamplerWrite(SurfaceClamped, gli::WRAP_CLAMP_TO_EDGE);
+	gli::sampler2d<float> SamplerFetch(Surface, gli::WRAP_CLAMP_TO_EDGE);
+
+	for(std::size_t y = 0; y < SurfaceClamped.extent().y; ++y)
+	for(std::size_t x = 0; x < SurfaceClamped.extent().x; ++x)
+	{
+		glm::vec4 const& Color = SamplerFetch.texel_fetch(gli::extent2d(x, y), 0);
+		SamplerWrite.texel_write(gli::extent2d(x, y), 0, glm::clamp(Color, MinVal, MaxVal));
+	}
+
+	return SurfaceClamped;
+}
+
 void camera::shootAliasing(glm::mat4 const& ModelView, int Depth)
 {
-	config & Config = config::instance();
+	config& Config = config::instance();
 
-	surface Surface(this->WindowSize);
+	gli::texture2d Surface(gli::FORMAT_RGBA32_SFLOAT_PACK32, this->WindowSize, 1);
 
 	ray Ray;
 	Ray.set_environment_index(1.0f);
@@ -162,20 +179,27 @@ void camera::shootAliasing(glm::mat4 const& ModelView, int Depth)
 			Ray.set_direction(glm::vec3(ModelView * glm::normalize(glm::vec4(float(x), float(y), -float(this->WindowSize.y), 0.0f))));
 			Ray.set_position(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 			glm::vec3 Color = this->trace(Ray, Depth);
-			Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
+			//Surface.add(, Color);
+
+			Surface.store<glm::vec4>(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), 0, glm::vec4(Color, 1.0f));
+
 			Count++;
 		}
 	}
 
-	Surface.save_as(Config.getFile());
+	gli::texture2d SurfaceScaled = scale_clamp(Surface, 0.f, 1.f);
+	gli::texture2d Export = gli::convert(gli::flip(SurfaceScaled), gli::FORMAT_RGBA8_UNORM_PACK8);
+	gli::save(Export, Config.getFile());
 }
 
 void camera::shootAntiAliasing(glm::mat4 const& ModelView, int Depth, int Antialising)
 {
+	config& Config = config::instance();
+
 	ray Ray;
 	Ray.set_environment_index(1.0f);
 
-	surface Surface(this->WindowSize);
+	gli::texture2d Surface(gli::FORMAT_RGBA32_SFLOAT_PACK32, this->WindowSize, 1);
 
 	std::vector<glm::vec2> AntialisingBias(Antialising);
 	for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
@@ -197,14 +221,21 @@ void camera::shootAntiAliasing(glm::mat4 const& ModelView, int Depth, int Antial
 			{
 				Ray.set_direction(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
 				Ray.set_position(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-				glm::vec3 Color = this->trace(Ray, Depth) / float(Antialising);
-				Surface.add(glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2)), Color);
+				glm::vec3 const ColorTrace = this->trace(Ray, Depth) / float(Antialising);
+
+				glm::uvec2 const TexelCoord = glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2));
+
+				glm::vec4 const ColorLoad = Surface.load<glm::vec4>(TexelCoord, 0);
+				Surface.store(TexelCoord, 0, ColorLoad + glm::vec4(ColorTrace, 1.0f));
+
+				Count++;
 			}
-			Count++;
 		}
 	}
 
-	Surface.save_as(config::instance().getFile());
+	gli::texture2d SurfaceScaled = scale_clamp(Surface, 0.f, 1.f);
+	gli::texture2d Export = gli::convert(gli::flip(SurfaceScaled), gli::FORMAT_RGBA8_UNORM_PACK8);
+	gli::save(Export, Config.getFile());
 }
 
 /*
@@ -323,24 +354,26 @@ void camera::shootInThread (int i)
 	}
 }
 */
-bool camera::checkAliasing(surface const& Surface, adaptator const& Adaptator, int x, int y)
+bool camera::checkAliasing(gli::texture2d const& Surface, adaptator const& Adaptator, int x, int y)
 {
+	gli::sampler2d<float> Sampler(Surface, gli::WRAP_CLAMP_TO_EDGE);
+
 	config& Config = config::instance();
 
 	if(x < 1 || x >= int(this->WindowSize.x) || y < 1 || y >= int(this->WindowSize.y))
 		return false;
 
-	glm::vec3 ColorMM = Surface.get_texel(glm::uvec2(x - 1, y - 1)) / Adaptator.get_factor(glm::uvec2(x - 1, y - 1));
-	glm::vec3 ColorM0 = Surface.get_texel(glm::uvec2(x - 1, y + 0)) / Adaptator.get_factor(glm::uvec2(x - 1, y + 0));
-	glm::vec3 ColorMP = Surface.get_texel(glm::uvec2(x - 1, y + 1)) / Adaptator.get_factor(glm::uvec2(x - 1, y + 1));
+	glm::vec3 ColorMM = Sampler.texel_fetch(glm::uvec2(x - 1, y - 1), 0) / Adaptator.get_factor(glm::uvec2(x - 1, y - 1));
+	glm::vec3 ColorM0 = Sampler.texel_fetch(glm::uvec2(x - 1, y + 0), 0) / Adaptator.get_factor(glm::uvec2(x - 1, y + 0));
+	glm::vec3 ColorMP = Sampler.texel_fetch(glm::uvec2(x - 1, y + 1), 0) / Adaptator.get_factor(glm::uvec2(x - 1, y + 1));
 
-	glm::vec3 Color0M = Surface.get_texel(glm::uvec2(x + 0, y - 1)) / Adaptator.get_factor(glm::uvec2(x + 0, y - 1));
-	glm::vec3 Color00 = Surface.get_texel(glm::uvec2(x + 0, y + 0)) / Adaptator.get_factor(glm::uvec2(x + 0, y + 0));
-	glm::vec3 Color0P = Surface.get_texel(glm::uvec2(x + 0, y + 1)) / Adaptator.get_factor(glm::uvec2(x + 0, y + 1));
+	glm::vec3 Color0M = Sampler.texel_fetch(glm::uvec2(x + 0, y - 1), 0) / Adaptator.get_factor(glm::uvec2(x + 0, y - 1));
+	glm::vec3 Color00 = Sampler.texel_fetch(glm::uvec2(x + 0, y + 0), 0) / Adaptator.get_factor(glm::uvec2(x + 0, y + 0));
+	glm::vec3 Color0P = Sampler.texel_fetch(glm::uvec2(x + 0, y + 1), 0) / Adaptator.get_factor(glm::uvec2(x + 0, y + 1));
 
-	glm::vec3 ColorPM = Surface.get_texel(glm::uvec2(x + 1, y - 1)) / Adaptator.get_factor(glm::uvec2(x + 1, y - 1));
-	glm::vec3 ColorP0 = Surface.get_texel(glm::uvec2(x + 1, y + 0)) / Adaptator.get_factor(glm::uvec2(x + 1, y + 0));
-	glm::vec3 ColorPP = Surface.get_texel(glm::uvec2(x + 1, y + 1)) / Adaptator.get_factor(glm::uvec2(x + 1, y + 1));
+	glm::vec3 ColorPM = Sampler.texel_fetch(glm::uvec2(x + 1, y - 1), 0) / Adaptator.get_factor(glm::uvec2(x + 1, y - 1));
+	glm::vec3 ColorP0 = Sampler.texel_fetch(glm::uvec2(x + 1, y + 0), 0) / Adaptator.get_factor(glm::uvec2(x + 1, y + 0));
+	glm::vec3 ColorPP = Sampler.texel_fetch(glm::uvec2(x + 1, y + 1), 0) / Adaptator.get_factor(glm::uvec2(x + 1, y + 1));
 
 	if(glm::any(glm::greaterThan(glm::abs(ColorMM - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
 		return true;
@@ -363,12 +396,13 @@ bool camera::checkAliasing(surface const& Surface, adaptator const& Adaptator, i
 
 void camera::shootAntiAliasingAdaptative(glm::mat4 const& ModelView, int Depth, int Antialising)
 {
+/*
 	adaptator Adaptator(this->WindowSize);
 
 	ray Ray;
 	Ray.set_environment_index(1.0f);
 
-	surface Surface(this->WindowSize);
+	gli::texture2d Surface(gli::FORMAT_RGBA32_SFLOAT_PACK32, this->WindowSize, 1);
 
 	glm::vec2 *pAnti = new glm::vec2[Antialising];
 	for(int i = 0; i < Antialising; ++i)
@@ -412,6 +446,7 @@ void camera::shootAntiAliasingAdaptative(glm::mat4 const& ModelView, int Depth, 
 	delete[] pAnti;
 
 	Surface.save_as(config::instance().getFile());
+*/
 }
 
 void camera::rotateX(action const& Move)
