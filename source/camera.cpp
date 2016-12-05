@@ -76,6 +76,9 @@ glm::vec3 camera::trace(ray const& RayCopy, int iDepth)
 
 	if(iDepth)
 	{
+		if (glm::all(glm::lessThan(Color, glm::vec3(0.001f))))
+			return Color;
+
 		iDepth--;
 		if(Material.getReflectionFactor() > glm::epsilon<float>() * 100.f && Config.getReflectionRays() > 0)
 		{
@@ -163,26 +166,24 @@ void camera::shoot(glm::mat4 const& ModelView, int Depth, int Antialising)
 
 	#pragma omp parallel for
 	for(int y = -int(this->WindowSize.y) / 2; y < int(this->WindowSize.y) / 2; y++)
+	for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
 	{
 		printf("%2.3f\r", float(Count) / float(Total) * 100.f);
 
-		for(int x = -int(this->WindowSize.x) / 2; x < int(this->WindowSize.x) / 2; x++)
+		glm::ivec2 WindowPosition(x, y);
+
+		for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
 		{
-			glm::ivec2 WindowPosition(x, y);
+			Ray.set_direction(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
+			Ray.set_position(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+			glm::vec3 const ColorTrace = this->trace(Ray, Depth) / float(Antialising);
 
-			for(std::vector<glm::vec2>::size_type i = 0; i < AntialisingBias.size(); i++)
-			{
-				Ray.set_direction(glm::vec3(ModelView * glm::normalize(glm::vec4(glm::vec2(WindowPosition) + AntialisingBias[i], -float(this->WindowSize.y), 0.0f))));
-				Ray.set_position(glm::vec3(ModelView * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-				glm::vec3 const ColorTrace = this->trace(Ray, Depth) / float(Antialising);
+			glm::uvec2 const TexelCoord = glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2));
 
-				glm::uvec2 const TexelCoord = glm::uvec2(x, y) + glm::uvec2(this->WindowSize / glm::uint(2));
+			glm::vec4 const ColorLoad = Surface.load<glm::vec4>(TexelCoord, 0);
+			Surface.store(TexelCoord, 0, ColorLoad + glm::vec4(ColorTrace, 1.0f));
 
-				glm::vec4 const ColorLoad = Surface.load<glm::vec4>(TexelCoord, 0);
-				Surface.store(TexelCoord, 0, ColorLoad + glm::vec4(ColorTrace, 1.0f));
-
-				Count++;
-			}
+			Count++;
 		}
 	}
 

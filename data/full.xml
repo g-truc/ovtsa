@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 
 <!--raytrace file="../full.dds" width="16" height="9" depth="2" antialiasing="64" reflection-rays="32" refraction-rays="16" reflection-accuracy="0.05" refraction-accuracy="0.02"-->
-<raytrace file="../full.dds" width="640" height="480" depth="2" antialiasing="1" reflection-rays="8" refraction-rays="8" reflection-accuracy="0.02" refraction-accuracy="0.005">
+<!--raytrace file="../full.dds" width="1280" height="720" depth="2" antialiasing="64" reflection-rays="32" refraction-rays="64" reflection-accuracy="0.02" refraction-accuracy="0.005"-->
+<raytrace file="../full.dds" width="720" height="480" depth="2" antialiasing="64" reflection-rays="16" refraction-rays="1" reflection-accuracy="0.005" refraction-accuracy="0.0">
 	<objects>
 		<plane>
 			<material opacity="1.0" reflection="0.2" refraction="0.0" environment-index="1.0" specular-exponent="8" type="grid" repeat="1">
@@ -123,17 +124,17 @@
 	</objects>
 	<lights>
 		<light-points>
-			<light-point rays-number="1" inaccuracy="0.0">
+			<light-point rays-number="16" inaccuracy="0.0">
 				<color r="0.0" g="0.5" b="1.0" a="0.1" />
 				<position x="8" y="-8" z="8" />
 			</light-point>
-			<light-point rays-number="1" inaccuracy="0.0">
+			<light-point rays-number="16" inaccuracy="0.0">
 				<color r="1.0" g="0.5" b="0.0" a="0.1" />
 				<position x="-8" y="-8" z="8" />
 			</light-point>
 		</light-points>
 		<light-spots>
-			<light-spot rays-number="32" inaccuracy="1.0" cutoff="0.8">
+			<light-spot rays-number="16" inaccuracy="0.5" cutoff="0.8">
 				<color r="1.0" g="1.0" b="1.0" a="0.25" />
 				<position x="0" y="0" z="12" />
 				<direction x="0" y="0" z="-1" />
