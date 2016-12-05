@@ -19,26 +19,21 @@ public:
 	camera();
 	~camera();
 
-	void shoot(
-		int Depth, 
-		int Antialising, 
-		glm::uvec2 const & WindowSize);
+	void shoot(int Depth, int Antialising, glm::uvec2 const& WindowSize);
 
-	void rotateX(action const & Action);
-	void rotateZ(action const & Action);
-	void move(action const & Action);
+	void rotate_x(action Action);
+	void rotate_z(action Action);
+	void move(action Action);
 
 private:
-	bool checkAliasing(gli::texture2d const& Surface, adaptator const& Adaptator, int x, int y);
+	bool check_aliasing(gli::texture2d const& Surface, adaptator const& Adaptator, int x, int y);
 
-	void shootAntiAliasingAdaptative(glm::mat4 const& ModelView, int Depth, int Antialising);
-	void shootAntiAliasing(glm::mat4 const& ModelView, int Depth, int Antialising);
-	void shootAliasing(glm::mat4 const& ModelView, int Depth);
+	void shoot_adaptative(glm::mat4 const& ModelView, int Depth, int Antialising);
+	void shoot(glm::mat4 const& ModelView, int Depth, int Antialising);
 
 	glm::vec3 shade(intersection const& Intersection, material const& Material, glm::vec3 const& View);
 	glm::vec3 trace(ray const& Ray, int iDepth);
 
-	//glm::mat4 ModelView;
 	glm::uvec2 WindowSize;
 	float MoveForward;
 	float MoveUp;

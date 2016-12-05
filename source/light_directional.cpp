@@ -26,10 +26,10 @@ glm::vec3 directional::shade(intersection const& Intersection, material const& M
 		float fDiffuse = glm::dot(glm::normalize(Intersection.getNormal()), LightVector);
 		if(fDiffuse > 0.0f)
 		{
-			if(Material.isDiffuse())
+			if(Material.is_diffuse())
 				Color += m_Color * Material.diffuse() * fDiffuse;
 
-			if(Material.isSpecular())
+			if(Material.is_specular())
 			{
 				glm::vec3 Reflect = glm::reflect(
 					glm::normalize(-LightVector), 
@@ -40,10 +40,6 @@ glm::vec3 directional::shade(intersection const& Intersection, material const& M
 			}
 		}
 	}
-
-	//if(this->shadow(Intersection.getGlobalPosition(), Position, LightVector))
-		//Color *= 1.0f - Material.getOpacity();
-		//Color = glm::vec3(0);
 
 	return Color;
 }

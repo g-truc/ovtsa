@@ -233,8 +233,6 @@ material parser::getMaterial(TiXmlElement* pElement)
 		Material.setType(material::MATERIAL_LINE_Y);
 	else if(!strcmp("line-z", type.c_str()))
 		Material.setType(material::MATERIAL_LINE_Z);
-	else if(!strcmp("noise", type.c_str()))
-		Material.setType(material::MATERIAL_NOISE);
 	else if(!strcmp("perlin", type.c_str()))
 		Material.setType(material::MATERIAL_PERLIN);
 	else if(!strcmp("marble", type.c_str()))
@@ -374,7 +372,7 @@ void parser::parseLightSpot(TiXmlElement* pElement)
 			pLight->setInaccuracy(float(atof(pAttribute->Value())));
 		else if(!strcmp("cutoff", pAttribute->Name()))
 			pLight->setCutOff(float(atof(pAttribute->Value())));
-	}    
+	}
 	while(pAttribute = pAttribute->Next());
 
 	pLight->setPosition(getPosition(pElement->FirstChildElement("position")));
@@ -403,7 +401,7 @@ void parser::parseLightPoint(TiXmlElement* pElement)
 			pLight->setRayNumber(atoi(pAttribute->Value()));
 		else if(!strcmp("inaccuracy", pAttribute->Name()))
 			pLight->setInaccuracy(float(atof(pAttribute->Value())));
-	}    
+	}
 	while(pAttribute = pAttribute->Next());
 
 	pLight->setPosition(getPosition(pElement->FirstChildElement("position")));
@@ -431,7 +429,7 @@ void parser::parseLightDirection(TiXmlElement* pElement)
 			pLight->setRayNumber(atoi(pAttribute->Value()));
 		else if(!strcmp("inaccuracy", pAttribute->Name()))
 			pLight->setInaccuracy(float(atof(pAttribute->Value())));
-	}    
+	}
 	while(pAttribute = pAttribute->Next());
 
 	pLight->setDirection(getDirection(pElement->FirstChildElement("direction")));
@@ -467,7 +465,7 @@ glm::vec3 parser::getDirection(TiXmlElement* pElement)
 			Direction.y = float(atof(pAttribute->Value()));
 		else if(!strcmp("z", pAttribute->Name()))
 			Direction.z = float(atof(pAttribute->Value()));
-	}    
+	}
 	while(pAttribute = pAttribute->Next());
 	return Direction;
 }
@@ -487,7 +485,7 @@ glm::vec3 parser::getColor(TiXmlElement* pElement)
 			Color.b = float(atof(pAttribute->Value()));
 		else if(!strcmp("a", pAttribute->Name()))
 			Alpha = float(atof(pAttribute->Value()));
-	}    
+	}
 	while(pAttribute = pAttribute->Next());
 	return Color * Alpha;
 }

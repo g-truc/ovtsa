@@ -18,7 +18,7 @@ glm::vec3 spot::shade(intersection const& Intersection, material const& Material
 {
 	glm::vec3 Color(0.0f);
 
-	glm::vec3 LightVector = glm::normalize(this->getPosition() - Intersection.getGlobalPosition()/* + glm::sphericalRand(this->Inaccuracy)*/);
+	glm::vec3 LightVector = glm::normalize(this->getPosition() - Intersection.getGlobalPosition() + glm::sphericalRand(this->Inaccuracy));
 
 	if(!this->shadow(Intersection.getGlobalPosition(), this->getPosition(), LightVector))
 	if(glm::dot(this->Direction, -LightVector) > this->CutOff)
@@ -26,10 +26,10 @@ glm::vec3 spot::shade(intersection const& Intersection, material const& Material
 		float fDiffuse = glm::dot(Intersection.getNormal(), LightVector);
 		if(fDiffuse > 0.0f)
 		{
-			if(Material.isDiffuse())
+			if(Material.is_diffuse())
 				Color += this->Color * Material.diffuse() * fDiffuse;
 
-			if(Material.isSpecular())
+			if(Material.is_specular())
 			{
 				glm::vec3 Reflect = glm::reflect(
 					glm::normalize(-LightVector),
@@ -40,10 +40,6 @@ glm::vec3 spot::shade(intersection const& Intersection, material const& Material
 			}
 		}
 	}
-
-	//if(this->shadow(Intersection.getGlobalPosition(), this->getPosition(), LightVector))
-		//Color *= 1.0f - Material.getOpacity();
-		//Color = glm::vec3(0);
 
 	return Color;
 }

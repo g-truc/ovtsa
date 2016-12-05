@@ -1,16 +1,65 @@
 <?xml version="1.0" ?>
 
-<raytrace file="../full.dds" width="720" height="480" depth="2" antialiasing="16" reflection-rays="1" refraction-rays="1" reflection-accuracy="0.0" refraction-accuracy="0.0">
+<!--raytrace file="../full.dds" width="16" height="9" depth="2" antialiasing="64" reflection-rays="32" refraction-rays="16" reflection-accuracy="0.05" refraction-accuracy="0.02"-->
+<raytrace file="../full.dds" width="640" height="480" depth="2" antialiasing="1" reflection-rays="8" refraction-rays="8" reflection-accuracy="0.02" refraction-accuracy="0.005">
 	<objects>
 		<plane>
 			<material opacity="1.0" reflection="0.2" refraction="0.0" environment-index="1.0" specular-exponent="8" type="grid" repeat="1">
-				<ambient r="1.0" g="1.0" b="1.0" a="0.3" />
-				<ambient-secondary r="0.9" g="0.9" b="0.9" a="0.3" />
+				<ambient r="0.8" g="0.9" b="1.0" a="0.3" />
+				<ambient-secondary r="0.7" g="0.8" b="0.9" a="0.3" />
+				<diffuse r="1.0" g="1.0" b="1.0" a="0.5" />
+				<specular r="1.0" g="1.0" b="1.0" a="0.1" />
+			</material>
+			<transforms>
+				<transform type="translate-z" value="-2" />
+			</transforms>
+		</plane>
+		<plane>
+			<material opacity="1.0" reflection="0.2" refraction="0.0" environment-index="1.0" specular-exponent="8" type="perlin" repeat="1">
+				<ambient r="1.0" g="0.9" b="0.8" a="0.3" />
+				<ambient-secondary r="0.9" g="0.8" b="0.7" a="0.3" />
 				<diffuse r="1.0" g="1.0" b="1.0" a="0.5" />
 				<specular r="1.0" g="1.0" b="1.0" a="0.4" />
 			</material>
 			<transforms>
-				<transform type="translate-z" value="-2" />
+				<transform type="rotate-y" value="90.0" />
+				<transform type="translate-z" value="-12.0" />
+			</transforms>
+		</plane>
+		<plane>
+			<material opacity="1.0" reflection="0.2" refraction="0.0" environment-index="1.0" specular-exponent="8" type="perlin" repeat="1">
+				<ambient r="1.0" g="0.9" b="0.8" a="0.3" />
+				<ambient-secondary r="0.9" g="0.8" b="0.7" a="0.3" />
+				<diffuse r="1.0" g="1.0" b="1.0" a="0.5" />
+				<specular r="1.0" g="1.0" b="1.0" a="0.4" />
+			</material>
+			<transforms>
+				<transform type="rotate-y" value="90.0" />
+				<transform type="translate-z" value="12.0" />
+			</transforms>
+		</plane>
+		<plane>
+			<material opacity="1.0" reflection="0.2" refraction="0.0" environment-index="1.0" specular-exponent="8" type="perlin" repeat="1">
+				<ambient r="1.0" g="0.9" b="0.8" a="0.3" />
+				<ambient-secondary r="0.9" g="0.8" b="0.7" a="0.3" />
+				<diffuse r="1.0" g="1.0" b="1.0" a="0.5" />
+				<specular r="1.0" g="1.0" b="1.0" a="0.4" />
+			</material>
+			<transforms>
+				<transform type="rotate-x" value="-90.0" />
+				<transform type="translate-z" value="12.0" />
+			</transforms>
+		</plane>
+		<plane>
+			<material opacity="1.0" reflection="0.2" refraction="0.0" environment-index="1.0" specular-exponent="8" type="perlin" repeat="1">
+				<ambient r="1.0" g="0.9" b="0.8" a="0.3" />
+				<ambient-secondary r="0.9" g="0.8" b="0.7" a="0.3" />
+				<diffuse r="1.0" g="1.0" b="1.0" a="0.5" />
+				<specular r="1.0" g="1.0" b="1.0" a="0.4" />
+			</material>
+			<transforms>
+				<transform type="rotate-x" value="90.0" />
+				<transform type="translate-z" value="12.0" />
 			</transforms>
 		</plane>
 		<sphere>
@@ -84,7 +133,7 @@
 			</light-point>
 		</light-points>
 		<light-spots>
-			<light-spot rays-number="1" inaccuracy="0.5" cutoff="0.8">
+			<light-spot rays-number="32" inaccuracy="1.0" cutoff="0.8">
 				<color r="1.0" g="1.0" b="1.0" a="0.25" />
 				<position x="0" y="0" z="12" />
 				<direction x="0" y="0" z="-1" />

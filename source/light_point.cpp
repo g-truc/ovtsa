@@ -26,10 +26,10 @@ glm::vec3 point::shade(intersection const& Intersection, material const& Materia
 		float Diffuse = glm::dot(Intersection.getNormal(), LightVector);
 		if(Diffuse > 0.0f)
 		{
-			if(Material.isDiffuse()) 
+			if(Material.is_diffuse()) 
 				Color += this->getColor() * Material.diffuse() * Diffuse;
 
-			if(Material.isSpecular())
+			if(Material.is_specular())
 			{
 				glm::vec3 Reflect = glm::reflect(
 					glm::normalize(-LightVector), 

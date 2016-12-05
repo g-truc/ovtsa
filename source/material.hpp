@@ -1,9 +1,6 @@
 #pragma once
 
 #include "util.hpp"
-#include "perlin.hpp"
-
-extern perlin g_Perlin;
 
 class material
 {
@@ -16,7 +13,6 @@ public:
 		MATERIAL_LINE_X,
 		MATERIAL_LINE_Y,
 		MATERIAL_LINE_Z,
-		MATERIAL_NOISE,
 		MATERIAL_PERLIN,
 		MATERIAL_MARBLE,
 		MATERIAL_WOOD
@@ -25,7 +21,6 @@ public:
 	material();
 
 	glm::vec3 ambient(const glm::vec3 & Position) const;
-	glm::vec3 ambientSecondary(const glm::vec3 & Position) const;
 	glm::vec3 diffuse() const {return this->Diffuse;}
 	glm::vec3 specular() const {return this->Specular;}
 	float getOpacity() const {return this->Opacity;}
@@ -48,8 +43,8 @@ public:
 	void setRepeat(float Repeat){this->Repeat = Repeat;}
 	void setType(type const & Type){this->Type = Type;}
 
-	bool isDiffuse() const;
-	bool isSpecular() const;
+	bool is_diffuse() const;
+	bool is_specular() const;
 
 private:
 	glm::vec3 Ambient;
@@ -69,13 +64,12 @@ private:
 
 	type Type;
 
-	glm::vec3 colorGrid(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
-	glm::vec3 colorLineX(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
-	glm::vec3 colorLineY(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
-	glm::vec3 colorLineZ(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
-	glm::vec3 colorNoise(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
-	glm::vec3 colorPerlin(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
-	glm::vec3 colorMarble(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
-	glm::vec3 colorWood(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
+	glm::vec3 color_grid(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
+	glm::vec3 color_line_x(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
+	glm::vec3 color_line_y(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
+	glm::vec3 color_line_z(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
+	glm::vec3 color_perlin(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
+	glm::vec3 color_marble(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
+	glm::vec3 color_wood(glm::vec3 const & Position, glm::vec3 const & ColorPrimary, glm::vec3 const & ColorSecondary) const;
 };
 
