@@ -36,22 +36,22 @@ glm::vec3 material::ambient(glm::vec3 const& Position) const
 	}
 }
 
-void material::setAmbient(glm::vec3 const& Color, float fFactor)
+void material::set_ambient(glm::vec3 const& Color, float fFactor)
 {
 	this->Ambient = Color * fFactor;
 }
 
-void material::setAmbientSecondary(glm::vec3 const& Color, float Factor)
+void material::set_ambient_secondary(glm::vec3 const& Color, float Factor)
 {
 	this->AmbientSecondary = Color * Factor;
 }
 
-void material::setDiffuse(glm::vec3 const& Color, float Factor)
+void material::set_diffuse(glm::vec3 const& Color, float Factor)
 {
 	this->Diffuse = Color * Factor;
 	this->DiffuseEnabled = Factor > 0.0f;
 }
-void material::setSpecular(glm::vec3 const& Color, float Factor)
+void material::set_specular(glm::vec3 const& Color, float Factor)
 {
 	this->Specular = Color * Factor;
 	this->SpecularEnabled = Factor > 0.0f;

@@ -15,28 +15,23 @@ camera::camera() :
 camera::~camera()
 {}
 
-glm::vec3 camera::shade
-(
-	intersection const & Intersection, 
-	material const & Material, 
-	glm::vec3 const & View
-)
+glm::vec3 camera::shade(intersection const& Intersection, material const& Material, glm::vec3 const& View)
 {
-	glm::vec3 Color = Material.ambient(Intersection.getGlobalPosition());
+	glm::vec3 Color = Material.ambient(Intersection.get_global_position());
 
 	light_factory& LightFactory = light_factory::instance();
 	for(light_factory::size_type i = 0; i < LightFactory.size(); i++)
 	{
 		glm::vec3 LightingColor;
-		int Lighting = LightFactory[i]->getRayNumber();
+		int Lighting = LightFactory[i]->get_ray_count();
 		while(Lighting--)
 			LightingColor += LightFactory[i]->shade(Intersection, Material, View);
-		Color += LightingColor / float(LightFactory[i]->getRayNumber());
+		Color += LightingColor / float(LightFactory[i]->get_ray_count());
 	}
 	return Color;
 }
 
-glm::vec3 camera::trace(ray const& RayCopy, int iDepth)
+glm::vec3 camera::trace(ray const& RayCopy, int Depth)
 {
 	config& Config = config::instance();
 	ray LocalRay;
@@ -49,19 +44,19 @@ glm::vec3 camera::trace(ray const& RayCopy, int iDepth)
 	object_factory& ObjectFactory = object_factory::instance();
 	for(object_factory::size_type i = 0, n = ObjectFactory.size(); i < n; ++i)
 	{
-		LocalRay.set_position(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.get_position(), 1.0f))));
-		LocalRay.set_direction(glm::normalize(glm::vec3(ObjectFactory[i]->getTransform()->computeInverse(glm::vec4(Ray.get_direction(), 0.0f)))));
-		if(ObjectFactory[i]->getShape()->intersect(LocalRay, Intersection))
+		LocalRay.set_position(glm::vec3(ObjectFactory[i]->get_transform()->compute_inverse(glm::vec4(Ray.get_position(), 1.0f))));
+		LocalRay.set_direction(glm::normalize(glm::vec3(ObjectFactory[i]->get_transform()->compute_inverse(glm::vec4(Ray.get_direction(), 0.0f)))));
+		if(ObjectFactory[i]->get_shape()->intersect(LocalRay, Intersection))
 		{
-			Intersection.setGlobalPosition(glm::vec3(ObjectFactory[i]->getTransform()->computeMatrix(glm::vec4(Intersection.getLocalPosition(), 1.0f))));
-			float fDistance = glm::distance(Ray.get_position(), Intersection.getGlobalPosition());
+			Intersection.set_global_position(glm::vec3(ObjectFactory[i]->get_transform()->compute_transform(glm::vec4(Intersection.get_local_position(), 1.0f))));
+			float fDistance = glm::distance(Ray.get_position(), Intersection.get_global_position());
 			if(fDistance < fDistanceMin)
 			{
 				fDistanceMin = fDistance;
 				NearestIntersection = Intersection;
-				glm::vec3 Normal = ObjectFactory[i]->getShape()->compute_normal(Intersection.getLocalPosition(), LocalRay.get_direction());
-				NearestIntersection.setNormal(glm::vec3(ObjectFactory[i]->getTransform()->computeNormal(glm::vec4(Normal, 0.0f))));
-				Material = *ObjectFactory[i]->getMaterial();
+				glm::vec3 Normal = ObjectFactory[i]->get_shape()->compute_normal(Intersection.get_local_position(), LocalRay.get_direction());
+				NearestIntersection.set_normal(glm::vec3(ObjectFactory[i]->get_transform()->compute_normal(glm::vec4(Normal, 0.0f))));
+				Material = *ObjectFactory[i]->get_material();
 			}
 		}
 	}
@@ -72,47 +67,47 @@ glm::vec3 camera::trace(ray const& RayCopy, int iDepth)
 	glm::vec3 Color = this->shade(
 		NearestIntersection, 
 		Material, 
-		-glm::vec3(Ray.get_direction())) * Material.getOpacity();
+		-glm::vec3(Ray.get_direction())) * Material.get_opacity();
 
-	if(iDepth)
+	if(Depth)
 	{
 		if (glm::all(glm::lessThan(Color, glm::vec3(0.001f))))
 			return Color;
 
-		iDepth--;
-		if(Material.getReflectionFactor() > glm::epsilon<float>() * 100.f && Config.getReflectionRays() > 0)
+		Depth--;
+		if(Material.get_reflection_factor() > glm::epsilon<float>() * 100.f && Config.get_reflection_rays() > 0)
 		{
-			Ray.set_position(NearestIntersection.getGlobalPosition());
+			Ray.set_position(NearestIntersection.get_global_position());
 
 			glm::vec3 ReflectionColor(0);
-			int ReflectionCount = Config.getReflectionRays();
+			int ReflectionCount = Config.get_reflection_rays();
 			while(ReflectionCount--)
 			{
 				Ray.set_direction(glm::reflect(
-					glm::normalize(Ray.get_direction() + glm::sphericalRand(Config.getReflectionAccuracy())),
-					glm::normalize(NearestIntersection.getNormal())));
-				ReflectionColor += this->trace(Ray, iDepth) * Material.getReflectionFactor();
+					glm::normalize(Ray.get_direction() + glm::sphericalRand(Config.get_reflection_accuracy())),
+					glm::normalize(NearestIntersection.get_normal())));
+				ReflectionColor += this->trace(Ray, Depth) * Material.get_reflection_factor();
 			}
-			Color += ReflectionColor / float(Config.getReflectionRays());
+			Color += ReflectionColor / float(Config.get_reflection_rays());
 		}
 
-		if(Material.getRefractionFactor() > glm::epsilon<float>() * 100.f && Config.getRefractionRays() > 0)
+		if(Material.get_refraction_factor() > glm::epsilon<float>() * 100.f && Config.get_refraction_rays() > 0)
 		{
-			Ray.set_position(NearestIntersection.getGlobalPosition());
+			Ray.set_position(NearestIntersection.get_global_position());
 
 			glm::vec3 RefractionColor(0);
-			int RefractionCount = Config.getRefractionRays();
+			int RefractionCount = Config.get_refraction_rays();
 			while(RefractionCount--)
 			{
 				Ray.set_direction(glm::refract(
-					glm::normalize(Ray.get_direction() + glm::sphericalRand(Config.getReflactionAccuracy())),
-						glm::normalize(NearestIntersection.getNormal()), 
-						(Ray.get_environment_index() == 1.0f ? 1.0f / Material.getEnvironmentIndex() : Material.getEnvironmentIndex())));
+					glm::normalize(Ray.get_direction() + glm::sphericalRand(Config.get_reflaction_accuracy())),
+						glm::normalize(NearestIntersection.get_normal()),
+						(Ray.get_environment_index() == 1.0f ? 1.0f / Material.get_environment_index() : Material.get_environment_index())));
 
-				Ray.set_environment_index(Ray.get_environment_index() == 1.0f ? Material.getEnvironmentIndex() : 1.0f);
-				RefractionColor += this->trace(Ray, iDepth) * Material.getRefractionFactor();
+				Ray.set_environment_index(Ray.get_environment_index() == 1.0f ? Material.get_environment_index() : 1.0f);
+				RefractionColor += this->trace(Ray, Depth) * Material.get_refraction_factor();
 			}
-			Color += RefractionColor / float(Config.getRefractionRays());
+			Color += RefractionColor / float(Config.get_refraction_rays());
 		}
 	}
 	return Color;
@@ -189,7 +184,7 @@ void camera::shoot(glm::mat4 const& ModelView, int Depth, int Antialising)
 
 	gli::texture2d SurfaceScaled = scale_clamp(Surface, 0.f, 1.f);
 	gli::texture2d Export = gli::convert(gli::flip(SurfaceScaled), gli::FORMAT_RGBA8_UNORM_PACK8);
-	gli::save(Export, Config.getFile());
+	gli::save(Export, Config.get_file());
 }
 
 bool camera::check_aliasing(gli::texture2d const& Surface, adaptator const& Adaptator, int x, int y)
@@ -213,21 +208,21 @@ bool camera::check_aliasing(gli::texture2d const& Surface, adaptator const& Adap
 	glm::vec3 ColorP0 = Sampler.texel_fetch(glm::uvec2(x + 1, y + 0), 0) / Adaptator.get_factor(glm::uvec2(x + 1, y + 0));
 	glm::vec3 ColorPP = Sampler.texel_fetch(glm::uvec2(x + 1, y + 1), 0) / Adaptator.get_factor(glm::uvec2(x + 1, y + 1));
 
-	if(glm::any(glm::greaterThan(glm::abs(ColorMM - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
+	if(glm::any(glm::greaterThan(glm::abs(ColorMM - Color00), glm::vec3(Config.get_anti_aliasing_accuracy()))))
 		return true;
-	if(glm::any(glm::greaterThan(glm::abs(ColorM0 - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
+	if(glm::any(glm::greaterThan(glm::abs(ColorM0 - Color00), glm::vec3(Config.get_anti_aliasing_accuracy()))))
 		return true;
-	if(glm::any(glm::greaterThan(glm::abs(ColorMP - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
+	if(glm::any(glm::greaterThan(glm::abs(ColorMP - Color00), glm::vec3(Config.get_anti_aliasing_accuracy()))))
 		return true;
-	if(glm::any(glm::greaterThan(glm::abs(Color0M - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
+	if(glm::any(glm::greaterThan(glm::abs(Color0M - Color00), glm::vec3(Config.get_anti_aliasing_accuracy()))))
 		return true;
-	if(glm::any(glm::greaterThan(glm::abs(Color0P - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
+	if(glm::any(glm::greaterThan(glm::abs(Color0P - Color00), glm::vec3(Config.get_anti_aliasing_accuracy()))))
 		return true;
-	if(glm::any(glm::greaterThan(glm::abs(ColorPM - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
+	if(glm::any(glm::greaterThan(glm::abs(ColorPM - Color00), glm::vec3(Config.get_anti_aliasing_accuracy()))))
 		return true;
-	if(glm::any(glm::greaterThan(glm::abs(ColorP0 - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
+	if(glm::any(glm::greaterThan(glm::abs(ColorP0 - Color00), glm::vec3(Config.get_anti_aliasing_accuracy()))))
 		return true;
-	if(glm::any(glm::greaterThan(glm::abs(ColorPP - Color00), glm::vec3(Config.getAntiAliasingAccuracy()))))
+	if(glm::any(glm::greaterThan(glm::abs(ColorPP - Color00), glm::vec3(Config.get_anti_aliasing_accuracy()))))
 		return true;
 	return false;
 }

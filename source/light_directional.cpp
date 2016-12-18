@@ -19,24 +19,24 @@ glm::vec3 directional::shade(intersection const& Intersection, material const& M
 	glm::vec3 Color(0.0f);
 
 	glm::vec3 Position = -m_Direction * 100000.f;
-	glm::vec3 LightVector = glm::normalize(Position - Intersection.getGlobalPosition()/* + glm::sphericalRand(this->Inaccuracy)*/);
+	glm::vec3 LightVector = glm::normalize(Position - Intersection.get_global_position()/* + glm::sphericalRand(this->Inaccuracy)*/);
 
-	if(!this->shadow(Intersection.getGlobalPosition(), Position, LightVector))
+	if(!this->shadow(Intersection.get_global_position(), Position, LightVector))
 	{
-		float fDiffuse = glm::dot(glm::normalize(Intersection.getNormal()), LightVector);
-		if(fDiffuse > 0.0f)
+		float Diffuse = glm::dot(glm::normalize(Intersection.get_normal()), LightVector);
+		if(Diffuse > 0.0f)
 		{
 			if(Material.is_diffuse())
-				Color += m_Color * Material.diffuse() * fDiffuse;
+				Color += m_Color * Material.diffuse() * Diffuse;
 
 			if(Material.is_specular())
 			{
 				glm::vec3 Reflect = glm::reflect(
-					glm::normalize(-LightVector), 
-					glm::normalize(glm::normalize(Intersection.getNormal())));
-				float fDot = glm::dot(Reflect, View);
-				float fSpecular = glm::pow(fDot > 0.0f ? fDot : 0.0f, Material.getSpecularExponent());
-				Color += Material.specular() * fSpecular;
+					glm::normalize(-LightVector),
+					glm::normalize(glm::normalize(Intersection.get_normal())));
+				float Dot = glm::dot(Reflect, View);
+				float Specular = glm::pow(Dot > 0.0f ? Dot : 0.0f, Material.get_specular_exponent());
+				Color += Material.specular() * Specular;
 			}
 		}
 	}

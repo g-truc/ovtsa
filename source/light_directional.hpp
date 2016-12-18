@@ -11,11 +11,11 @@ public:
 
 	virtual glm::vec3 shade(intersection const& Intersection, material const& Material, glm::vec3 const& View) const;
 
-	glm::vec3 const & getDirection() const {return this->m_Direction;}
-	glm::vec3 const & getColor() const {return this->m_Color;}
+	glm::vec3 const& get_direction() const {return this->m_Direction;}
+	glm::vec3 const& get_color() const {return this->m_Color;}
 
-	void setDirection(glm::vec3 const & Direction) {this->m_Direction = Direction;}
-	void setColor(glm::vec3 const & Color) {this->m_Color = Color;}
+	void set_direction(glm::vec3 const& Direction) {this->m_Direction = Direction;}
+	void set_color(glm::vec3 const& Color) {this->m_Color = Color;}
 
 private:
 	directional();

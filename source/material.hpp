@@ -23,25 +23,25 @@ public:
 	glm::vec3 ambient(const glm::vec3 & Position) const;
 	glm::vec3 diffuse() const {return this->Diffuse;}
 	glm::vec3 specular() const {return this->Specular;}
-	float getOpacity() const {return this->Opacity;}
-	float getSpecularExponent() const {return this->SpecularExponent;}
-	float getEnvironmentIndex() const {return this->EnvironmentIndex;}
-	float getReflectionFactor() const {return this->ReflectionFactor;}
-	float getRefractionFactor() const {return this->RefractionFactor;}
-	float getRepeat() const {return this->Repeat;}
-	type getType() const {return this->Type;}
+	float get_opacity() const {return this->Opacity;}
+	float get_specular_exponent() const {return this->SpecularExponent;}
+	float get_environment_index() const {return this->EnvironmentIndex;}
+	float get_reflection_factor() const {return this->ReflectionFactor;}
+	float get_refraction_factor() const {return this->RefractionFactor;}
+	float get_repeat() const {return this->Repeat;}
+	type get_type() const {return this->Type;}
 
-	void setAmbient(glm::vec3 const & Color, float Factor);
-	void setAmbientSecondary(glm::vec3 const & Color, float Factor);
-	void setDiffuse(glm::vec3 const & Color, float Factor);
-	void setSpecular(glm::vec3 const & Color, float Factor);
-	void setOpacity(float const & Opacity){this->Opacity = Opacity;}
-	void setSpecularExponent(float SpecularExponent){this->SpecularExponent = SpecularExponent;}
-	void setEnvironmentIndex(float EnvironmentIndex){this->EnvironmentIndex = EnvironmentIndex;}
-	void setReflectionFactor(float ReflectionFactor){this->ReflectionFactor = ReflectionFactor;}
-	void setRefractionFactor(float RefractionFactor){this->RefractionFactor = RefractionFactor;}
-	void setRepeat(float Repeat){this->Repeat = Repeat;}
-	void setType(type const & Type){this->Type = Type;}
+	void set_ambient(glm::vec3 const& Color, float Factor);
+	void set_ambient_secondary(glm::vec3 const& Color, float Factor);
+	void set_diffuse(glm::vec3 const& Color, float Factor);
+	void set_specular(glm::vec3 const& Color, float Factor);
+	void set_opacity(float Opacity){this->Opacity = Opacity;}
+	void set_specular_exponent(float SpecularExponent){this->SpecularExponent = SpecularExponent;}
+	void set_environment_index(float EnvironmentIndex){this->EnvironmentIndex = EnvironmentIndex;}
+	void set_reflection_factor(float ReflectionFactor){this->ReflectionFactor = ReflectionFactor;}
+	void set_refraction_factor(float RefractionFactor){this->RefractionFactor = RefractionFactor;}
+	void set_repeat(float Repeat){this->Repeat = Repeat;}
+	void set_type(type const& Type){this->Type = Type;}
 
 	bool is_diffuse() const;
 	bool is_specular() const;

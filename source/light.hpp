@@ -15,24 +15,18 @@ public:
 	
 	light();
 
-	virtual glm::vec3 shade(
-		intersection const & Intersection, 
-		material const & Material, 
-		glm::vec3 const & View) const = 0;
+	virtual glm::vec3 shade(intersection const& Intersection, material const& Material, glm::vec3 const& View) const = 0;
 
-	float getInaccuracy() const {return this->Inaccuracy;}
-	int getRayNumber() const {return this->RayNumber;}
+	float get_inaccuracy() const {return this->Inaccuracy;}
+	int get_ray_count() const {return this->RayCount;}
 
-	void setInaccuracy(float Inaccuracy) {this->Inaccuracy = Inaccuracy;}
-	void setRayNumber(int RayNumber) {this->RayNumber = RayNumber;}
+	void set_inaccuracy(float Inaccuracy) {this->Inaccuracy = Inaccuracy;}
+	void set_ray_count(int RayCount) {this->RayCount = RayCount;}
 
 protected:
-	bool shadow(
-		glm::vec3 const & GlobalIntersection, 
-		glm::vec3 const & GlobalLightPosition, 
-		glm::vec3 const & GlobalLightDirection) const;
+	bool shadow(glm::vec3 const& GlobalIntersection, glm::vec3 const& GlobalLightPosition, glm::vec3 const& GlobalLightDirection) const;
 
 	float Inaccuracy;
-	int RayNumber;
+	int RayCount;
 };
 

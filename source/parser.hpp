@@ -30,8 +30,8 @@ private:
 	void parseLightPoint(TiXmlElement* pElement);
 	void parseLightDirections(TiXmlElement* pElement);
 	void parseLightDirection(TiXmlElement* pElement);
-	glm::vec3 getPosition(TiXmlElement* pElement);
-	glm::vec3 getDirection(TiXmlElement* pElement);
-	glm::vec3 getColor(TiXmlElement* pElement);
+	glm::vec3 get_position(TiXmlElement* pElement);
+	glm::vec3 get_direction(TiXmlElement* pElement);
+	glm::vec3 get_color(TiXmlElement* pElement);
 };
 

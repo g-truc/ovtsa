@@ -12,17 +12,17 @@ public:
 		, InverseTransposeMatrix(glm::transpose(InverseMatrix))
 	{}
 
-	glm::vec4 computeMatrix(glm::vec4 const& v) const
+	glm::vec4 compute_transform(glm::vec4 const& v) const
 	{
 		return v * this->TransformMatrix;
 	}
 
-	glm::vec4 computeInverse(glm::vec4 const& v) const
+	glm::vec4 compute_inverse(glm::vec4 const& v) const
 	{
 		return v * this->InverseMatrix;
 	}
 
-	glm::vec4 computeNormal(glm::vec4 const& Normal) const
+	glm::vec4 compute_normal(glm::vec4 const& Normal) const
 	{
 		return Normal * this->InverseTransposeMatrix;
 	}

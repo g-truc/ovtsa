@@ -9,16 +9,13 @@ class point : public light
 public:
 	static point* create();
 
-	virtual glm::vec3 shade(
-		intersection const & Intersection, 
-		material const & Material, 
-		glm::vec3 const & View) const;
+	virtual glm::vec3 shade(intersection const& Intersection, material const& Material, glm::vec3 const& View) const;
 
-	glm::vec3 const & getPosition() const {return this->Position;}
-	glm::vec3 const & getColor() const {return this->Color;}
+	glm::vec3 const& get_position() const {return this->Position;}
+	glm::vec3 const& get_color() const {return this->Color;}
 
-	void setPosition(glm::vec3 const & Position) {this->Position = Position;}
-	void setColor(glm::vec3 const & Color) {this->Color = Color;}
+	void set_position(glm::vec3 const& Position) {this->Position = Position;}
+	void set_color(glm::vec3 const& Color) {this->Color = Color;}
 
 private:
 	point();

@@ -3,7 +3,7 @@
 #include "util.hpp"
 #include "singleton.hpp"
 
-enum EAntiAlias
+enum anti_alias_mode
 {
 	AA_NONE,
 	AA_ADAPT,
@@ -17,38 +17,38 @@ class config : public singleton<config>
 	~config();
 
 public:
-	void load(std::string const & Filename);
+	void load(std::string const& Filename);
 
-	glm::ivec2 getWindowSize() const {return this->WindowSize;}
-	int getDepth() const {return this->Depth;}
-	int getAntiAliasingLevel() const {return this->AntiAliasing;}
-	float getAntiAliasingAccuracy() const {return this->AAAccuracy;}
-	EAntiAlias getAntiAliasingType() const {return this->AAType;}
-	int getReflectionRays() const {return this->ReflectionRays;}
-	int getRefractionRays() const {return this->RefractionRays;}
-	float getReflectionAccuracy() const {return this->ReflectionAccuracy;}
-	float getReflactionAccuracy() const {return this->ReflactionAccuracy;}
-	std::string getFile() const {return this->File;}
-	std::string getConfig() const {return this->Config;}
+	glm::ivec2 get_window_size() const {return this->WindowSize;}
+	int get_depth() const {return this->Depth;}
+	int get_anti_aliasing_level() const {return this->AntiAliasing;}
+	float get_anti_aliasing_accuracy() const {return this->AAAccuracy;}
+	anti_alias_mode get_anti_aliasing_type() const {return this->AAType;}
+	int get_reflection_rays() const {return this->ReflectionRays;}
+	int get_refraction_rays() const {return this->RefractionRays;}
+	float get_reflection_accuracy() const {return this->ReflectionAccuracy;}
+	float get_reflaction_accuracy() const {return this->ReflactionAccuracy;}
+	std::string get_file() const {return this->File;}
+	std::string get_config() const {return this->Config;}
 
-	void SetWindowSize(glm::ivec2 const & WindowSize) {this->WindowSize = WindowSize;}
-	void SetDepth(int Depth) {this->Depth = Depth;}
-	void SetAntiAliasingLevel(int AntiAliasing) {this->AntiAliasing = AntiAliasing;}
-	void SetAntiAliasingAccuracy(float AAAccuracy) {this->AAAccuracy = AAAccuracy;}
-	void SetAntiAliasingType(EAntiAlias AAType) {this->AAType = AAType;}
-	void SetReflectionRays(int ReflectionRays) {this->ReflectionRays = ReflectionRays;}
-	void SetRefractionRays(int RefractionRays) {this->RefractionRays = RefractionRays;}
-	void SetReflectionAccuracy(float ReflectionAccuracy) {this->ReflectionAccuracy = ReflectionAccuracy;}
-	void SetReflactionAccuracy(float ReflactionAccuracy) {this->ReflactionAccuracy = ReflactionAccuracy;}
-	void SetFile(std::string const & File) {this->File = File;}
-	void SetConfig(std::string const & Config) {this->Config = Config;}
+	void set_window_size(glm::ivec2 const & WindowSize) {this->WindowSize = WindowSize;}
+	void set_depth(int Depth) {this->Depth = Depth;}
+	void set_anti_aliasing_level(int AntiAliasing) {this->AntiAliasing = AntiAliasing;}
+	void set_anti_aliasing_accuracy(float AAAccuracy) {this->AAAccuracy = AAAccuracy;}
+	void set_anti_aliasing_type(anti_alias_mode AAType) {this->AAType = AAType;}
+	void set_reflection_rays(int ReflectionRays) {this->ReflectionRays = ReflectionRays;}
+	void set_refraction_rays(int RefractionRays) {this->RefractionRays = RefractionRays;}
+	void set_reflection_accuracy(float ReflectionAccuracy) {this->ReflectionAccuracy = ReflectionAccuracy;}
+	void set_reflaction_accuracy(float ReflactionAccuracy) {this->ReflactionAccuracy = ReflactionAccuracy;}
+	void set_file(std::string const& File) {this->File = File;}
+	void set_config(std::string const& Config) {this->Config = Config;}
 
 private:
 	glm::ivec2 WindowSize;
 	int Depth;
 	int AntiAliasing;
 	float AAAccuracy;
-	EAntiAlias AAType;
+	anti_alias_mode AAType;
 	int ReflectionRays;
 	int RefractionRays;
 	float ReflectionAccuracy;

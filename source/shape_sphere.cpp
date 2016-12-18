@@ -4,7 +4,7 @@
 #include "material.hpp"
 #include "util.hpp"
 
-glm::vec3 sphere::compute_normal(const glm::vec3& Position, const glm::vec3& RayDirection) const
+glm::vec3 sphere::compute_normal(glm::vec3 const& Position, glm::vec3 const& RayDirection) const
 {
 	return glm::mix(-Position, Position, glm::dot(Position, RayDirection) < 0);
 }
@@ -17,19 +17,19 @@ bool sphere::intersect(ray const& Ray, intersection& Intersection) const
 	float c = glm::dot(Ray.get_position(), Ray.get_position()) - 1.0f; // 1.0f => Radius
 	float d = b * b - c;
 
-	if(d > glm::epsilon<float>() * 1000.f)
+	if(d > glm::epsilon<float>())
 	{
 		float e = glm::sqrt(d);
 		float x1 = -b - e;
 		float x2 = -b + e;
-		if(x1 > glm::epsilon<float>() * 1000.f)
+		if(x1 > glm::epsilon<float>())
 		{
-			Intersection.setLocalPosition(Ray.get_position() + Ray.get_direction() * x1);
+			Intersection.set_local_position(Ray.get_position() + Ray.get_direction() * x1);
 			bHit = true;
 		}
-		else if(x2 > glm::epsilon<float>() * 1000.f)
+		else if(x2 > glm::epsilon<float>())
 		{
-			Intersection.setLocalPosition(Ray.get_position() + Ray.get_direction() * x2);
+			Intersection.set_local_position(Ray.get_position() + Ray.get_direction() * x2);
 			bHit = true;
 		}
 	}

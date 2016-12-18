@@ -15,7 +15,7 @@ bool plane::intersect(ray const& Ray, intersection& Intersection) const
 		float t = -Ray.get_position().z / Ray.get_direction().z;
 		if(t > glm::epsilon<float>() * 100.f)
 		{
-			Intersection.setLocalPosition(Ray.get_position() + Ray.get_direction() * t);
+			Intersection.set_local_position(Ray.get_position() + Ray.get_direction() * t);
 			hit = true;
 		}
 	}

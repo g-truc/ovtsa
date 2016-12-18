@@ -26,47 +26,47 @@ parser::~parser()
 
 void parser::parseRaytracer(TiXmlElement * pElement)
 {
-	config * pConfig = & config::instance();
+	config& Config = config::instance();
 	std::string AAType;
 	glm::ivec2 WindowSize(0);
 
-	TiXmlAttribute* pAttribute = pElement->FirstAttribute();
+	TiXmlAttribute* Attribute = pElement->FirstAttribute();
 	do
 	{
-		if(!strcmp("file", pAttribute->Name()))
-			pConfig->SetFile(pAttribute->Value());
-		else if(!strcmp("width", pAttribute->Name()))
-			WindowSize.x = atoi(pAttribute->Value());
-		else if(!strcmp("height", pAttribute->Name()))
-			WindowSize.y = atoi(pAttribute->Value());
-		else if(!strcmp("depth", pAttribute->Name()))
-			pConfig->SetDepth(atoi(pAttribute->Value()));
-		else if(!strcmp("antialiasing", pAttribute->Name()))
-			pConfig->SetAntiAliasingLevel(atoi(pAttribute->Value()));
-		else if(!strcmp("aa-accuracy", pAttribute->Name()))
-			pConfig->SetAntiAliasingAccuracy(float(atof(pAttribute->Value())));
-		else if(!strcmp("aa-type", pAttribute->Name()))
-			AAType = pAttribute->Value();
-		else if(!strcmp("reflection-rays", pAttribute->Name()))
-			pConfig->SetReflectionRays(atoi(pAttribute->Value()));
-		else if(!strcmp("refraction-rays", pAttribute->Name()))
-			pConfig->SetRefractionRays(atoi(pAttribute->Value()));
-		else if(!strcmp("reflection-accuracy", pAttribute->Name()))
-			pConfig->SetReflectionAccuracy(float(atof(pAttribute->Value())));
-		else if(!strcmp("refraction-accuracy", pAttribute->Name()))
-			pConfig->SetReflactionAccuracy(float(atof(pAttribute->Value())));
-	}    
-	while (pAttribute = pAttribute->Next());
+		if(!strcmp("file", Attribute->Name()))
+			Config.set_file(Attribute->Value());
+		else if(!strcmp("width", Attribute->Name()))
+			WindowSize.x = atoi(Attribute->Value());
+		else if(!strcmp("height", Attribute->Name()))
+			WindowSize.y = atoi(Attribute->Value());
+		else if(!strcmp("depth", Attribute->Name()))
+			Config.set_depth(atoi(Attribute->Value()));
+		else if(!strcmp("antialiasing", Attribute->Name()))
+			Config.set_anti_aliasing_level(atoi(Attribute->Value()));
+		else if(!strcmp("aa-accuracy", Attribute->Name()))
+			Config.set_anti_aliasing_accuracy(float(atof(Attribute->Value())));
+		else if(!strcmp("aa-type", Attribute->Name()))
+			AAType = Attribute->Value();
+		else if(!strcmp("reflection-rays", Attribute->Name()))
+			Config.set_reflection_rays(atoi(Attribute->Value()));
+		else if(!strcmp("refraction-rays", Attribute->Name()))
+			Config.set_refraction_rays(atoi(Attribute->Value()));
+		else if(!strcmp("reflection-accuracy", Attribute->Name()))
+			Config.set_reflection_accuracy(float(atof(Attribute->Value())));
+		else if(!strcmp("refraction-accuracy", Attribute->Name()))
+			Config.set_reflaction_accuracy(float(atof(Attribute->Value())));
+	}
+	while (Attribute = Attribute->Next());
 
 	if(!strcmp("none", AAType.c_str()))
-		pConfig->SetAntiAliasingType(AA_NONE);
+		Config.set_anti_aliasing_type(AA_NONE);
 	else if(!strcmp("adapt", AAType.c_str()))
-		pConfig->SetAntiAliasingType(AA_ADAPT);
+		Config.set_anti_aliasing_type(AA_ADAPT);
 	else if(!strcmp("force", AAType.c_str()))
-		pConfig->SetAntiAliasingType(AA_FORCE);
+		Config.set_anti_aliasing_type(AA_FORCE);
 
 
-	pConfig->SetWindowSize(WindowSize);
+	Config.set_window_size(WindowSize);
 
 	parseObjects(pElement->FirstChildElement("objects"));
 	parseLights(pElement->FirstChildElement("lights"));
@@ -167,7 +167,7 @@ void parser::parseTriangle(TiXmlElement* pElement)
 
 	TiXmlElement* pChildPositions = pElement->FirstChildElement("positions");
 	if(pChildPositions)
-		static_cast<triangle*>(pObject->getShape())->set_positions(this->getPositions(pChildPositions));
+		static_cast<triangle*>(pObject->get_shape())->set_positions(this->getPositions(pChildPositions));
 }
 
 void parser::parseCylinder(TiXmlElement* pElement)
@@ -191,9 +191,9 @@ std::array<glm::vec3, 3> parser::getPositions(TiXmlElement* pElement)
 	std::array<glm::vec3, 3> Positions;
 
 	TiXmlElement* pChild = pElement->FirstChildElement("position");
-	Positions[0] = getPosition(pChild);
-	Positions[1] = getPosition(pChild);
-	Positions[2] = getPosition(pChild);
+	Positions[0] = get_position(pChild);
+	Positions[1] = get_position(pChild);
+	Positions[2] = get_position(pChild);
 
 	return Positions;
 }
@@ -207,56 +207,56 @@ material parser::getMaterial(TiXmlElement* pElement)
 	do
 	{
 		if(!strcmp("opacity", pAttribute->Name()))
-			Material.setOpacity(float(atof(pAttribute->Value())));
+			Material.set_opacity(float(atof(pAttribute->Value())));
 		else if(!strcmp("reflection", pAttribute->Name()))
-			Material.setReflectionFactor(float(atof(pAttribute->Value())));
+			Material.set_reflection_factor(float(atof(pAttribute->Value())));
 		else if(!strcmp("refraction", pAttribute->Name()))
-			Material.setRefractionFactor(float(atof(pAttribute->Value())));
+			Material.set_refraction_factor(float(atof(pAttribute->Value())));
 		else if(!strcmp("environment-index", pAttribute->Name()))
-			Material.setEnvironmentIndex(float(atof(pAttribute->Value())));
+			Material.set_environment_index(float(atof(pAttribute->Value())));
 		else if(!strcmp("specular-exponent", pAttribute->Name()))
-			Material.setSpecularExponent(float(atof(pAttribute->Value())));
+			Material.set_specular_exponent(float(atof(pAttribute->Value())));
 		else if(!strcmp("repeat", pAttribute->Name()))
-			Material.setRepeat(float(atof(pAttribute->Value())));
+			Material.set_repeat(float(atof(pAttribute->Value())));
 		else if(!strcmp("type", pAttribute->Name()))
 			type = pAttribute->Value();
 	}
 		while (pAttribute = pAttribute->Next());
 
 	if(!strcmp("flat", type.c_str()))
-		Material.setType(material::MATERIAL_FLAT);
+		Material.set_type(material::MATERIAL_FLAT);
 	else if(!strcmp("grid", type.c_str()))
-		Material.setType(material::MATERIAL_GRID);
+		Material.set_type(material::MATERIAL_GRID);
 	else if(!strcmp("line-x", type.c_str()))
-		Material.setType(material::MATERIAL_LINE_X);
+		Material.set_type(material::MATERIAL_LINE_X);
 	else if(!strcmp("line-y", type.c_str()))
-		Material.setType(material::MATERIAL_LINE_Y);
+		Material.set_type(material::MATERIAL_LINE_Y);
 	else if(!strcmp("line-z", type.c_str()))
-		Material.setType(material::MATERIAL_LINE_Z);
+		Material.set_type(material::MATERIAL_LINE_Z);
 	else if(!strcmp("perlin", type.c_str()))
-		Material.setType(material::MATERIAL_PERLIN);
+		Material.set_type(material::MATERIAL_PERLIN);
 	else if(!strcmp("marble", type.c_str()))
-		Material.setType(material::MATERIAL_MARBLE);
+		Material.set_type(material::MATERIAL_MARBLE);
 	else if(!strcmp("wood", type.c_str()))
-		Material.setType(material::MATERIAL_WOOD);
+		Material.set_type(material::MATERIAL_WOOD);
 	else
-		Material.setType(material::MATERIAL_FLAT);
+		Material.set_type(material::MATERIAL_FLAT);
 
 	glm::vec4 Ambient = getColorMaterial(pElement->FirstChildElement("ambient"));
-	Material.setAmbient(glm::vec3(Ambient), Ambient.a);
+	Material.set_ambient(glm::vec3(Ambient), Ambient.a);
 
 	TiXmlElement* pAmbientSecondary = pElement->FirstChildElement("ambient-secondary");
 	if(pAmbientSecondary)
 	{
 		glm::vec4 AmbientSecondary = getColorMaterial(pAmbientSecondary);
-		Material.setAmbientSecondary(glm::vec3(AmbientSecondary), AmbientSecondary.a);
+		Material.set_ambient_secondary(glm::vec3(AmbientSecondary), AmbientSecondary.a);
 	}
 
 	glm::vec4 Diffuse = getColorMaterial(pElement->FirstChildElement("diffuse"));
-	Material.setDiffuse(glm::vec3(Diffuse), Diffuse.a);
+	Material.set_diffuse(glm::vec3(Diffuse), Diffuse.a);
 
 	glm::vec4 Specular = getColorMaterial(pElement->FirstChildElement("specular"));
-	Material.setSpecular(glm::vec3(Specular), Specular.a);
+	Material.set_specular(glm::vec3(Specular), Specular.a);
 
 	return Material;
 }
@@ -367,17 +367,17 @@ void parser::parseLightSpot(TiXmlElement* pElement)
 	do
 	{
 		if(!strcmp("rays-number", pAttribute->Name()))
-			pLight->setRayNumber(atoi(pAttribute->Value()));
+			pLight->set_ray_count(atoi(pAttribute->Value()));
 		else if(!strcmp("inaccuracy", pAttribute->Name()))
-			pLight->setInaccuracy(float(atof(pAttribute->Value())));
+			pLight->set_inaccuracy(float(atof(pAttribute->Value())));
 		else if(!strcmp("cutoff", pAttribute->Name()))
-			pLight->setCutOff(float(atof(pAttribute->Value())));
+			pLight->set_cutoff(float(atof(pAttribute->Value())));
 	}
 	while(pAttribute = pAttribute->Next());
 
-	pLight->setPosition(getPosition(pElement->FirstChildElement("position")));
-	pLight->setDirection(getDirection(pElement->FirstChildElement("direction")));
-	pLight->setColor(getColor(pElement->FirstChildElement("color")));
+	pLight->set_position(get_position(pElement->FirstChildElement("position")));
+	pLight->set_direction(get_direction(pElement->FirstChildElement("direction")));
+	pLight->set_color(get_color(pElement->FirstChildElement("color")));
 }
 
 void parser::parseLightPoints(TiXmlElement* pElement)
@@ -398,14 +398,14 @@ void parser::parseLightPoint(TiXmlElement* pElement)
 	do
 	{
 		if(!strcmp("rays-number", pAttribute->Name()))
-			pLight->setRayNumber(atoi(pAttribute->Value()));
+			pLight->set_ray_count(atoi(pAttribute->Value()));
 		else if(!strcmp("inaccuracy", pAttribute->Name()))
-			pLight->setInaccuracy(float(atof(pAttribute->Value())));
+			pLight->set_inaccuracy(float(atof(pAttribute->Value())));
 	}
 	while(pAttribute = pAttribute->Next());
 
-	pLight->setPosition(getPosition(pElement->FirstChildElement("position")));
-	pLight->setColor(getColor(pElement->FirstChildElement("color")));
+	pLight->set_position(get_position(pElement->FirstChildElement("position")));
+	pLight->set_color(get_color(pElement->FirstChildElement("color")));
 }
 
 void parser::parseLightDirections(TiXmlElement* pElement)
@@ -426,17 +426,17 @@ void parser::parseLightDirection(TiXmlElement* pElement)
 	do
 	{
 		if(!strcmp("rays-number", pAttribute->Name()))
-			pLight->setRayNumber(atoi(pAttribute->Value()));
+			pLight->set_ray_count(atoi(pAttribute->Value()));
 		else if(!strcmp("inaccuracy", pAttribute->Name()))
-			pLight->setInaccuracy(float(atof(pAttribute->Value())));
+			pLight->set_inaccuracy(float(atof(pAttribute->Value())));
 	}
 	while(pAttribute = pAttribute->Next());
 
-	pLight->setDirection(getDirection(pElement->FirstChildElement("direction")));
-	pLight->setColor(getColor(pElement->FirstChildElement("color")));
+	pLight->set_direction(get_direction(pElement->FirstChildElement("direction")));
+	pLight->set_color(get_color(pElement->FirstChildElement("color")));
 }
 
-glm::vec3 parser::getPosition(TiXmlElement* pElement)
+glm::vec3 parser::get_position(TiXmlElement* pElement)
 {
 	glm::vec3 Position;
 	TiXmlAttribute* pAttribute = pElement->FirstAttribute();
@@ -448,12 +448,12 @@ glm::vec3 parser::getPosition(TiXmlElement* pElement)
 			Position.y = float(atof(pAttribute->Value()));
 		else if(!strcmp("z", pAttribute->Name()))
 			Position.z = float(atof(pAttribute->Value()));
-	}    
+	}
 	while(pAttribute = pAttribute->Next());
 	return Position;
 }
 
-glm::vec3 parser::getDirection(TiXmlElement* pElement)
+glm::vec3 parser::get_direction(TiXmlElement* pElement)
 {
 	glm::vec3 Direction;
 	TiXmlAttribute* pAttribute = pElement->FirstAttribute();
@@ -470,7 +470,7 @@ glm::vec3 parser::getDirection(TiXmlElement* pElement)
 	return Direction;
 }
 
-glm::vec3 parser::getColor(TiXmlElement* pElement)
+glm::vec3 parser::get_color(TiXmlElement* pElement)
 {
 	glm::vec3 Color;
 	float Alpha;
